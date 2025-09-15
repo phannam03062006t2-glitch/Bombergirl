@@ -1,5 +1,5 @@
 🔹 1. Sự kiện cửa sổ (Window Events)
-event.type	Ý nghĩa
+event.type	                                    Ý nghĩa
 Event::Closed                                  	Người dùng nhấn nút đóng cửa sổ → nên gọi window.close()
 Event::Resized                                 	Cửa sổ được thay đổi kích thước
 Event::LostFocus                              	Cửa sổ mất focus (người dùng chuyển sang app khác)
@@ -18,7 +18,7 @@ if(event.type == Event::KeyPressed){
 }
 
 🔹 3. Sự kiện chuột (Mouse Events)
-event.type	Mô tả
+event.type	                                                    Mô tả
 Event::MouseButtonPressed	                                    Nhấn nút chuột
 Event::MouseButtonReleased	                                  Nhả nút chuột
 Event::MouseMoved                                           	Chuột di chuyển
@@ -34,7 +34,7 @@ if(event.type == Event::MouseButtonPressed){
 }
 
 🔹 4. Sự kiện joystick / gamepad
-event.type	Mô tả
+event.type	                                                  Mô tả
 Event::JoystickButtonPressed	                             Nhấn nút joystick
 Event::JoystickButtonReleased	                             Nhả nút joystick
 Event::JoystickMoved	                                     Joystick di chuyển
@@ -54,6 +54,4 @@ Keyboard::isKeyPressed()                  → kiểm tra liên tục phím đang
 
 Mouse::getPosition(window)                → lấy vị trí chuột hiện tại.
 
-Nếu bạn muốn, mình có thể viết bảng code mẫu tất cả event + real-time input để bạn copy thử chạy luôn, nhìn rõ cách xử lý từng loại sự kiện.
 
-Bạn có muốn mình viết luôn không?
