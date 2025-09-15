@@ -1,98 +1,38 @@
 #include <SFML/Graphics.hpp>
-#include <conio.h>
+#include <fstream>
+#include <iostream>
 using namespace sf;
+using namespace std;
 
-// map  ? x ? : 1 � = ? bit
+// map  ? x ? : 1 ô = ? bit
 
 // --------------------------------1-------------------------------------
       /*
-            -Class : Player (co animation don gian)
-            - sd t�nh k� thua, da hinh (CLO2)
+            - Class : Player (có animation đơn giản)
+            - Sử dụng tính kế thừa, đa hình (CLO2)
       */
 
 //---------------------------------2-------------------------------------
       /*
-            -Class : Enermy (2 -> 3 loai quai) (co animation don gian )
-            - sd t�nh k� thua, da hinh (CLO2)
+            - Class : Enermy (2 -> 3 loại quái) (có animation đơn giản)
+            - Sử dụng tính kế thừa, đa hình (CLO2)
       */
    
 //---------------------------------3------------------------------------
       /*
-            -Class : Bomb, Wall
-            -sd (set, map, queue,...) quan ly dan, diem so (CLO3)
-            - Vao ra file (map, cau hinh), ngoai le (CLO4)
+            - Class : Bomb, Wall
+            - Sử dụng (set, map, queue,...) quản lý bomb, điểm số (CLO3)
+            - Vào ra file (map, cấu hình), ngoại lệ (CLO4)
       */
 
-
-class Character{
-	public:
-		int x, y;
-		int c1, c2, c3, c4;
-		int r;
-		int health;
-		int speed;
-		Texture playerTexture;
-		Sprite playerSprite;
-};
-
-class Player : public Character{
-	public:
-	Player(){
-		// chi so co ban
-		x = 100;
-		y = 100;
-		r = 30;
-		speed = 1.f;
-		// xbox
-		c1 = x - r;
-		c2 = y - r;
-		c3 = x + r;
-		c4 = y + r;
-		// set hinh anh
-        playerTexture.loadFromFile("assets/wtf.png");
-		playerSprite.setTexture(playerTexture);
-		playerSprite.setPosition(100.f, 100.f);
-	}
-	
-	void move(int dx, int dy){
-		x += dx*speed;
-		y += dy*speed;
-		c1 = x - r;
-		c2 = y - r;
-		c3 = x + r;
-		c4 = y + r;
-		playerSprite.setPosition(x, y);
-	}
-	
-	void player_input(){
-		if(Keyboard::isKeyPressed(Keyboard::Up)){move(0, -1);}
-		else if(Keyboard::isKeyPressed(Keyboard::Down)){move(0, 1);}
-		else if(Keyboard::isKeyPressed(Keyboard::Right)){move(1, 0);}
-		else if(Keyboard::isKeyPressed(Keyboard::Left)){move(-1, 0);}
-	}
-	
-	void die(){}
-	
-	void take_damge(){
-	    health--;
-		if(health == 0){}
-		}
-	
-	void bomb(){}
-	
-	void draw_player(RenderWindow &window){
-		window.draw(playerSprite);
-	}
-};
-
 int main(){
-	
+	// tạo cửa sổ
 	RenderWindow window(VideoMode(800, 600), "Muslim");
 	
 	Player a;
 	
 	while(window.isOpen()){
-		//-------------------------------UPDATE---------------------------------------------------------
+		//-------------------------------Sự kiện---------------------------------------------------------
 		Event event;
 		while(window.pollEvent(event))
 		{
@@ -100,12 +40,14 @@ int main(){
 			{window.close();}
 			
 		}
-	    a.player_input();
-		//-------------------------------Draw------------------------------------------------------------
+	    //------------------------------Cập nhập-------------------------------------------------------
+
+		
+		//-------------------------------Vẽ------------------------------------------------------------
 		window.clear();
-		a.draw_player(window);
 		window.display();
 		
 	}
 	return 0;
 }
+
