@@ -1,55 +1,33 @@
-#include <SFML/Graphics.hpp>
-#include <conio.h>
-#include <iostream>
 #include <fstream>
-using namespace sf;
+#include <bits/stdc++.h>
 using namespace std;
 
-// map  ? x ? : 1 ô = ? bit
-
-// --------------------------------1-------------------------------------
-      /*
-            -Class : Player (có animation đơn giản)
-            - Sử dụng tính kế thừa, đa hình (CLO2)
-      */
-
-//---------------------------------2-------------------------------------
-      /*
-            - Class : Enermy (2 -> 3 loại quái) (có animation đơn giản )
-            - Sử dụng tính kế thừa, đa hình (CLO2)
-      */
-   
-//---------------------------------3------------------------------------
-      /*
-            - Class : Bomb, Wall
-            - Sử dụng (set, map, queue,...) quản lý đạn, điểm số (CLO3)
-            - Vào ra file (map, cau hình), ngoại lệ (CLO4)
-      */
 
 int main(){
-	// tạo màn hình window
-	RenderWindow window(VideoMode(800, 600), "Muslim");
+	ifstream file;
+	file.open("test.txt", ios::in);
 	
-	while(window.isOpen()){
-		//-------------------------------Sự kiện---------------------------------------------------------
-		Event event;
-		while(window.pollEvent(event))
+	int a[100][100];
+	
+	for(int i = 0 ; i < 10; i++)
+	{
+		for(int j = 0; j < 10; j++)
 		{
-			if(event.type == Event::Closed)
-			{window.close();}
-			
+			file >> a[i][j];
 		}
-	    //------------------------------Cập nhập --------------------------------------------------------
-
-		
-		
-		//-------------------------------Vẽ------------------------------------------------------------
-		window.clear();
-		window.display();
-		
 	}
-	return 0;
+	
+	for(int i = 0 ; i < 10; i++)
+	{
+		for(int j = 0; j < 10; j++)
+		{
+			cout << a[i][j] << " ";
+		}
+		cout << endl;
+	}
+	
+	
+	
+	file.close();
 }
-
-
 
