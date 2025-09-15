@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 using namespace sf;
-using namespace syd;
+using namespace std;
 
 // map  ? x ? : 1 ô = ? bit
 
@@ -50,5 +50,6 @@ int main(){
 	}
 	return 0;
 }
+
 
 
