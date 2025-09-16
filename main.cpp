@@ -8,8 +8,9 @@ using namespace std;
 
 // --------------------------------1-------------------------------------
       /*
-            - Class : Player (có animation đơn giản)
+            - Class :Bomb, Player (có animation đơn giản)
             - Sử dụng tính kế thừa, đa hình (CLO2)
+			- (set, map, queue,...) quản lý bomb, (CLO3)
       */
 
 //---------------------------------2-------------------------------------
@@ -20,9 +21,9 @@ using namespace std;
    
 //---------------------------------3------------------------------------
       /*
-            - Class : Bomb, Wall
-            - Sử dụng (set, map, queue,...) quản lý bomb, điểm số (CLO3)
-            - Vào ra file (map, cấu hình), ngoại lệ (CLO4)
+            - Class : Wall
+            - (set, map, queue,...) Tính điểm số (CLO3)
+            - Vào ra file (map, cấu hình), tạo map, ngoại lệ (CLO4)
       */
 
 int main(){
@@ -50,4 +51,5 @@ int main(){
 	}
 	return 0;
 }
+
 
