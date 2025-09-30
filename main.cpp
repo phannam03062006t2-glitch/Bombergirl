@@ -1,55 +1,48 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
+#include <bits/stdc++.h>
 #include <iostream>
-using namespace sf;
+#include "Player.h"
 using namespace std;
+using namespace sf;
 
-// map  ? x ? : 1 ô = ? bit
-
-// --------------------------------1-------------------------------------
-      /*
-            - Class :Bomb, Player (có animation đơn giản)
-            - Sử dụng tính kế thừa, đa hình (CLO2)
-			- (set, map, queue,...) quản lý bomb, (CLO3)
-      */
-
-//---------------------------------2-------------------------------------
-      /*
-            - Class : Enermy (2 -> 3 loại quái) (có animation đơn giản)
-            - Sử dụng tính kế thừa, đa hình (CLO2)
-      */
-   
-//---------------------------------3------------------------------------
-      /*
-            - Class : Wall
-            - (set, map, queue,...) Tính điểm số (CLO3)
-            - Vào ra file (map, cấu hình), tạo map, ngoại lệ (CLO4)
-      */
 
 int main(){
-	// tạo cửa sổ
-	RenderWindow window(VideoMode(800, 600), "Muslim");
-	
+	// khoi tao cua so
+    RenderWindow window(VideoMode(1700, 900), "my game");
+	window.setFramerateLimit(60);
+	// khai bao
 	Player a;
+	//
+	float deltaTime = 0.f;
+	Clock clock;
 	
 	while(window.isOpen()){
-		//-------------------------------Sự kiện---------------------------------------------------------
-		Event event;
-		while(window.pollEvent(event))
-		{
-			if(event.type == Event::Closed)
-			{window.close();}
-			
-		}
-	    //------------------------------Cập nhập-------------------------------------------------------
-
 		
-		//-------------------------------Vẽ------------------------------------------------------------
-		window.clear();
-		window.display();
+	deltaTime = clock.restart().asSeconds();
 		
+	Event event;
+	while(window.pollEvent(event))
+	{
+		if(event.type == Event::Closed){window.close();}
 	}
-	return 0;
+   	//--------------------------------------------Cap nhap------------------------------
+   	CapNhapPlayer(a);
+   	CapNhapBomb(QuanLyBomb, deltaTime);
+   	
+   	//----------------------------------------------Ve--------------------------------
+   	
+   	window.clear();
+   	
+   	a.Ve(window);
+   	
+   	for(int i = 0; i < QuanLyBomb.size(); i++)
+   	{
+   		QuanLyBomb[i].Ve(window);
+    }
+
+   	
+   	window.display();
+   }
+   return 0;
 }
-
-
