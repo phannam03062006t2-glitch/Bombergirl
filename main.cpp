@@ -27,10 +27,12 @@ int main(){
 		if(event.type == Event::Closed){window.close();}
 	}
    	//--------------------------------------------Cap nhap------------------------------
-   	CapNhapPlayer(a);
    	CapNhapBomb(QuanLyBomb, deltaTime);
+   	CapNhapPlayer(a);
    	
    	//----------------------------------------------Ve--------------------------------
+   	
+   	if(a.alive == false){return 0;}
    	
    	window.clear();
    	

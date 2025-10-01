@@ -14,9 +14,11 @@ class Bomb{
 		float x, y;
 		float c1, c2, c3, c4;
 		float time;
+		float thoiGianNo;
+		bool dangNo;
 	Bomb(const Player& a);
-	    void No();
 	    void Ve(RenderWindow &window);
+	    void VeBombNo(RenderWindow &window);
 };
 
 extern vector<Bomb> QuanLyBomb;
@@ -34,6 +36,7 @@ class Player{
 		bool out;                                 // kt nv out bomb cuoi ch
 		bool cham;
 		int bombMax;
+		bool alive;
 	Player();
 	   void Move();
 	   void Input();
@@ -44,6 +47,8 @@ bool VaCham(const Player& a, const Bomb& b);
 bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a);
 void CapNhapPlayer(Player &a);
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime);
+bool VaChamNo(const Player& a, const Bomb& b);
+bool ktCham(Player &a, vector<Bomb>& QuanLyBomb);
 
 
 
