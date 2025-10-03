@@ -16,6 +16,12 @@ int main(){
 	//
 	float deltaTime = 0.f;
 	Clock clock;
+	//map
+    Texture TEXTURE;
+    TEXTURE.loadFromFile("assets/map.png");
+	Sprite SPRITE;
+	SPRITE.setTexture(TEXTURE);
+	SPRITE.setPosition(0, 0);
 	
 	while(window.isOpen()){
 		
@@ -29,20 +35,25 @@ int main(){
    	//--------------------------------------------Cap nhap------------------------------
    	CapNhapBomb(QuanLyBomb, deltaTime);
    	CapNhapPlayer(a);
+   		
+   	if(a.alive == false)
+	   {
+	   a.x = 32;
+	   a.y = 32;
+	   a.alive = true;
+	   }
    	
    	//----------------------------------------------Ve--------------------------------
-   	
-   	if(a.alive == false){return 0;}
-   	
+   
    	window.clear();
-   	
-   	a.Ve(window);
-   	
+   	window.draw(SPRITE);
    	for(int i = 0; i < QuanLyBomb.size(); i++)
    	{
    		QuanLyBomb[i].Ve(window);
     }
-
+   	
+   	a.Ve(window);
+   
    	
    	window.display();
    }
