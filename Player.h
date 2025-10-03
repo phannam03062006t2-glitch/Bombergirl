@@ -11,12 +11,12 @@ class Bomb{
 	public:
 	    static Texture TEXTURE;
 		Sprite SPRITE;
-		float x, y;
-		float c1, c2, c3, c4;
-		float time;
-		float thoiGianNo;
-		bool dangNo;
-		int phamVi;
+		float x, y;                                    // tọa độ
+		float c1, c2, c3, c4;                        // vùng va chạm
+		float time;                                   // thời gian đếm ngược
+		float thoiGianNo;                             // thời gian vụ nổ xảy ra
+		bool dangNo;                                   // kiểm tra có đang nổ không
+		int phamVi;                                  // phạm vi vụ nổ
 	Bomb(const Player& a);
 	    void Ve(RenderWindow &window);
 	    void VeBombNo(RenderWindow &window);
@@ -45,13 +45,13 @@ class Player{
 };
 
 bool VaCham(const Player& a, const Bomb& b);
-bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a);
 void CapNhapPlayer(Player &a);
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime);
 bool VaChamNo(const Player& a, const Bomb& b);
 bool VaChamNo2(const Bomb& a, const Bomb& b);
 bool ktCham(Player &a, vector<Bomb>& QuanLyBomb);
 bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j);
+
 
 
 
