@@ -14,10 +14,10 @@ int main(){
 	// khai bao
 	Player a;
 	//
-	float deltaTime = 0.f;
+	float deltaTime = 0.f;             // thời gian mỗi vòng while
 	Clock clock;
-	float Time  = 0.f;
-	//map
+	float Time  = 0.f;                // đếm thời gian từ lúc đầu game
+	//map (tạm thời) 64x64
     Texture TEXTURE;
     TEXTURE.loadFromFile("assets/map.png");
 	Sprite SPRITE;
@@ -25,10 +25,10 @@ int main(){
 	SPRITE.setPosition(0, 0);
 	
 	while(window.isOpen()){
-		
+	// cập nhập thời gian
 	deltaTime = clock.restart().asSeconds();
 	Time += deltaTime;
-	
+	// giữ cửa sổ mở
 	Event event;
 	while(window.pollEvent(event))
 	{
@@ -41,6 +41,7 @@ int main(){
    	//----------------------------------------------Ve--------------------------------
    
    	window.clear();
+		
    	window.draw(SPRITE);
    	for(int i = 0; i < QuanLyBomb.size(); i++)
    	{
@@ -54,3 +55,4 @@ int main(){
    }
    return 0;
 }
+
