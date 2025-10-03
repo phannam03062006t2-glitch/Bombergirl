@@ -15,24 +15,27 @@ Bomb::Bomb(const Player& a){
     }
 	SPRITE.setTexture(TEXTURE);
     
-    time = 3.f;
-    phamVi = 2;
-    thoiGianNo = 0.5f;
+    time = 3.f;                                                 // thời gian đếm ngược đến lúc nổ
+    phamVi = 2;                                           // phạm vi vụ nổ
+    thoiGianNo = 0.5f;                                           // thời gian vụ nổ xảy ra
     dangNo = false;
+	// tạo tọa độ chính giữa ô
     x = a.x / 64;
 	y = a.y / 64;
 	x = int(x)*64 + 32;
 	y = int(y)*64 + 32;
+	// tạo vùng va chạm
 	c1 = x - 32;
 	c2 = y - 32;
 	c3 = x + 32;
 	c4 = y + 32;
+	// set SPRITE
 	SPRITE.setPosition(x - 32, y - 32);
 }
 
 
 void Bomb::Ve(RenderWindow &window){
-	if(dangNo == true){
+	if(dangNo == true){                                             // nếu đang nổ thì vẽ vụ nổ
 	TEXTURE.loadFromFile("assets/no.png");
 	SPRITE.setTexture(TEXTURE);
 	SPRITE.setPosition(x - 32, y - 32);
@@ -54,7 +57,7 @@ void Bomb::Ve(RenderWindow &window){
 	window.draw(SPRITE);
     }
 	}
-	else{
+	else{                                                        // nếu không nổ thì vẽ bomb
         TEXTURE.loadFromFile("assets/bomb.png");
 	    SPRITE.setTexture(TEXTURE);
 		window.draw(SPRITE);
@@ -65,24 +68,32 @@ Player::Player(){
 	TEXTURE.loadFromFile("assets/player.png");
 	SPRITE.setTexture(TEXTURE);
     SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
-	bombMax = 3;
+	bombMax = 3;                                                   // số bomb max
+	// set vị trí
 	x = 32.f;
 	y = 32.f;
+	// chỉnh vùng va chạm
 	c1 = x - 23;
 	c2 = y - 26;
 	c3 = x + 23;
 	c4 = y + 26;
-	SPRITE.setPosition(x - 27, y - 32);               
+	SPRITE.setPosition(x - 27, y - 32);   
+	// hướng lúc đầu
 	dx = 0;
 	dy = 1;
+	// tốc độ
 	speed = 3.f;
+	// kiểm tra nếu true thì đặt  bomb xong trả về false
 	DatBomb = false;
+	// để không đặt quá nhiều bomb
     phimX  = false;    
+	// kiểm tra out bomb cuối
     out    = true;
+	// kiểm tra còn sống
 	alive = true;	
 }
 
-bool VaCham(const Player& a, const Bomb& b){
+bool VaCham(const Player& a, const Bomb& b){                            // hàm kiểm tra va chạm bomb với player 
 	if(a.c1 >= b.c3)return false;
 	if(a.c3 <= b.c1)return false;
 	if(a.c2 >= b.c4)return false;
@@ -97,7 +108,7 @@ void Player::Input(){
 	else if(Keyboard::isKeyPressed(Keyboard::Down)){dx = 0; dy = 1;}
 	else if(Keyboard::isKeyPressed(Keyboard::Right)){dx = 1; dy = 0;}
 	
-	if(Keyboard::isKeyPressed(Keyboard::X) && !KiemTraTrung(QuanLyBomb, *this) && (int)QuanLyBomb.size() < bombMax) 
+	if(Keyboard::isKeyPressed(Keyboard::X) && !KiemTraTrung(QuanLyBomb, *this) && (int)QuanLyBomb.size() < bombMax)                // điều kiện đặt bomb : không trùng, đã rời bomb cuối 
 	   {  
 	                 if(!phimX && out == true) { 
                           DatBomb = true;
@@ -121,7 +132,7 @@ void Player::Move(){
 	c4 = y + 26;
 }
 
-void Player::Ve(RenderWindow &window, float Time){
+void Player::Ve(RenderWindow &window, float Time){                          // vẽ player
 	if(alive == false){
 		SPRITE.setScale(1.f, 1.f);
         SPRITE.setOrigin(0, 0);
@@ -129,7 +140,7 @@ void Player::Ve(RenderWindow &window, float Time){
 	}
     else if (dy == 1) {
         SPRITE.setScale(1.f, 1.f);
-        SPRITE.setOrigin(0, 0);
+        SPRITE.setOrigin(0, 0); 
         SPRITE.setTextureRect(IntRect(0 + (int)(Time*5) % 3 * 62.4, 0, 62.4, 64));
     }
     else if (dy == -1) {
@@ -154,26 +165,28 @@ void Player::Ve(RenderWindow &window, float Time){
 void CapNhapPlayer(Player &a){
 	a.dx = 0;
 	a.dy = 0;
+	// lấy dữ liệu
     a.Input();
+	// lưu vị trí cũ nếu va chạm thì dịch chuyển lại
     float oldX = a.x;
     float oldY = a.y; 
-    
+    // đặt bomb
     if(a.DatBomb == true && a.phimX == false){
         Bomb b(a);
         QuanLyBomb.push_back(b);
         a.DatBomb = false;
         a.out = false;
     }
-
-    
+    // di chuyển
     a.Move();
-   
+   // nếu có bomb
 if((int)QuanLyBomb.size()>0){
+	// nếu rời khỏi bomb cuối thì out = true
 	if(!VaCham(a, QuanLyBomb[(int)QuanLyBomb.size()-1]))
 	{
 		a.out = true;
     }
-	
+	// kt va chạm
     for (int i = 0; i < (int)QuanLyBomb.size(); ++i) {
     if (i != (int)QuanLyBomb.size() - 1 || a.out == true) {
         bool nowOverlap = VaCham(a, QuanLyBomb[i]);
@@ -194,12 +207,11 @@ if((int)QuanLyBomb.size()>0){
    ktCham(a,QuanLyBomb);
 }
 
-bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a){                 
+bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a){          // hàm này kiểm tra xem có đặt   (hình như thừa nhưng tuân thủ nguyên tắc : code chạy thì không động)    
 	int x = a.x / 64;
 	int y = a.y / 64;
 	x = x*64 + 32;
 	y = y*64 + 32;
-	
 	
 	for(int i = 0 ; i < (int)QuanLyBomb.size() ; i++)
 	{
@@ -213,24 +225,24 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
         Bomb &b = QuanLyBomb[i];
 
         if (b.dangNo) {
-            b.thoiGianNo -= deltaTime;
+            b.thoiGianNo -= deltaTime;                             // nếu đang nổ thì trừ thời gian nổ
         } else {
-            b.time -= deltaTime;
+            b.time -= deltaTime;                                // nếu đang chờ nổ thì trừ thời gian đếm ngược
         }
 
         if (b.time <= 0.0f && !b.dangNo) {
             b.dangNo = true;
-            ktCham2(b, QuanLyBomb, i);
+            ktCham2(b, QuanLyBomb, i);                                 // kiểm tra nếu nổ lên bomb thì cho thời gian đếm ngược về 0.1  ( gần như nổ luôn)
         }
         
         if (b.dangNo && b.thoiGianNo <= 0.0f) {
-            QuanLyBomb.erase(QuanLyBomb.begin() + i);
+            QuanLyBomb.erase(QuanLyBomb.begin() + i);                   // xóa bomb khi xong
             continue; 
         }
     }
 }
 
-bool VaChamNo(const Player& a, const Bomb& b){
+bool VaChamNo(const Player& a, const Bomb& b){                        // kiểm tra xem người chơi bị nổ không        (kiểm tra 1 bomb)
 	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
 	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
 	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
@@ -242,7 +254,7 @@ bool VaChamNo(const Player& a, const Bomb& b){
 	return true;
 }
 
-bool VaChamNo2(const Bomb& a, const Bomb& b){
+bool VaChamNo2(const Bomb& a, const Bomb& b){                          // kiểm tra bomb nổ bomb không               (kiển tra 1 bomb)
 	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
 	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
 	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
@@ -254,7 +266,7 @@ bool VaChamNo2(const Bomb& a, const Bomb& b){
 	return true;
 }
 
-bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){
+bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){                                 // kiểm tra nếu bị nổ thì chết        (kiểm tra tất cả  bomb)
 	for(int i = 0; i < (int)QuanLyBomb.size(); i++)
 	{   
 		if( QuanLyBomb[i].dangNo && VaChamNo(a, QuanLyBomb[i]))
@@ -264,7 +276,7 @@ bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){
 	}
 }
 
-bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j){
+bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j){                           // kiểm tra bomb nổ bomb               (kiểm tra tất cả bomb)
 	for(int i = j + 1; i < (int)QuanLyBomb.size(); i++)
 	{   
 		if( !QuanLyBomb[i].dangNo && VaChamNo2(a, QuanLyBomb[i]))
@@ -273,4 +285,5 @@ bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j){
 		}
 	}
 }
+
 
