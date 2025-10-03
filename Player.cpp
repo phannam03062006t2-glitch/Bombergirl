@@ -91,6 +91,7 @@ bool VaCham(const Player& a, const Bomb& b){
 }
 
 void Player::Input(){
+	if(alive == false)return;
 	if(Keyboard::isKeyPressed(Keyboard::Up)){dx = 0; dy = -1;}
 	else if(Keyboard::isKeyPressed(Keyboard::Left)){dx = -1; dy = 0;}
 	else if(Keyboard::isKeyPressed(Keyboard::Down)){dx = 0; dy = 1;}
@@ -121,7 +122,12 @@ void Player::Move(){
 }
 
 void Player::Ve(RenderWindow &window, float Time){
-    if (dy == 1) {
+	if(alive == false){
+		SPRITE.setScale(1.f, 1.f);
+        SPRITE.setOrigin(0, 0);
+        SPRITE.setTextureRect(IntRect(3*62.4, 2*64, 62.4, 64));
+	}
+    else if (dy == 1) {
         SPRITE.setScale(1.f, 1.f);
         SPRITE.setOrigin(0, 0);
         SPRITE.setTextureRect(IntRect(0 + (int)(Time*5) % 3 * 62.4, 0, 62.4, 64));
