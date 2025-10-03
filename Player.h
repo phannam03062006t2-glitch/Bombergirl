@@ -16,6 +16,7 @@ class Bomb{
 		float time;
 		float thoiGianNo;
 		bool dangNo;
+		int phamVi;
 	Bomb(const Player& a);
 	    void Ve(RenderWindow &window);
 	    void VeBombNo(RenderWindow &window);
@@ -40,7 +41,7 @@ class Player{
 	Player();
 	   void Move();
 	   void Input();
-	   void Ve(RenderWindow &window);
+	   void Ve(RenderWindow &window, float Time);
 };
 
 bool VaCham(const Player& a, const Bomb& b);

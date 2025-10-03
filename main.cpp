@@ -16,6 +16,7 @@ int main(){
 	//
 	float deltaTime = 0.f;
 	Clock clock;
+	float Time  = 0.f;
 	//map
     Texture TEXTURE;
     TEXTURE.loadFromFile("assets/map.png");
@@ -26,7 +27,8 @@ int main(){
 	while(window.isOpen()){
 		
 	deltaTime = clock.restart().asSeconds();
-		
+	Time += deltaTime;
+	
 	Event event;
 	while(window.pollEvent(event))
 	{
@@ -52,7 +54,7 @@ int main(){
    		QuanLyBomb[i].Ve(window);
     }
    	
-   	a.Ve(window);
+   	a.Ve(window, Time);
    
    	
    	window.display();
