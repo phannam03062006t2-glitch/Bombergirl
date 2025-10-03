@@ -10,7 +10,7 @@ bool BombLoad = false;
 
 Bomb::Bomb(const Player& a){
 	if(!BombLoad){
-	TEXTURE.loadFromFile("assets/wall2.png");
+	TEXTURE.loadFromFile("assets/bomb.png");
 	BombLoad = true;
     }
 	SPRITE.setTexture(TEXTURE);
@@ -18,33 +18,36 @@ Bomb::Bomb(const Player& a){
     time = 3.f;
     thoiGianNo = 0.5f;
     dangNo = false;
-    x = a.x / 32;
-	y = a.y / 32;
-	x = int(x)*32 + 16;
-	y = int(y)*32 + 16;
-	c1 = x - 15;
-	c2 = y - 15;
-	c3 = x + 15;
-	c4 = y + 15;
-	SPRITE.setPosition(x - 16, y - 16);
+    x = a.x / 64;
+	y = a.y / 64;
+	x = int(x)*64 + 32;
+	y = int(y)*64 + 32;
+	c1 = x - 32;
+	c2 = y - 32;
+	c3 = x + 32;
+	c4 = y + 32;
+	SPRITE.setPosition(x - 32, y - 32);
 }
 
 
 void Bomb::Ve(RenderWindow &window){
 	if(dangNo == true){
-	SPRITE.setPosition(x - 16, y - 16);
+	TEXTURE.loadFromFile("assets/no.png");
+	SPRITE.setTexture(TEXTURE);
+	SPRITE.setPosition(x - 32, y - 32);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 16 - 32, y - 16);
+	SPRITE.setPosition(x - 32 - 64, y - 32);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 16 + 32, y - 16);
+	SPRITE.setPosition(x - 32 + 64, y - 32);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 16, y - 16 + 32);
+	SPRITE.setPosition(x - 32, y - 32 + 64);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 16, y - 16 - 32);
+	SPRITE.setPosition(x - 32, y - 32 - 64);
 	window.draw(SPRITE);
 	}
 	else{
-
+        TEXTURE.loadFromFile("assets/bomb.png");
+	    SPRITE.setTexture(TEXTURE);
 		window.draw(SPRITE);
 	}
 }
@@ -52,14 +55,15 @@ void Bomb::Ve(RenderWindow &window){
 Player::Player(){
 	TEXTURE.loadFromFile("assets/wall.png");
 	SPRITE.setTexture(TEXTURE);
+    //SPRITE.setTextureRect(IntRect(40, 40, 128 - 40, 128 -40));
 	bombMax = 3;
-	x = 16.f;
-	y = 16.f;
-	c1 = x - 15;
-	c2 = y - 15;
-	c3 = x + 15;
-	c4 = y + 15;
-	SPRITE.setPosition(x - 16.5, y - 16.5);               // nho tru di de hop vi tri
+	x = 32.f;
+	y = 32.f;
+	c1 = x - 32;
+	c2 = y - 32;
+	c3 = x + 32;
+	c4 = y + 32;
+	SPRITE.setPosition(x - 32, y - 32);               
 	dx = 0;
 	dy = 1;
 	speed = 3.f;
@@ -85,7 +89,7 @@ void Player::Input(){
 	
 	if(Keyboard::isKeyPressed(Keyboard::X) && !KiemTraTrung(QuanLyBomb, *this) && (int)QuanLyBomb.size() < bombMax) 
 	   {  
-	                 if(!phimX) { 
+	                 if(!phimX && out == true) { 
                           DatBomb = true;
                          phimX = true;
                    }
@@ -100,11 +104,11 @@ void Player::Input(){
 void Player::Move(){
 	x += dx*speed;
 	y += dy*speed;
-	SPRITE.setPosition(x - 16, y-16);
-	c1 = x - 15;
-	c2 = y - 15;
-	c3 = x + 15;
-	c4 = y + 15;
+	SPRITE.setPosition(x - 32, y - 32);
+	c1 = x - 32;
+	c2 = y - 32;
+	c3 = x + 32;
+	c4 = y + 32;
 }
 
 void Player::Ve(RenderWindow &window){
@@ -138,11 +142,11 @@ if((int)QuanLyBomb.size()>0){
         if (nowOverlap) {
             a.x = oldX;
             a.y = oldY;
-            a.c1 = a.x - 15.0f;
-            a.c2 = a.y - 15.0f;
-            a.c3 = a.x + 15.0f;
-            a.c4 = a.y + 15.0f;
-            a.SPRITE.setPosition(a.x - 16.f, a.y - 16.f);
+            a.c1 = a.x - 32.0f;
+            a.c2 = a.y - 32.0f;
+            a.c3 = a.x + 32.0f;
+            a.c4 = a.y + 32.0f;
+            a.SPRITE.setPosition(a.x - 32.f, a.y - 32.f);
             break;
         }
     }
@@ -155,11 +159,11 @@ if((int)QuanLyBomb.size()>0){
     a.dy = 0;
 }
 
-bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a){                 // kt xem có trùng bomb ko
-	int x = a.x / 32;
-	int y = a.y / 32;
-	x = x*32 + 16;
-	y = y*32 + 16;
+bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a){                 
+	int x = a.x / 64;
+	int y = a.y / 64;
+	x = x*64 + 32;
+	y = y*64 + 32;
 	
 	
 	for(int i = 0 ; i < (int)QuanLyBomb.size() ; i++)
@@ -181,8 +185,9 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
 
         if (b.time <= 0.0f && !b.dangNo) {
             b.dangNo = true;
+            ktCham2(b, QuanLyBomb, i);
         }
-
+        
         if (b.dangNo && b.thoiGianNo <= 0.0f) {
             QuanLyBomb.erase(QuanLyBomb.begin() + i);
             continue; 
@@ -191,10 +196,22 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
 }
 
 bool VaChamNo(const Player& a, const Bomb& b){
-	if(a.c1 >= b.c3 + 31)return false;
-	if(a.c3 <= b.c1 - 31)return false;
-	if(a.c2 >= b.c4 + 31)return false;
-	if(a.c4 <= b.c2 - 31)return false;
+	if(a.c1 >= b.c3 + 63)return false;
+	if(a.c3 <= b.c1 - 63)return false;
+	if(a.c2 >= b.c4 + 63)return false;
+	if(a.c4 <= b.c2 - 63)return false;
+	if(a.c3 <= b.c1 && a.c4 <= b.c2)return false;
+	if(a.c1 >= b.c3 && a.c4 <= b.c2)return false;
+	if(a.c2 >= b.c4 && a.c1 >= b.c3)return false;
+	if(a.c2 >= b.c4 && a.c3 <= b.c1)return false;
+	return true;
+}
+
+bool VaChamNo2(const Bomb& a, const Bomb& b){
+	if(a.c1 >= b.c3 + 63)return false;
+	if(a.c3 <= b.c1 - 63)return false;
+	if(a.c2 >= b.c4 + 63)return false;
+	if(a.c4 <= b.c2 - 63)return false;
 	if(a.c3 <= b.c1 && a.c4 <= b.c2)return false;
 	if(a.c1 >= b.c3 && a.c4 <= b.c2)return false;
 	if(a.c2 >= b.c4 && a.c1 >= b.c3)return false;
@@ -208,19 +225,17 @@ bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){
 		if( QuanLyBomb[i].dangNo && VaChamNo(a, QuanLyBomb[i]))
 		{
 			a.alive = false;
-			return 0;
 		}
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
+bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j){
+	for(int i = j + 1; i < (int)QuanLyBomb.size(); i++)
+	{   
+		if( !QuanLyBomb[i].dangNo && VaChamNo2(a, QuanLyBomb[i]))
+		{
+			QuanLyBomb[i].time = 0.1f;
+		}
+	}
+}
 

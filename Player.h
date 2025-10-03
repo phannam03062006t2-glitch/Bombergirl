@@ -48,8 +48,9 @@ bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a);
 void CapNhapPlayer(Player &a);
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime);
 bool VaChamNo(const Player& a, const Bomb& b);
+bool VaChamNo2(const Bomb& a, const Bomb& b);
 bool ktCham(Player &a, vector<Bomb>& QuanLyBomb);
-
+bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j);
 
 
 
