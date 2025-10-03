@@ -19,7 +19,6 @@ class Bomb{
 		int phamVi;                                  // phạm vi vụ nổ
 	Bomb(const Player& a);
 	    void Ve(RenderWindow &window);
-	    void VeBombNo(RenderWindow &window);
 };
 
 extern vector<Bomb> QuanLyBomb;
@@ -28,16 +27,16 @@ class Player{
 	public:
 		Texture TEXTURE;
 		Sprite SPRITE;
-		float x, y;
-		float c1, c2, c3, c4;
-		float dx, dy;
-		float speed;
-		bool DatBomb;
-		bool phimX;
+		float x, y;                               // tọa độ
+		float c1, c2, c3, c4;                     // vùng va chạm
+		float dx, dy;                             // hướng
+		float speed;                              // tốc độ
+		bool DatBomb;                             // biến để đặt bomb
+		bool phimX;                               // tránh đặt nhiều bomb khi nhấn giữ nút X
 		bool out;                                 // kt nv out bomb cuoi ch
 		bool cham;
-		int bombMax;
-		bool alive;
+		int bombMax;                               // bomb max đặt được
+		bool alive;                                // kiểm tra còn sống không
 	Player();
 	   void Move();
 	   void Input();
@@ -51,6 +50,7 @@ bool VaChamNo(const Player& a, const Bomb& b);
 bool VaChamNo2(const Bomb& a, const Bomb& b);
 bool ktCham(Player &a, vector<Bomb>& QuanLyBomb);
 bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j);
+
 
 
 
