@@ -6,7 +6,7 @@ Wall::Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh) {
 	hinh.setSize(Vector2f(64,64));
 	hinh.setPosition(vitri);
 	
-	if(!ket_cau.loadFromFile(duongan_anh)) {
+	if(!ket_cau.loadFromFile(duongdan_anh)) {
 		if(pha_duoc) hinh.setFillColor(Color(139, 69, 19)); //fallback nau
 		else hinh.setFillColor(Color(128, 128, 128));       //fallback xam
 	} else {
@@ -30,4 +30,5 @@ FloatRect Wall::layKhung() {
         return hinh.getGlobalBounds(); // rectangle fallback
 }
 bool Wall::laPhaDuoc() {return co_the_pha;}
+
 
