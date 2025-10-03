@@ -108,7 +108,7 @@ void Player::Input(){
 	else if(Keyboard::isKeyPressed(Keyboard::Down)){dx = 0; dy = 1;}
 	else if(Keyboard::isKeyPressed(Keyboard::Right)){dx = 1; dy = 0;}
 	
-	if(Keyboard::isKeyPressed(Keyboard::X) && !KiemTraTrung(QuanLyBomb, *this) && (int)QuanLyBomb.size() < bombMax)                // điều kiện đặt bomb : không trùng, đã rời bomb cuối 
+	if(Keyboard::isKeyPressed(Keyboard::X) && (int)QuanLyBomb.size() < bombMax)                // điều kiện đặt bomb : đã rời bomb cuối 
 	   {  
 	                 if(!phimX && out == true) { 
                           DatBomb = true;
@@ -207,19 +207,6 @@ if((int)QuanLyBomb.size()>0){
    ktCham(a,QuanLyBomb);
 }
 
-bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a){          // hàm này kiểm tra xem có đặt   (hình như thừa nhưng tuân thủ nguyên tắc : code chạy thì không động)    
-	int x = a.x / 64;
-	int y = a.y / 64;
-	x = x*64 + 32;
-	y = y*64 + 32;
-	
-	for(int i = 0 ; i < (int)QuanLyBomb.size() ; i++)
-	{
-		if(x == QuanLyBomb[i].x && y == QuanLyBomb[i].y){return true;}
-    }
-    return false;
-}
-
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
     for (int i = (int)QuanLyBomb.size() - 1; i >= 0; --i) {
         Bomb &b = QuanLyBomb[i];
@@ -285,5 +272,6 @@ bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j){                         
 		}
 	}
 }
+
 
 
