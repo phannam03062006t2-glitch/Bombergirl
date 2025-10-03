@@ -3,7 +3,7 @@
 using namespace std;
 Wall::Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh) {
 	co_the_pha=pha_duoc;
-	hinh.setSize(Vector2f(32,32));
+	hinh.setSize(Vector2f(64,64));
 	hinh.setPosition(vitri);
 	
 	if(!ket_cau.loadFromFile(duongan_anh)) {
@@ -12,7 +12,7 @@ Wall::Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh) {
 	} else {
 		anh.setTexture(ket_cau);
 		anh.setPosition(vitri);
-		anh.setScale(32.f/ket_cau.getSize().x, 32.f/ket_cau.getSize().y);
+		anh.setScale(64.f/ket_cau.getSize().x, 64.f/ket_cau.getSize().y);
 	}
 }
 
@@ -25,8 +25,9 @@ void Wall::ve(RenderWindow& cua_so) {
 
 FloatRect Wall::layKhung() {
 	if (ket_cau.getSize().x > 0) 
-        return anh.getGlobalBounds(); // sprite (có texture)
+        return anh.getGlobalBounds(); // sprite (cÃ³ texture)
     else 
         return hinh.getGlobalBounds(); // rectangle fallback
 }
 bool Wall::laPhaDuoc() {return co_the_pha;}
+
