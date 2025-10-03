@@ -16,6 +16,7 @@ Bomb::Bomb(const Player& a){
 	SPRITE.setTexture(TEXTURE);
     
     time = 3.f;
+    phamVi = 2;
     thoiGianNo = 0.5f;
     dangNo = false;
     x = a.x / 64;
@@ -36,14 +37,22 @@ void Bomb::Ve(RenderWindow &window){
 	SPRITE.setTexture(TEXTURE);
 	SPRITE.setPosition(x - 32, y - 32);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 32 - 64, y - 32);
+	for(int i = 1; i <= phamVi; i++){
+	SPRITE.setPosition(x - 32 - 64*i, y - 32);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 32 + 64, y - 32);
+    }
+    for(int i = 1; i <= phamVi; i++){
+	SPRITE.setPosition(x - 32 + 64*i, y - 32);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 32, y - 32 + 64);
+    }
+	for(int i = 1; i <= phamVi; i++){
+	SPRITE.setPosition(x - 32, y - 32 + 64*i);
 	window.draw(SPRITE);
-	SPRITE.setPosition(x - 32, y - 32 - 64);
+    }
+	for(int i = 1; i <= phamVi; i++){
+	SPRITE.setPosition(x - 32, y - 32 - 64*i);
 	window.draw(SPRITE);
+    }
 	}
 	else{
         TEXTURE.loadFromFile("assets/bomb.png");
@@ -53,17 +62,17 @@ void Bomb::Ve(RenderWindow &window){
 }
 
 Player::Player(){
-	TEXTURE.loadFromFile("assets/wall.png");
+	TEXTURE.loadFromFile("assets/player.png");
 	SPRITE.setTexture(TEXTURE);
-    //SPRITE.setTextureRect(IntRect(40, 40, 128 - 40, 128 -40));
+    SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
 	bombMax = 3;
 	x = 32.f;
 	y = 32.f;
-	c1 = x - 32;
-	c2 = y - 32;
-	c3 = x + 32;
-	c4 = y + 32;
-	SPRITE.setPosition(x - 32, y - 32);               
+	c1 = x - 23;
+	c2 = y - 26;
+	c3 = x + 23;
+	c4 = y + 26;
+	SPRITE.setPosition(x - 27, y - 32);               
 	dx = 0;
 	dy = 1;
 	speed = 3.f;
@@ -104,18 +113,41 @@ void Player::Input(){
 void Player::Move(){
 	x += dx*speed;
 	y += dy*speed;
-	SPRITE.setPosition(x - 32, y - 32);
-	c1 = x - 32;
-	c2 = y - 32;
-	c3 = x + 32;
-	c4 = y + 32;
+	SPRITE.setPosition(x - 33, y - 32);
+	c1 = x - 23;
+	c2 = y - 26;
+	c3 = x + 23;
+	c4 = y + 26;
 }
 
-void Player::Ve(RenderWindow &window){
-	window.draw(SPRITE);
+void Player::Ve(RenderWindow &window, float Time){
+    if (dy == 1) {
+        SPRITE.setScale(1.f, 1.f);
+        SPRITE.setOrigin(0, 0);
+        SPRITE.setTextureRect(IntRect(0 + (int)(Time*5) % 3 * 62.4, 0, 62.4, 64));
+    }
+    else if (dy == -1) {
+        SPRITE.setScale(1.f, 1.f);
+        SPRITE.setOrigin(0, 0);
+        SPRITE.setTextureRect(IntRect(62.4 * 3 + (int)(Time*5) % 3 * 62.4, 0, 62.4, 64));
+    }
+    else if (dx == -1) {
+        SPRITE.setScale(1.f, 1.f);
+        SPRITE.setOrigin(0, 0);
+        SPRITE.setTextureRect(IntRect(62.4 * 6 + (int)(Time*5) % 3 * 62.4, 0, 62.4, 64));
+    }
+    else if (dx == 1) {
+        SPRITE.setScale(-1.f, 1.f);
+        SPRITE.setOrigin(SPRITE.getLocalBounds().width, 0); 
+        SPRITE.setTextureRect(IntRect(62.4 * 6 + (int)(Time*5) % 3 * 62.4, 0, 62.4, 64));
+    }
+    window.draw(SPRITE);
 }
+
 
 void CapNhapPlayer(Player &a){
+	a.dx = 0;
+	a.dy = 0;
     a.Input();
     float oldX = a.x;
     float oldY = a.y; 
@@ -142,11 +174,11 @@ if((int)QuanLyBomb.size()>0){
         if (nowOverlap) {
             a.x = oldX;
             a.y = oldY;
-            a.c1 = a.x - 32.0f;
-            a.c2 = a.y - 32.0f;
-            a.c3 = a.x + 32.0f;
-            a.c4 = a.y + 32.0f;
-            a.SPRITE.setPosition(a.x - 32.f, a.y - 32.f);
+            a.c1 = a.x - 23.0f;
+            a.c2 = a.y - 26.0f;
+            a.c3 = a.x + 23.0f;
+            a.c4 = a.y + 26.0f;
+            a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
             break;
         }
     }
@@ -154,9 +186,6 @@ if((int)QuanLyBomb.size()>0){
 }
 
    ktCham(a,QuanLyBomb);
-
-    a.dx = 0;
-    a.dy = 0;
 }
 
 bool KiemTraTrung(vector<Bomb>& QuanLyBomb, Player a){                 
@@ -196,10 +225,10 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
 }
 
 bool VaChamNo(const Player& a, const Bomb& b){
-	if(a.c1 >= b.c3 + 63)return false;
-	if(a.c3 <= b.c1 - 63)return false;
-	if(a.c2 >= b.c4 + 63)return false;
-	if(a.c4 <= b.c2 - 63)return false;
+	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
+	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
+	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
+	if(a.c4 <= b.c2 - 64*b.phamVi)return false;
 	if(a.c3 <= b.c1 && a.c4 <= b.c2)return false;
 	if(a.c1 >= b.c3 && a.c4 <= b.c2)return false;
 	if(a.c2 >= b.c4 && a.c1 >= b.c3)return false;
@@ -208,10 +237,10 @@ bool VaChamNo(const Player& a, const Bomb& b){
 }
 
 bool VaChamNo2(const Bomb& a, const Bomb& b){
-	if(a.c1 >= b.c3 + 63)return false;
-	if(a.c3 <= b.c1 - 63)return false;
-	if(a.c2 >= b.c4 + 63)return false;
-	if(a.c4 <= b.c2 - 63)return false;
+	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
+	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
+	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
+	if(a.c4 <= b.c2 - 64*b.phamVi)return false;
 	if(a.c3 <= b.c1 && a.c4 <= b.c2)return false;
 	if(a.c1 >= b.c3 && a.c4 <= b.c2)return false;
 	if(a.c2 >= b.c4 && a.c1 >= b.c3)return false;
