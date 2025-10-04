@@ -13,9 +13,9 @@ void Map::napFile(const string& tenfile) {
 			int loai;
 			fin>>loai;
 			if(loai==1) {
-				ds_tuong[{i,j}]=Wall(Vector2f(j*64,i*64), true,"wall.png");
+				ds_tuong[{i,j}]=Wall(Vector2f(j*64,i*64), true,"assets/wall.png");
 			} else if(loai==2) {
-				ds_tuong[{i,j}] = Wall(Vector2f(j*64, i*64),false, "wall2.png");
+				ds_tuong[{i,j}] = Wall(Vector2f(j*64, i*64),false, "assets/wall2.png");
 			}
 		}
 	}
@@ -28,3 +28,4 @@ void Map::ve(RenderWindow& cua_so) {
 	}
 }
 map<pair<int,int>, Wall>& Map::layDanhSach() {return ds_tuong; }
+
