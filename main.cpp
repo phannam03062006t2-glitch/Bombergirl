@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Map.h"
 #include "Diem.h"
+#include "Enemy.h"
+#include <vector>
 
 using namespace std;
 using namespace sf;
@@ -36,7 +38,11 @@ int main(){
 	}
 	//Khởi tạo điểm
 	Diem diem;
-
+	// Khởi tạo enemy
+	vector<Enemy*> enemies;
+	enemies.push_back(new Enemy1(200.f, 200.f));
+	enemies.push_back(new Enemy2(500.f, 500.f));
+	enemies.push_back(new Enemy3(800.f, 300.f));
 	// Vòng lặp game
 	while(window.isOpen()){
 	// cập nhập thời gian
@@ -51,7 +57,10 @@ int main(){
    	//--------------------------------------------Cap nhap------------------------------
    	CapNhapBomb(QuanLyBomb, deltaTime);
    	CapNhapPlayer(a);
-   	
+   	// Cập nhật enemy
+	for(auto enemy:enemies) {
+		enemy->capNhat(window);
+	}
    	//----------------------------------------------Ve--------------------------------
    	// Vẽ
    	window.clear();
@@ -64,6 +73,10 @@ int main(){
    	{
    		QuanLyBomb[i].Ve(window);
     }
+	// Vẽ enemy
+		for(auto enemy:enemies) {
+			enemy->ve(window);
+		}
    	// Vẽ người chơi
    	a.Ve(window, Time);
    
@@ -71,7 +84,13 @@ int main(){
 	diem.draw(window);
    	window.display();
    }
+	// Giải phóng bộ nhớ enemy
+	for(auto enemy:enemies) {
+		delete enemy;
+	}
+	enemies.clear();
    return 0;
 }
+
 
 
