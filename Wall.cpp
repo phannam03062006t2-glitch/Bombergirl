@@ -1,6 +1,7 @@
 #include "Wall.h"
 #include<bits/stdc++.h>
 using namespace std;
+Wall::Wall(){}
 Wall::Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh) {
 	co_the_pha=pha_duoc;
 	hinh.setSize(Vector2f(64,64));
@@ -30,5 +31,6 @@ FloatRect Wall::layKhung() {
         return hinh.getGlobalBounds(); // rectangle fallback
 }
 bool Wall::laPhaDuoc() {return co_the_pha;}
+
 
 
