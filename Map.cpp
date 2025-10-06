@@ -26,17 +26,17 @@ void Map::napFile(const string& duong_dan_file) {
             file >> loai;
 
             // ======= VẼ NỀN (mặc định là nền gạch) =======
-            Nen nen(Vector2f(j * 64, i * 64), "assets/floor.png");
+            Nen nen(Vector2f(j * 64, i * 64), "assets/ground.png");
             ds_nen[{i, j}] = nen;
 
             // ======= VẼ TƯỜNG, CỎ, CÂY =======
             if (loai == 1) {
                 // Tường phá được
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), true, "assets/breakable.png", false);
+                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), true, "assets/wall.png", false);
             }
             else if (loai == 2) {
                 // Tường không phá được
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/unbreakable.png", false);
+                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/wall2.png", false);
             }
             else if (loai == 3) {
                 // Cỏ: có thể đi qua, chồng lên nền
@@ -62,3 +62,4 @@ void Map::ve(RenderWindow& cua_so) {
         tuong.second.ve(cua_so);
     }
 }
+
