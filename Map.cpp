@@ -1,74 +1,67 @@
 #include "Map.h"
-#include <bits/stdc++.h>
+#include <fstream>
+#include <iostream>
 using namespace std;
 
-Map::Map() : hang(0), cot(0) {}
+Map::Map() {}
 
-// Hàm nạp dữ liệu bản đồ từ file
-void Map::napFile(const string& tenfile) {
-    ifstream fin(tenfile);
-    if (!fin) throw runtime_error("Khong mo duoc file map!");
+Map::Map(const string& duong_dan_file)
+{
+    napFile(duong_dan_file);
+}
 
-    // Đọc kích thước bản đồ
-    fin >> hang >> cot;
+// ======= HÀM NẠP DỮ LIỆU BẢN ĐỒ =======
+void Map::napFile(const string& duong_dan_file)
+{
+    ifstream file(duong_dan_file);
+    if (!file.is_open()) {
+        cout << "Khong the mo file map!" << endl;
+        return;
+    }
 
-    // Duyệt qua từng ô trong bản đồ
-    for (int i = 0; i < hang; i++) {
-        for (int j = 0; j < cot; j++) {
+    int so_dong, so_cot;
+    file >> so_dong >> so_cot;
+
+    for (int i = 0; i < so_dong; i++) {
+        for (int j = 0; j < so_cot; j++) {
             int loai;
-            fin >> loai;
+            file >> loai;
 
-            // Lưu lại thông tin từng ô
-            ds_o.push_back({loai, Vector2f(j * 64, i * 64)});
+            // ======= ẢNH NỀN (layer thấp nhất) =======
+            Nen nen(Vector2f(j * 64, i * 64), "assets/grass.png");
+            ds_nen[{i, j}] = nen;
 
-            // Nếu là tường thì thêm vào danh sách tường
+            // ======= TẠO TƯỜNG, CỎ, CÂY =======
             if (loai == 1) {
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), true, "assets/wall.png");
+                // Tường phá được
+                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), true, "assets/breakable.png", false);
             }
             else if (loai == 2) {
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/wall2.png");
+                // Tường không phá được
+                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/solid.png", false);
+            }
+            else if (loai == 3) {
+                // Cỏ - vẽ chồng lên nền (đi qua được)
+                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/grass_top.png", true);
+            }
+            else if (loai == 4) {
+                // Cây - cao hơn 1 ô, căn Y lên để chân cây nằm vừa ô
+                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64 - 91), false, "assets/tree.png", false);
             }
         }
     }
-    fin.close();
 
-    // Nạp ảnh nền và các loại ô khác
-    nenTex.loadFromFile("assets/ground.png"); // nền gạch
-    coTex.loadFromFile("assets/grass.png");   // cỏ
-    cayTex.loadFromFile("assets/tree.png");   // cây
+    file.close();
 }
 
-// Hàm vẽ bản đồ ra cửa sổ
-void Map::ve(RenderWindow& cua_so) {
-    // --------- Vẽ nền toàn bản đồ ---------
-    Sprite nen(nenTex);
-    for (auto& o : ds_o) {
-        nen.setPosition(o.viTri);
-        cua_so.draw(nen); // luôn vẽ nền ở tất cả các ô
-    }
+// ======= HÀM VẼ MAP =======
+void Map::ve(RenderWindow& cua_so)
+{
+    // Vẽ nền trước
+    for (auto& n : ds_nen)
+        n.second.ve(cua_so);
 
-    // --------- Vẽ cỏ và cây đè lên nền ---------
-    Sprite anhCo(coTex);
-    Sprite anhCay(cayTex);
-
-    for (auto& o : ds_o) {
-        if (o.loai == 3) { // ô cỏ
-            anhCo.setPosition(o.viTri);
-            cua_so.draw(anhCo);
-        }
-        else if (o.loai == 4) { // ô cây
-            anhCay.setPosition(o.viTri);
-            cua_so.draw(anhCay);
-        }
-    }
-
-    // --------- Vẽ các bức tường ---------
-    for (auto& t : ds_tuong) {
+    // Sau đó vẽ tường, cây, cỏ, v.v...
+    for (auto& t : ds_tuong)
         t.second.ve(cua_so);
-    }
-}
-
-// Trả về danh sách tường (để xử lý va chạm)
-map<pair<int, int>, Wall>& Map::layDanhSach() {
-    return ds_tuong;
 }
