@@ -5,13 +5,13 @@ using namespace std;
 
 Map::Map() {}
 
-Map::Map(const string& duong_dan_file) {
-    napFile(duong_dan_file);
+Map::Map(const string& duongdan_file) {
+    napFile(duongdan_file);
 }
 
 // ======= NẠP FILE BẢN ĐỒ =======
-void Map::napFile(const string& duong_dan_file) {
-    ifstream file(duong_dan_file);
+void Map::napFile(const string& duongdan_file) {
+    ifstream file(duongdan_file);
     if (!file.is_open()) {
         cout << "Khong mo duoc file map!" << endl;
         return;
@@ -25,26 +25,31 @@ void Map::napFile(const string& duong_dan_file) {
             int loai;
             file >> loai;
 
-            // ======= VẼ NỀN (mặc định là nền gạch) =======
-            Nen nen(Vector2f(j * 64, i * 64), "assets/ground.png");
-            ds_nen[{i, j}] = nen;
+            // ======= NỀN MẶC ĐỊNH =======
+            // Luôn vẽ nền gạch dưới cùng
+            Wall nen(Vector2f(j * 64, i * 64), false, "assets/ground.png", true);
+            ds_phan_tu.push_back(nen);
 
-            // ======= VẼ TƯỜNG, CỎ, CÂY =======
+            // ======= PHÂN LOẠI CÁC Ô =======
             if (loai == 1) {
                 // Tường phá được
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), true, "assets/wall.png", false);
+                Wall tuongpha(Vector2f(j * 64, i * 64), true, "assets/wall.png", false);
+                ds_phan_tu.push_back(tuongpha);
             }
             else if (loai == 2) {
                 // Tường không phá được
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/wall2.png", false);
+                Wall tuongcung(Vector2f(j * 64, i * 64), false, "assets/wall2.png", false);
+                ds_phan_tu.push_back(tuongcung);
             }
             else if (loai == 3) {
                 // Cỏ: có thể đi qua, chồng lên nền
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64), false, "assets/grass.png", true);
+                Wall co(Vector2f(j * 64, i * 64), false, "assets/grass.png", true);
+                ds_phan_tu.push_back(co);
             }
             else if (loai == 4) {
-                // Cây: có thể đi qua, cao hơn nền
-                ds_tuong[{i, j}] = Wall(Vector2f(j * 64, i * 64 - 90), false, "assets/tree.png", true);
+                // Cây: cao hơn nền, có thể đi qua
+                Wall cay(Vector2f(j * 64, i * 64 - 90), false, "assets/tree.png", true);
+                ds_phan_tu.push_back(cay);
             }
         }
     }
@@ -52,14 +57,7 @@ void Map::napFile(const string& duong_dan_file) {
 
 // ======= VẼ TOÀN BỘ BẢN ĐỒ =======
 void Map::ve(RenderWindow& cua_so) {
-    // Vẽ nền trước
-    for (auto& nen : ds_nen) {
-        nen.second.ve(cua_so);
-    }
-
-    // Sau đó vẽ các vật thể lên trên (tường, cỏ, cây)
-    for (auto& tuong : ds_tuong) {
-        tuong.second.ve(cua_so);
+    for (auto& phan_tu : ds_phan_tu) {
+        phan_tu.ve(cua_so);
     }
 }
-
