@@ -1,6 +1,7 @@
 #include "Map.h"
 #include <fstream>
 #include <iostream>
+#include <stdexcept> // để dùng exception
 using namespace std;
 
 Map::Map() {}
@@ -12,21 +13,24 @@ Map::Map(const string& duongdan_file) {
 void Map::napFile(const string& duongdan_file) {
     ifstream file(duongdan_file);
     if (!file.is_open()) {
-        cout << "Khong mo duoc file map!" << endl;
-        return;
+        throw runtime_error("Khong mo duoc file map!"); // lỗi nếu không mở được file
     }
 
     int so_dong, so_cot;
-    file >> so_dong >> so_cot;
+    if (!(file >> so_dong >> so_cot)) {
+        throw runtime_error("File map khong hop le (thieu kich thuoc)!");
+    }
 
     ds_phan_tu.clear();
 
     for (int i = 0; i < so_dong; i++) {
         for (int j = 0; j < so_cot; j++) {
             int loai;
-            file >> loai;
+            if (!(file >> loai)) {
+                throw runtime_error("File map khong du du lieu o dong " + to_string(i));
+            }
 
-            // vẽ nền trước
+            // vẽ nền
             ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64), false, "assets/ground.png", true);
 
             // phân loại ô
@@ -38,8 +42,12 @@ void Map::napFile(const string& duongdan_file) {
                 ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64), false, "assets/grass.png", true);
             else if (loai == 4)
                 ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64 - 90), false, "assets/tree.png", true);
+            else if (loai != 0)
+                cout << "Canh bao: Gia tri khong hop le (" << loai << ") tai dong " << i << ", cot " << j << endl;
         }
     }
+
+    file.close();
 }
 
 void Map::ve(RenderWindow& cua_so) {
@@ -48,7 +56,6 @@ void Map::ve(RenderWindow& cua_so) {
     }
 }
 
-// trả về các ô không thể đi qua để kiểm tra va chạm
 vector<Wall> Map::layTuongChan() {
     vector<Wall> chan;
     for (auto& p : ds_phan_tu) {
@@ -58,12 +65,10 @@ vector<Wall> Map::layTuongChan() {
     return chan;
 }
 
-// kiểm tra va chạm giữa player và tường
 bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
     for (auto& p : ds_phan_tu) {
-        if (!p.coTheDiQua() && khung_nv.intersects(p.layKhung())) {
-            return true; // có va chạm
-        }
+        if (!p.coTheDiQua() && khung_nv.intersects(p.layKhung()))
+            return true;
     }
-    return false; // không va chạm
+    return false;
 }
