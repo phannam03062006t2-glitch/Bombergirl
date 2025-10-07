@@ -1,5 +1,5 @@
 #include "Wall.h"
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 Wall::Wall() {}
@@ -7,16 +7,17 @@ Wall::Wall() {}
 Wall::Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh, bool di_qua)
     : vitri(vitri), co_the_pha(pha_duoc), di_qua(di_qua)
 {
-    hinh.setSize(Vector2f(64,64));
+    hinh.setSize(Vector2f(64, 64));
     hinh.setPosition(vitri);
 
-    if(!ket_cau.loadFromFile(duongdan_anh)) {
-        if(pha_duoc) hinh.setFillColor(Color(139, 69, 19)); // fallback: nâu
-        else hinh.setFillColor(Color(128, 128, 128));       // fallback: xám
+    if (!ket_cau.loadFromFile(duongdan_anh)) {
+        // Nếu không tải được ảnh thì tô màu tạm
+        if (pha_duoc) hinh.setFillColor(Color(139, 69, 19));
+        else hinh.setFillColor(Color(128, 128, 128));
     } else {
         anh.setTexture(ket_cau);
         anh.setPosition(vitri);
-        anh.setScale(64.f/ket_cau.getSize().x, 64.f/ket_cau.getSize().y);
+        anh.setScale(64.f / ket_cau.getSize().x, 64.f / ket_cau.getSize().y);
     }
 }
 
