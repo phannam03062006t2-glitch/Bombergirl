@@ -12,41 +12,41 @@ using namespace std;
 using namespace sf;
 
 int main() {
-    // Khá»Ÿi táº¡o cá»­a sá»•
+    // Khoi tao cua so
     RenderWindow window(VideoMode(1700, 900), "my game");
     window.setFramerateLimit(60);
 
-    // Khai bÃ¡o
+    // Khai bao
     Player a;
     float deltaTime = 0.f;
     Clock clock;
     float Time = 0.f;
 
-    // Khá»Ÿi táº¡o báº£n Ä‘á»“
+    // Khoi tao ban do
     Map map;
     try {
-        map.napFile("map.txt");   // map.txt cÃ³ cÃ¡c loáº¡i: 0-ná»n, 1-tÆ°á»ng cá»©ng, 2-tÆ°á»ng phÃ¡, 3-cá», 4-cÃ¢y
+        map.napFile("map.txt");   // map.txt co cac loai: 0-nen, 1-tuong cung, 2-tuong pha, 3-co, 4-cay
     } catch (const exception& e) {
         cerr << e.what() << endl;
         return -1;
     }
 
-    // Khá»Ÿi táº¡o Ä‘iá»ƒm
+    // Khoi tao diem
     Diem diem;
 
-    // Khá»Ÿi táº¡o enemy
+    // Khoi tao enemy
     vector<Enemy*> enemies;
     enemies.push_back(new Enemy1(200.f, 200.f));
     enemies.push_back(new Enemy2(500.f, 500.f));
     enemies.push_back(new Enemy3(800.f, 300.f));
 
-    // VÃ²ng láº·p game
+    // Vong lap game
     while (window.isOpen()) {
-        // Cáº­p nháº­t thá»i gian
+        // Cap nhat thoi gian
         deltaTime = clock.restart().asSeconds();
         Time += deltaTime;
 
-        // Sá»± kiá»‡n
+        // Su kien
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
@@ -54,41 +54,41 @@ int main() {
             }
         }
 
-        //--------------------------------------------Cáº¬P NHáº¬T--------------------------------
+        //--------------------------------------------CAP NHAT--------------------------------
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
 
-        // Cáº­p nháº­t enemy
+        // Cap nhat enemy
         for (auto enemy : enemies) {
             enemy->capNhat(window);
         }
 
-        //----------------------------------------------Váº¼--------------------------------
+        //----------------------------------------------VE--------------------------------
         window.clear();
 
-        // Váº½ báº£n Ä‘á»“ (ná»n, tÆ°á»ng, cÃ¢y, cá»...)
+        // Ve ban do (nen, tuong, cay, co...)
         map.ve(window);
 
-        // Váº½ bomb
+        // Ve bomb
         for (int i = 0; i < QuanLyBomb.size(); i++) {
             QuanLyBomb[i].Ve(window);
         }
 
-        // Váº½ enemy
+        // Ve enemy
         for (auto enemy : enemies) {
             enemy->ve(window);
         }
 
-        // Váº½ ngÆ°á»i chÆ¡i
+        // Ve nguoi choi
         a.Ve(window, Time);
 
-        // Váº½ Ä‘iá»ƒm
+        // Ve diem
         diem.draw(window);
 
         window.display();
     }
 
-    // Giáº£i phÃ³ng bá»™ nhá»› enemy
+    // Giai phong bo nho enemy
     for (auto enemy : enemies) {
         delete enemy;
     }
