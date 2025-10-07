@@ -7,15 +7,15 @@ using namespace std;
 
 class Wall {
 private:
-    RectangleShape hinh;  // Dạng fallback (ô vuông màu)
-    Sprite anh;           // Dùng khi có texture (ảnh)
-    Texture ket_cau;      // Dữ liệu hình ảnh (texture)
-    Vector2f vitri;       // Vị trí trên bản đồ
-    bool co_the_pha;      // Có thể phá được không
-    bool di_qua;          // Có thể đi qua được không
+    RectangleShape hinh;
+    Sprite anh;
+    Texture ket_cau;      // texture dùng nội bộ
+    Vector2f vitri;
+    bool co_the_pha;
+    bool di_qua;
 
 public:
-    Wall(); 
+    Wall();
     Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh, bool di_qua);
 
     void ve(RenderWindow& cua_so);
