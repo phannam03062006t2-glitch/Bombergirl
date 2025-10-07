@@ -1,22 +1,22 @@
-#pragma once
+#ifndef MAP_H
+#define MAP_H
 #include <SFML/Graphics.hpp>
-#include "Wall.h"
 #include <vector>
-#include <string>
+#include "Wall.h"
 using namespace std;
 using namespace sf;
 
 class Map {
 private:
-    vector<Wall> ds_phan_tu; // các ô bản đồ
+    vector<Wall> ds_phan_tu;
 
 public:
     Map();
     Map(const string& duongdan_file);
-
     void napFile(const string& duongdan_file);
     void ve(RenderWindow& cua_so);
-
-    // thêm: trả về danh sách tường có collision
     vector<Wall> layTuongChan();
+    bool kiemTraVaCham(const FloatRect& khung_nv);
 };
+
+#endif
