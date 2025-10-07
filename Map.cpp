@@ -57,3 +57,13 @@ vector<Wall> Map::layTuongChan() {
     }
     return chan;
 }
+
+// kiểm tra va chạm giữa player và tường
+bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
+    for (auto& p : ds_phan_tu) {
+        if (!p.coTheDiQua() && khung_nv.intersects(p.layKhung())) {
+            return true; // có va chạm
+        }
+    }
+    return false; // không va chạm
+}
