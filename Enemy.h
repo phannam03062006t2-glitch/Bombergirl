@@ -2,45 +2,34 @@
 #define ENEMY_H
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-
+#include <vector>
 using namespace sf;
 using namespace std;
 
 class Enemy {
-protected:
-    RectangleShape hinh;
+	int frame;
+	Clock frameClock;
+	int huong; // 0=xuong,1=trai,2=phai,3=len
+public:
+    static Texture TEXTURE;
+    Sprite SPRITE;
+    float x, y;           // toa do?
+    float c1, c2, c3, c4; // vùng va cham
     Vector2f vanToc;
-    float tocDo = 1.0f;
+    float tocDo;
+    bool alive;
+
     Clock doiHuongClock;
 
-public:
-    Enemy(float x, float y, Color mau);
-    virtual void datHuongNgauNhien();
-    virtual void capNhat(RenderWindow& cuaSo);
-    virtual void ve(RenderWindow& cuaSo);
-    virtual ~Enemy();
+    Enemy(float x, float y);
+    void datHuongNgauNhien();
+    void capNhat(RenderWindow &window);
+    void Ve(RenderWindow &window);
+    bool kiemTraVaChamBom(const FloatRect& bomNo);
+    bool kiemTraVaChamPlayer(const FloatRect& playerBounds);
 };
 
-// loai quai 1
-class Enemy1 : public Enemy {
-public:
-    Enemy1(float x, float y);
-};
-
-// loai quai 2
-class Enemy2 : public Enemy {
-public:
-    Enemy2(float x, float y);
-};
-
-// loai quai 3
-class Enemy3 : public Enemy {
-public:
-    Enemy3(float x, float y);
-};
+extern vector<Enemy> DanhSachEnemy;
 
 #endif
 
