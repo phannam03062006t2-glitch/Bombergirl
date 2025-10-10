@@ -1,27 +1,28 @@
 #ifndef MAP_H
 #define MAP_H
-
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <string>
 #include "Wall.h"
+using namespace std;
+using namespace sf;
 
 class Map {
 private:
-    std::vector<Wall> ds_phan_tu;
+    vector<Wall> danh_sach_tuong_pha_duoc;
+    vector<Wall> danh_sach_tuong_khong_pha;
+
+    vector<Wall> danh_sach_phan_khac; // gồm ground, grass, tree...
 
 public:
     Map();
-    Map(const std::string& duongdan_file);
-    void napFile(const std::string& duongdan_file);
-    void ve(sf::RenderWindow& cua_so);
-    std::vector<Wall>& getWalls();
+    Map(const string& duongdan_file);
+    void napFile(const string& duongdan_file);
+    void ve(RenderWindow& cua_so);
 
-    // Kiểm tra va chạm player với các tường cản
-    bool kiemTraVaCham(const sf::FloatRect& khung_nv);
+    vector<Wall>& layDanhSachTuongPhaDuoc();
+    vector<Wall>& layDanhSachTuongKhongPha();
 
-    // Xử lý phá tường khi bom nổ
-    void xuLyBomNo(float bom_x, float bom_y, int pham_vi);
+    bool kiemTraVaCham(const FloatRect& khung_nv);
 };
 
 #endif
