@@ -7,7 +7,6 @@
 using namespace std;
 using namespace sf;
 
-
 int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
     window.setFramerateLimit(60);
@@ -22,10 +21,14 @@ int main() {
     TEXTURE.loadFromFile("map.png");
     Sprite SPRITE(TEXTURE);
 
-    // ? Thêm quái
-    DanhSachEnemy.push_back(Enemy(200, 200));
-    DanhSachEnemy.push_back(Enemy(400, 400));
-    DanhSachEnemy.push_back(Enemy(800, 600));
+    // ==========================
+    // ?? Thêm 3 quái khác hình
+    // ==========================
+    DanhSachEnemy.clear();
+    DanhSachEnemy.push_back(Enemy(200, 200, 0)); // enemy1.png
+    DanhSachEnemy.push_back(Enemy(600, 400, 1)); // enemy2.png
+    DanhSachEnemy.push_back(Enemy(1000, 600, 2)); // enemy3.png
+    // ==========================
 
     while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
@@ -40,7 +43,7 @@ int main() {
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
 
-        // ? Cap nhat enemy
+        // Cap nhat enemy
         for (auto &enemy : DanhSachEnemy) {
             enemy.capNhat(window);
             if (enemy.kiemTraVaChamPlayer(a.SPRITE.getGlobalBounds())) {
@@ -48,17 +51,24 @@ int main() {
             }
         }
 
-        // ? Kiem tra enemy chet khi trúng va cham?
+        // Kiem tra enemy chet khi trúng bomb
         for (auto &enemy : DanhSachEnemy) {
             for (auto &bomb : QuanLyBomb) {
                 if (bomb.dangNo) {
-                    FloatRect bomNo(bomb.x - 64 * bomb.phamVi, bomb.y - 64 * bomb.phamVi,
-                                    64 * (2 * bomb.phamVi + 1), 64 * (2 * bomb.phamVi + 1));
+                    FloatRect bomNo(
+                        bomb.x - 64 * bomb.phamVi,
+                        bomb.y - 64 * bomb.phamVi,
+                        64 * (2 * bomb.phamVi + 1),
+                        64 * (2 * bomb.phamVi + 1)
+                    );
                     enemy.kiemTraVaChamBom(bomNo);
                 }
             }
         }
 
+        // ==========================
+        //  Ve moi thu
+        // ==========================
         window.clear();
         window.draw(SPRITE);
 
@@ -67,7 +77,6 @@ int main() {
 
         a.Ve(window, Time);
 
-        // ? Ve enemy
         for (auto &enemy : DanhSachEnemy)
             enemy.Ve(window);
 
