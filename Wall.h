@@ -6,23 +6,24 @@
 
 class Wall {
 private:
-    sf::Sprite sprite;
-    sf::Texture texture;
     sf::Vector2f position;
-    int loai;           // 0=nen,1=tuong pha duoc,2=tuong ko pha duoc,3=co,4=cay
-    bool ton_tai;       // false nếu bị phá rồi
+    int loai;
+    bool ton_tai;
+    sf::Texture texture;
+    sf::Sprite sprite;
 
 public:
-    Wall();
+    Wall();  // mặc định
     Wall(sf::Vector2f pos, int loai, const std::string& duong_dan_anh);
 
     void ve(sf::RenderWindow& window);
     sf::FloatRect getBounds() const;
-    bool coTheDiQua() const;  // player có đi qua được không
-    bool coThePha() const;    // có thể phá bởi bom không
-    bool tonTai() const;      // còn tồn tại không
-    void pha();               // gọi khi bom phá tường/cây
-    int getLoai() const;
+
+    bool coTheDiQua() const;     // Nền, cỏ: đi được. Tường, cây: không đi được
+    bool coThePha() const;       // Tường mềm, cây: có thể phá
+    bool tonTai() const;         // Còn tồn tại trên map không
+    void pha();                  // Phá tường/cây
+    int getLoai() const;         // Loại gì (0..4)
 };
 
 #endif
