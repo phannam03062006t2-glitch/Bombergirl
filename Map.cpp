@@ -1,83 +1,74 @@
 #include "Map.h"
 #include <fstream>
 #include <iostream>
-#include <stdexcept> // Ä‘á»ƒ dÃ¹ng exception
-using namespace std;
 
 Map::Map() {}
 
-Map::Map(const string& duongdan_file) {
+Map::Map(const std::string& duongdan_file) {
     napFile(duongdan_file);
 }
 
-void Map::napFile(const string& duongdan_file) {
-    ifstream file(duongdan_file);
+void Map::napFile(const std::string& duongdan_file) {
+    std::ifstream file(duongdan_file);
     if (!file.is_open()) {
-        throw runtime_error("Khong mo duoc file map!");
+        std::cerr << "Khong mo duoc file map!" << std::endl;
+        return;
     }
 
     int so_dong, so_cot;
-    if (!(file >> so_dong >> so_cot)) {
-        throw runtime_error("File map khong hop le (thieu kich thuoc)!");
-    }
+    file >> so_dong >> so_cot;
 
     ds_phan_tu.clear();
 
     for (int i = 0; i < so_dong; i++) {
         for (int j = 0; j < so_cot; j++) {
             int loai;
-            if (!(file >> loai)) {
-                throw runtime_error("File map khong du du lieu o dong " + to_string(i));
+            file >> loai;
+            sf::Vector2f pos(j * 64.f, i * 64.f);
+            std::string img_path;
+
+            switch (loai) {
+                case 0: img_path = "ground.png"; break;
+                case 1: img_path = "wall1.png"; break;   // tường phá được
+                case 2: img_path = "wall2.png"; break;   // tường không phá được
+                case 3: img_path = "grass.png"; break;
+                case 4: img_path = "tree.png"; break;    // cây
+                default: img_path = "ground.png"; break;
             }
 
-            // V? n?n (ground)
-            if (loai == 0)
-                ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64), false, "ground.png", true);
-
-            // V? tý?ng không th? phá (wall)
-            else if (loai == 1)
-                ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64), true, "wall.png", false);
-
-            // V? tý?ng có th? phá (wall2)
-            else if (loai == 2)
-                ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64), false, "wall2.png", false);
-
-            // V? c? (grass)
-            else if (loai == 3)
-                ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64), false, "grass.png", true);
-
-            // V? cây (tree)
-            else if (loai == 4)
-                ds_phan_tu.emplace_back(Vector2f(j * 64, i * 64 - 90), false, "tree.png", true);
-
-            else
-                cout << "Canh bao: Gia tri khong hop le (" << loai << ") tai dong " << i << ", cot " << j << endl;
+            ds_phan_tu.emplace_back(pos, loai, img_path);
         }
     }
 
     file.close();
 }
 
-
-void Map::ve(RenderWindow& cua_so) {
+void Map::ve(sf::RenderWindow& cua_so) {
     for (auto& phan_tu : ds_phan_tu) {
         phan_tu.ve(cua_so);
     }
 }
 
-vector<Wall> Map::layTuongChan() {
-    vector<Wall> chan;
-    for (auto& p : ds_phan_tu) {
-        if (!p.coTheDiQua())
-            chan.push_back(p);
-    }
-    return chan;
+std::vector<Wall>& Map::getWalls() {
+    return ds_phan_tu;
 }
 
-bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
-    for (auto& p : ds_phan_tu) {
-        if (!p.coTheDiQua() && khung_nv.intersects(p.layKhung()))
+bool Map::kiemTraVaCham(const sf::FloatRect& khung_nv) {
+    for (auto& wall : ds_phan_tu) {
+        if (!wall.coTheDiQua() && wall.tonTai() && wall.getBounds().intersects(khung_nv)) {
             return true;
+        }
     }
     return false;
+}
+
+void Map::xuLyBomNo(float bom_x, float bom_y, int pham_vi) {
+    // Vùng nổ bom
+    sf::FloatRect vung_no(bom_x - 64.f * pham_vi, bom_y - 64.f * pham_vi,
+                         64.f * (2 * pham_vi + 1), 64.f * (2 * pham_vi + 1));
+    for (auto& wall : ds_phan_tu) {
+        if (wall.coThePha() && wall.tonTai() && wall.getBounds().intersects(vung_no)) {
+            wall.pha();
+        }
+    }
 }
