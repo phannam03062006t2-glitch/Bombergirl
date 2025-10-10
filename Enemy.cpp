@@ -3,16 +3,19 @@
 #include <ctime>
 
 vector<Enemy> DanhSachEnemy;
-Texture Enemy::TEXTURE;
+Texture Enemy::TEXTURES[3];  // Mang 3 anh
 bool EnemyLoad = false;
 
-Enemy::Enemy(float x_, float y_) {
+Enemy::Enemy(float x_, float y_, int loai_) {
     if (!EnemyLoad) {
-        TEXTURE.loadFromFile("enemy1.png");
+        TEXTURES[0].loadFromFile("enemy1.png");
+        TEXTURES[1].loadFromFile("enemy2.png");
+        TEXTURES[2].loadFromFile("enemy3.png");
         EnemyLoad = true;
     }
 
-    SPRITE.setTexture(TEXTURE);
+    loai = loai_ % 3;
+    SPRITE.setTexture(TEXTURES[loai]);
     SPRITE.setTextureRect(IntRect(0, 0, 64, 64));
 
     x = x_;
@@ -26,6 +29,7 @@ Enemy::Enemy(float x_, float y_) {
 
     tocDo = 1.5f;
     alive = true;
+    frame = 0;
 
     datHuongNgauNhien();
 }
@@ -48,23 +52,21 @@ void Enemy::capNhat(RenderWindow &window) {
         doiHuongClock.restart();
     }
 
-    // cap nhat vi trí
     x += vanToc.x;
     y += vanToc.y;
 
-    // doi huong khi cham biên
+    // Ðoi huong khi cham biên
     if (x < 0 || x + 64 > window.getSize().x) vanToc.x = -vanToc.x;
     if (y < 0 || y + 64 > window.getSize().y) vanToc.y = -vanToc.y;
 
     SPRITE.setPosition(x, y);
 
-    // animation
+    // Animation
     if (frameClock.getElapsedTime().asSeconds() > 0.15f) {
-        frame = (frame + 1) % 3; // ví du: moi huong có 3 frame
+        frame = (frame + 1) % 3;
         frameClock.restart();
     }
 
-    // moi huong nam trên 1 hàng trong sprite sheet
     SPRITE.setTextureRect(IntRect(frame * 64, huong * 64, 64, 64));
 
     c1 = x;
@@ -78,7 +80,7 @@ void Enemy::Ve(RenderWindow &window) {
         window.draw(SPRITE);
 }
 
-bool Enemy::kiemTraVaChamBom(const FloatRect& bomNo) {
+bool Enemy::kiemTraVaChamBom(const FloatRect &bomNo) {
     if (alive && SPRITE.getGlobalBounds().intersects(bomNo)) {
         alive = false;
         return true;
@@ -86,9 +88,9 @@ bool Enemy::kiemTraVaChamBom(const FloatRect& bomNo) {
     return false;
 }
 
-bool Enemy::kiemTraVaChamPlayer(const FloatRect& playerBounds) {
+bool Enemy::kiemTraVaChamPlayer(const FloatRect &playerBounds) {
     if (alive && SPRITE.getGlobalBounds().intersects(playerBounds)) {
-        return true; // Có the dùng de ket thúc game
+        return true;
     }
     return false;
 }
