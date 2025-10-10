@@ -1,28 +1,28 @@
 #ifndef WALL_H
 #define WALL_H
+
 #include <SFML/Graphics.hpp>
 #include <string>
-using namespace sf;
-using namespace std;
 
 class Wall {
 private:
-    RectangleShape hinh;         // hinh chu nhat de ve tuong
-    Sprite anh;                  // sprite cho tuong
-    Texture ket_cau;             // texture dung noi bo
-    Vector2f vitri;              // vi tri cua tuong
-    bool co_the_pha;             // kiem tra xem tuong co the pha duoc khong
-    bool di_qua;                 // kiem tra xem co the di qua tuong khong
+    sf::Sprite sprite;
+    sf::Texture texture;
+    sf::Vector2f position;
+    int loai;           // 0=nen,1=tuong pha duoc,2=tuong ko pha duoc,3=co,4=cay
+    bool ton_tai;       // false nếu bị phá rồi
 
 public:
     Wall();
-    Wall(Vector2f vitri, bool pha_duoc, const string& duongdan_anh, bool di_qua);
+    Wall(sf::Vector2f pos, int loai, const std::string& duong_dan_anh);
 
-    void ve(RenderWindow& cua_so);  // ve tuong
-    FloatRect layKhung();          // lay khung va cham cua tuong
-
-    bool laPhaDuoc();              // kiem tra tuong co the pha duoc
-    bool coTheDiQua();             // kiem tra tuong co the di qua
+    void ve(sf::RenderWindow& window);
+    sf::FloatRect getBounds() const;
+    bool coTheDiQua() const;  // player có đi qua được không
+    bool coThePha() const;    // có thể phá bởi bom không
+    bool tonTai() const;      // còn tồn tại không
+    void pha();               // gọi khi bom phá tường/cây
+    int getLoai() const;
 };
 
 #endif
