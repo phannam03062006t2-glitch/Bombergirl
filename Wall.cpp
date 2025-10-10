@@ -1,14 +1,13 @@
 #include "Wall.h"
 #include <iostream>
 
-Wall::Wall() : position(0,0), loai(0), ton_tai(true) {}
+Wall::Wall() : position(0, 0), loai(0), ton_tai(true) {}
 
 Wall::Wall(sf::Vector2f pos, int loai, const std::string& duong_dan_anh)
     : position(pos), loai(loai), ton_tai(true)
 {
     if (!texture.loadFromFile(duong_dan_anh)) {
-        std::cout << "Khong load duoc anh: " << duong_dan_anh << std::endl;
-        // Có thể xử lý bằng màu mặc định nếu cần
+        std::cout << "Không load được ảnh: " << duong_dan_anh << std::endl;
     }
     sprite.setTexture(texture);
     sprite.setPosition(position);
@@ -26,14 +25,12 @@ sf::FloatRect Wall::getBounds() const {
 }
 
 bool Wall::coTheDiQua() const {
-    // Nền (0) và cỏ (3) thì đi qua được, còn lại không
-    if (!ton_tai) return true;  // nếu đã phá thì đi qua được
-    return (loai == 0 || loai == 3);
+    if (!ton_tai) return true;
+    return (loai == 0 || loai == 3); // nền và cỏ đi qua được
 }
 
 bool Wall::coThePha() const {
-    // Tường phá được (1) và cây (4) thì có thể phá
-    return (ton_tai && (loai == 1 || loai == 4));
+    return (ton_tai && (loai == 1 || loai == 4)); // tường mềm, cây có thể phá
 }
 
 bool Wall::tonTai() const {
