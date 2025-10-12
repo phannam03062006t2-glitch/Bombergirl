@@ -3,9 +3,12 @@
 #include <bits/stdc++.h>
 #include <iostream>
 #include "Player.h"
-#include "Enemy.h"
+#include "Enemy1.h"
+#include "Enemy2.h"
+#include "Enemy3.h"
 #include "Map.h"
 #include "Diem.h"
+
 // ===================================
 
 using namespace std;
@@ -15,7 +18,8 @@ Map mapGame;
 Diem diem;
 
 extern vector<Bomb> QuanLyBomb;
-extern vector<Enemy> DanhSachEnemy;
+//  doi vector Enemy -> vector<Enemy*> de chua các loai quái ke thua
+vector<Enemy*> DanhSachEnemy;
 
 int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
@@ -26,7 +30,7 @@ int main() {
     try {
         mapGame = Map("map.txt");
     } catch (runtime_error& e) {
-        cerr << "Loi map: " << e.what() << endl;
+        cerr << "L?i map: " << e.what() << endl;
         return -1;
     }
 
@@ -40,12 +44,12 @@ int main() {
     Sprite SPRITE(TEXTURE);
 
     // ==========================
-    // ?? ThÃªm 3 quÃ¡i khÃ¡c hÃ¬nh
+    //  Thêm 3 loai quái khác nhau (ke thua Enemy)
     // ==========================
     DanhSachEnemy.clear();
-    DanhSachEnemy.push_back(Enemy(200, 200, 0)); // enemy1.png
-    DanhSachEnemy.push_back(Enemy(600, 400, 1)); // enemy2.png
-    DanhSachEnemy.push_back(Enemy(1000, 600, 2)); // enemy3.png
+    DanhSachEnemy.push_back(new Enemy1(200, 200));   // enemy1.png
+    DanhSachEnemy.push_back(new Enemy2(600, 400));   // enemy2.png
+    DanhSachEnemy.push_back(new Enemy3(1000, 600));  // enemy3.png
     // ==========================
 
     while (window.isOpen()) {
@@ -57,19 +61,25 @@ int main() {
             if (event.type == Event::Closed) window.close();
         }
 
-        // Cap nhat bomb & player
+        // ==========================
+        //  Cap nhat bomb & player
+        // ==========================
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
 
-        // Cap nhat enemy
+        // ==========================
+        //  Cap nhat enemy
+        // ==========================
         for (auto &enemy : DanhSachEnemy) {
-            enemy.capNhat(window);
-            if (enemy.kiemTraVaChamPlayer(a.SPRITE.getGlobalBounds())) {
+            enemy->capNhat(window);
+            if (enemy->kiemTraVaChamPlayer(a.SPRITE.getGlobalBounds())) {
                 a.alive = false;
             }
         }
 
-        // Kiem tra enemy chet khi trÃºng bomb
+        // ==========================
+        //  Kiem tra enemy trúng bomb
+        // ==========================
         for (auto &enemy : DanhSachEnemy) {
             for (auto &bomb : QuanLyBomb) {
                 if (bomb.dangNo) {
@@ -79,7 +89,7 @@ int main() {
                         64 * (2 * bomb.phamVi + 1),
                         64 * (2 * bomb.phamVi + 1)
                     );
-                    enemy.kiemTraVaChamBom(bomNo);
+                    enemy->kiemTraVaChamBom(bomNo);
                 }
             }
         }
@@ -89,24 +99,35 @@ int main() {
         // ==========================
         window.clear();
 
-        // Ve ban do truoc nen
+        // Ve ban do truoc (nen)
         mapGame.ve(window);
 
         // Ve background map.png
         window.draw(SPRITE);
 
+        // Ve bomb
         for (auto &bomb : QuanLyBomb)
             bomb.Ve(window);
 
+        // Ve player
         a.Ve(window, Time);
 
+        // Ve enemy
         for (auto &enemy : DanhSachEnemy)
-            enemy.Ve(window);
+            enemy->Ve(window);
 
-        // Ve diem len goc man 
+        // Ve diem lên góc màn
         diem.draw(window);
 
         window.display();
     }
+
+    // ==========================
+    //  Giai phóng bo nho Enemy
+    // ==========================
+    for (auto enemy : DanhSachEnemy) delete enemy;
+    DanhSachEnemy.clear();
+
     return 0;
 }
+
