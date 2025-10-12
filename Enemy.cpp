@@ -2,11 +2,10 @@
 #include <cstdlib>
 #include <ctime>
 
-vector<Enemy> DanhSachEnemy;
-Texture Enemy::TEXTURES[3];  // Mang 3 anh
-bool EnemyLoad = false;
+Texture Enemy::TEXTURES[3];
+bool Enemy::EnemyLoad = false;
 
-Enemy::Enemy(float x_, float y_, int loai_) {
+Enemy::Enemy(float x_, float y_) {
     if (!EnemyLoad) {
         TEXTURES[0].loadFromFile("enemy1.png");
         TEXTURES[1].loadFromFile("enemy2.png");
@@ -14,19 +13,11 @@ Enemy::Enemy(float x_, float y_, int loai_) {
         EnemyLoad = true;
     }
 
-    loai = loai_ % 3;
-    SPRITE.setTexture(TEXTURES[loai]);
+    SPRITE.setTexture(TEXTURES[0]); // mac dinh enemy1
     SPRITE.setTextureRect(IntRect(0, 0, 64, 64));
 
-    x = x_;
-    y = y_;
+    x = x_; y = y_;
     SPRITE.setPosition(x, y);
-
-    c1 = x;
-    c2 = y;
-    c3 = x + 64;
-    c4 = y + 64;
-
     tocDo = 1.5f;
     alive = true;
     frame = 0;
@@ -55,13 +46,11 @@ void Enemy::capNhat(RenderWindow &window) {
     x += vanToc.x;
     y += vanToc.y;
 
-    // Ðoi huong khi cham biên
     if (x < 0 || x + 64 > window.getSize().x) vanToc.x = -vanToc.x;
     if (y < 0 || y + 64 > window.getSize().y) vanToc.y = -vanToc.y;
 
     SPRITE.setPosition(x, y);
 
-    // Animation
     if (frameClock.getElapsedTime().asSeconds() > 0.15f) {
         frame = (frame + 1) % 3;
         frameClock.restart();
@@ -69,15 +58,11 @@ void Enemy::capNhat(RenderWindow &window) {
 
     SPRITE.setTextureRect(IntRect(frame * 64, huong * 64, 64, 64));
 
-    c1 = x;
-    c2 = y;
-    c3 = x + 64;
-    c4 = y + 64;
+    c1 = x; c2 = y; c3 = x + 64; c4 = y + 64;
 }
 
 void Enemy::Ve(RenderWindow &window) {
-    if (alive)
-        window.draw(SPRITE);
+    if (alive) window.draw(SPRITE);
 }
 
 bool Enemy::kiemTraVaChamBom(const FloatRect &bomNo) {
@@ -89,9 +74,8 @@ bool Enemy::kiemTraVaChamBom(const FloatRect &bomNo) {
 }
 
 bool Enemy::kiemTraVaChamPlayer(const FloatRect &playerBounds) {
-    if (alive && SPRITE.getGlobalBounds().intersects(playerBounds)) {
+    if (alive && SPRITE.getGlobalBounds().intersects(playerBounds))
         return true;
-    }
     return false;
 }
 
