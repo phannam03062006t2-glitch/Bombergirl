@@ -4,13 +4,31 @@
 #include <iostream>
 #include "Player.h"
 #include "Enemy.h"
+#include "Map.h"
+#include "Diem.h"
+// ===================================
+
 using namespace std;
 using namespace sf;
+
+Map mapGame;
+Diem diem;
+
+extern vector<Bomb> QuanLyBomb;
+extern vector<Enemy> DanhSachEnemy;
 
 int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
     window.setFramerateLimit(60);
     srand(time(0));
+
+    // Nap map
+    try {
+        mapGame = Map("map.txt");
+    } catch (runtime_error& e) {
+        cerr << "Loi map: " << e.what() << endl;
+        return -1;
+    }
 
     Player a;
     float deltaTime = 0.f;
@@ -22,7 +40,7 @@ int main() {
     Sprite SPRITE(TEXTURE);
 
     // ==========================
-    // ?? Thêm 3 quái khác hình
+    // ?? ThÃªm 3 quÃ¡i khÃ¡c hÃ¬nh
     // ==========================
     DanhSachEnemy.clear();
     DanhSachEnemy.push_back(Enemy(200, 200, 0)); // enemy1.png
@@ -51,7 +69,7 @@ int main() {
             }
         }
 
-        // Kiem tra enemy chet khi trúng bomb
+        // Kiem tra enemy chet khi trÃºng bomb
         for (auto &enemy : DanhSachEnemy) {
             for (auto &bomb : QuanLyBomb) {
                 if (bomb.dangNo) {
@@ -70,6 +88,11 @@ int main() {
         //  Ve moi thu
         // ==========================
         window.clear();
+
+        // Ve ban do truoc nen
+        mapGame.ve(window);
+
+        // Ve background map.png
         window.draw(SPRITE);
 
         for (auto &bomb : QuanLyBomb)
@@ -79,6 +102,9 @@ int main() {
 
         for (auto &enemy : DanhSachEnemy)
             enemy.Ve(window);
+
+        // Ve diem len goc man 
+        diem.draw(window);
 
         window.display();
     }
