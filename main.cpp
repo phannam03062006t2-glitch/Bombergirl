@@ -89,12 +89,15 @@ int main() {
         // ==========================
         window.clear();
 
-        // Ve ban do truoc nen
-        mapGame.ve(window);
+        
 
         // Ve background map.png
         window.draw(SPRITE);
 
+        // Ve cac doi tuong
+        mapGame.ve(window);
+
+        // Ve player, bom, quai,..
         for (auto &bomb : QuanLyBomb)
             bomb.Ve(window);
 
@@ -110,3 +113,4 @@ int main() {
     }
     return 0;
 }
+
