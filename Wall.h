@@ -23,8 +23,9 @@ public:
     bool coThePha() const;       // Tường mềm: có thể phá
     bool tonTai() const;         // Còn tồn tại trên map không
     void pha();                  // Phá tường
-    int getLoai() const;         // Loại gì (0..4)
+    int getLoai() const;         // Loại gì (0.2)
 };
 
 #endif
+
 
