@@ -10,13 +10,14 @@ extern bool BombLoad ;
 class Bomb{
 	public:
 	    static Texture TEXTURE;
+	    static Texture TEXTURE2;
 		Sprite SPRITE;
-		float x, y;                                    // tọa độ
-		float c1, c2, c3, c4;                        // vùng va chạm
-		float time;                                   // thời gian đếm ngược
-		float thoiGianNo;                             // thời gian vụ nổ xảy ra
-		bool dangNo;                                   // kiểm tra có đang nổ không
-		int phamVi;                                  // phạm vi vụ nổ
+		float x, y;                                    // t?a d?
+		float c1, c2, c3, c4;                        // v�ng va ch?m
+		float time;                                   // th?i gian d?m ngu?c
+		float thoiGianNo;                             // th?i gian v? n? x?y ra
+		bool dangNo;                                   // ki?m tra c� dang n? kh�ng
+		int phamVi;                                  // ph?m vi v? n?
 	Bomb(const Player& a);
 	    void Ve(RenderWindow &window);
 };
@@ -27,16 +28,17 @@ class Player{
 	public:
 		Texture TEXTURE;
 		Sprite SPRITE;
-		float x, y;                               // tọa độ
-		float c1, c2, c3, c4;                     // vùng va chạm
-		float dx, dy;                             // hướng
-		float speed;                              // tốc độ
-		bool DatBomb;                             // biến để đặt bomb
-		bool phimX;                               // tránh đặt nhiều bomb khi nhấn giữ nút X
+		float x, y;                               // t?a d?
+		float kx, ky;
+		float c1, c2, c3, c4;                     // v�ng va ch?m
+		float dx, dy;                             // hu?ng
+		float speed;                              // t?c d?
+		bool DatBomb;                             // bi?n d? d?t bomb
+		bool phimX;                               // tr�nh d?t nhi?u bomb khi nh?n gi? n�t X
 		bool out;                                 // kt nv out bomb cuoi ch
 		bool cham;
-		int bombMax;                               // bomb max đặt được
-		bool alive;                                // kiểm tra còn sống không
+		int bombMax;                               // bomb max d?t du?c
+		bool alive;                                // ki?m tra c�n s?ng kh�ng
 	Player();
 	   void Move();
 	   void Input();
