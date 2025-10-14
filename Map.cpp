@@ -44,12 +44,6 @@ void Map::napFile(const string& duongdan_file) {
                 case 2: // tuong khong pha
                     danh_sach_tuong_khong_pha.emplace_back(pos, loai, "assets/wall_hard.png");
                     break;
-                case 3: // grass
-                    danh_sach_phan_khac.emplace_back(pos, loai, "assets/grass.png");
-                    break;
-                case 4: // tree
-                    danh_sach_phan_khac.emplace_back(pos, loai, "assets/tree.png");
-                    break;
                 default:
                     cout << "Gia tri loai khong hop le: " << loai << endl;
             }
@@ -93,3 +87,4 @@ bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
 
     return false;
 }
+
