@@ -19,11 +19,12 @@ public:
     void ve(sf::RenderWindow& window);
     sf::FloatRect getBounds() const;
 
-    bool coTheDiQua() const;     // Nền, cỏ: đi được. Tường, cây: không đi được
-    bool coThePha() const;       // Tường mềm, cây: có thể phá
+    bool coTheDiQua() const;     // Nền: đi được. Tường: không đi được
+    bool coThePha() const;       // Tường mềm: có thể phá
     bool tonTai() const;         // Còn tồn tại trên map không
-    void pha();                  // Phá tường/cây
+    void pha();                  // Phá tường
     int getLoai() const;         // Loại gì (0..4)
 };
 
 #endif
+
