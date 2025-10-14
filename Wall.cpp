@@ -26,11 +26,11 @@ sf::FloatRect Wall::getBounds() const {
 
 bool Wall::coTheDiQua() const {
     if (!ton_tai) return true;
-    return (loai == 0 || loai == 3); // nền và cỏ đi qua được
+    return (loai == 0); // nền đi qua được
 }
 
 bool Wall::coThePha() const {
-    return (ton_tai && (loai == 1 || loai == 4)); // tường mềm, cây có thể phá
+    return (ton_tai && loai == 1); // tường mềm
 }
 
 bool Wall::tonTai() const {
@@ -44,3 +44,4 @@ void Wall::pha() {
 int Wall::getLoai() const {
     return loai;
 }
+
