@@ -35,9 +35,7 @@ void Map::napFile(const string& duongdan_file) {
             Vector2f pos(j * 64, i * 64);
 
             switch (loai) {
-                case 0: // ground
-                    danh_sach_phan_khac.emplace_back(pos, loai, "assets/ground.png");
-                    break;
+               
                 case 1: // tuong pha duoc
                     danh_sach_tuong_pha_duoc.emplace_back(pos, loai, "assets/wall_soft.png");
                     break;
@@ -87,4 +85,5 @@ bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
 
     return false;
 }
+
 
