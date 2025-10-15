@@ -1,6 +1,10 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <bits/stdc++.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "Map_phu.h"
 using namespace std;
 using namespace sf;
 
@@ -45,17 +49,21 @@ class Player{
 	   void Ve(RenderWindow &window, float Time);
 };
 
+extern vector<Bomb> QuanLyBomb;
 bool VaCham(const Player& a, const Bomb& b);
+bool VaChamWall(const Player& a, const Wall& b);
+bool VaChamWall2(const Player& a, const Wall2& b);
 void CapNhapPlayer(Player &a);
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime);
 bool VaChamNo(const Player& a, const Bomb& b);
 bool VaChamNo2(const Bomb& a, const Bomb& b);
 bool ktCham(Player &a, vector<Bomb>& QuanLyBomb);
 bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j);
+bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2);
 
 
 
 
-
+#endif
 
 

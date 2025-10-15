@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Map.h"
+#include "Map_phu.h"
 using namespace std;
 using namespace sf;
 
@@ -12,7 +12,11 @@ Texture Wall2::TEXTURE;
 
 Wall::Wall(float X, float Y){
 	x = X;
-	y = Y;
+	y = Y; 
+	c1 = x;
+	c2 = y;
+	c3 = x + 64;
+	c4 = y + 64;
 	TEXTURE.loadFromFile("assets/wall.png");
 	SPRITE.setTexture(TEXTURE);
 	SPRITE.setPosition(x, y);

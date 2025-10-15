@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Player.h"
+#include "Map_phu.h"
 using namespace std;
 using namespace sf;
 
@@ -74,13 +75,15 @@ Player::Player(){
     SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
 	bombMax = 3;                                                   // s? bomb max
 	// set v? trí
-	x = 32.f;
-	y = 32.f;
+	x = 32.f + 64;
+	y = 32.f + 64;
 	// ch?nh vùng va ch?m
-	c1 = x - 23;
-	c2 = y - 26;
-	c3 = x + 23;
-	c4 = y + 26;
+	kx = 20;
+	ky = 26;
+	c1 = x - kx;
+	c2 = y - ky;
+	c3 = x + kx - 10;
+	c4 = y + ky;
 	SPRITE.setPosition(x - 27, y - 32);   
 	// hu?ng lúc d?u
 	dx = 0;
@@ -98,6 +101,20 @@ Player::Player(){
 }
 
 bool VaCham(const Player& a, const Bomb& b){                            // hàm ki?m tra va ch?m bomb v?i player 
+	if(a.c1 >= b.c3)return false;
+	if(a.c3 <= b.c1)return false;
+	if(a.c2 >= b.c4)return false;
+	if(a.c4 <= b.c2)return false;
+	return true;
+}
+bool VaChamWall(const Player& a, const Wall& b){                            // hàm ki?m tra va ch?m bomb v?i player 
+	if(a.c1 >= b.c3)return false;
+	if(a.c3 <= b.c1)return false;
+	if(a.c2 >= b.c4)return false;
+	if(a.c4 <= b.c2)return false;
+	return true;
+}
+bool VaChamWall2(const Player& a, const Wall2& b){                            // hàm ki?m tra va ch?m bomb v?i player 
 	if(a.c1 >= b.c3)return false;
 	if(a.c3 <= b.c1)return false;
 	if(a.c2 >= b.c4)return false;
@@ -130,10 +147,10 @@ void Player::Move(){
 	x += dx*speed;
 	y += dy*speed;
 	SPRITE.setPosition(x - 33, y - 32);
-	c1 = x - 23;
-	c2 = y - 26;
-	c3 = x + 23;
-	c4 = y + 26;
+	c1 = x - kx;
+	c2 = y - ky;
+	c3 = x + kx - 10;
+	c4 = y + ky;
 }
 
 void Player::Ve(RenderWindow &window, float Time){                          // v? player
@@ -165,6 +182,49 @@ void Player::Ve(RenderWindow &window, float Time){                          // v
     window.draw(SPRITE);
 }
 
+bool KiemTraChan(Player& a){
+    bool kt_Chan = false;
+
+    if (!QuanLyBomb.empty()) {
+        // N?u r?i kh?i bomb cu?i cùng thì out = true
+        if (!VaCham(a, QuanLyBomb.back())) {
+            a.out = true;
+        }
+
+        // Ki?m tra va ch?m v?i bomb
+        for (int i = 0; i < (int)QuanLyBomb.size(); ++i) {
+            if (i != (int)QuanLyBomb.size() - 1 || a.out == true) {
+                if (VaCham(a, QuanLyBomb[i])) {
+                    kt_Chan = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Ki?m tra va ch?m v?i Wall
+    if (!kt_Chan) {
+        for (int i = 0; i < (int)QuanLyWall.size(); ++i) {
+            if (VaChamWall(a, QuanLyWall[i])) {
+                kt_Chan = true;
+                break;
+            }
+        }
+    }
+
+    // Ki?m tra va ch?m v?i Wall2
+    if (!kt_Chan) {
+        for (int i = 0; i < (int)QuanLyWall2.size(); ++i) {
+            if (VaChamWall2(a, QuanLyWall2[i])) {
+                kt_Chan = true;
+                break;
+            }
+        }
+    }
+
+    return kt_Chan;
+}
+
 
 void CapNhapPlayer(Player &a){
 	a.dx = 0;
@@ -184,33 +244,20 @@ void CapNhapPlayer(Player &a){
     // di chuy?n
     a.Move();
    // n?u có bomb
-if((int)QuanLyBomb.size()>0){
-	// n?u r?i kh?i bomb cu?i thì out = true
-	if(!VaCham(a, QuanLyBomb[(int)QuanLyBomb.size()-1]))
-	{
-		a.out = true;
-    }
-	// kt va ch?m
-    for (int i = 0; i < (int)QuanLyBomb.size(); ++i) {
-    if (i != (int)QuanLyBomb.size() - 1 || a.out == true) {
-        bool nowOverlap = VaCham(a, QuanLyBomb[i]);
-        if (nowOverlap) {
-            a.x = oldX;
+   if(KiemTraChan(a))
+			{
+			a.x = oldX;
             a.y = oldY;
-            a.c1 = a.x - 23.0f;
-            a.c2 = a.y - 26.0f;
-            a.c3 = a.x + 23.0f;
-            a.c4 = a.y + 26.0f;
-            a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
-            break;
-        }
-    }
-}
-}
-
+			a.c1 = a.x - a.kx;
+            a.c2 = a.y - a.ky;
+            a.c3 = a.x + a.kx - 10;
+            a.c4 = a.y + a.ky;
+             a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
+			}
+   
    ktCham(a,QuanLyBomb);
 }
-
+bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2);
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
     for (int i = (int)QuanLyBomb.size() - 1; i >= 0; --i) {
         Bomb &b = QuanLyBomb[i];
@@ -224,6 +271,7 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
         if (b.time <= 0.0f && !b.dangNo) {
             b.dangNo = true;
             ktCham2(b, QuanLyBomb, i);                                 // ki?m tra n?u n? lên bomb thì cho th?i gian d?m ngu?c v? 0.1  ( g?n nhu n? luôn)
+             ktCham3(b, QuanLyWall2);
         }
         
         if (b.dangNo && b.thoiGianNo <= 0.0f) {
@@ -257,6 +305,18 @@ bool VaChamNo2(const Bomb& a, const Bomb& b){                          // ki?m t
 	return true;
 }
 
+bool VaChamNo3(const Bomb& b, const Wall2& a){                          // ki?m tra bomb n? bomb không               (ki?n tra 1 bomb)
+	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
+	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
+	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
+	if(a.c4 <= b.c2 - 64*b.phamVi)return false;
+	if(a.c3 <= b.c1 && a.c4 <= b.c2)return false;
+	if(a.c1 >= b.c3 && a.c4 <= b.c2)return false;
+	if(a.c2 >= b.c4 && a.c1 >= b.c3)return false;
+	if(a.c2 >= b.c4 && a.c3 <= b.c1)return false;
+	return true;
+}
+
 bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){                                 // ki?m tra n?u b? n? thì ch?t        (ki?m tra t?t c?  bomb)
 	for(int i = 0; i < (int)QuanLyBomb.size(); i++)
 	{   
@@ -276,6 +336,21 @@ bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j){                         
 		}
 	}
 }
+
+bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2){                           // ki?m tra bomb n? bomb               (ki?m tra t?t c? bomb)
+	for(int i = 0; i < (int)QuanLyWall2.size(); i++)
+	{   
+		if(VaChamNo3(a, QuanLyWall2[i]))
+		{
+			QuanLyWall2.erase(QuanLyWall2.begin() + i); 
+			i--;  
+		}
+	}
+}
+
+
+
+
 
 
 
