@@ -1,31 +1,23 @@
 #ifndef WALL_H
 #define WALL_H
-
 #include <SFML/Graphics.hpp>
 #include <string>
-
+using namespace std;
+using namespace sf;
 class Wall {
-private:
-    sf::Vector2f position;
-    int loai;
-    bool ton_tai;
-    sf::Texture texture;
-    sf::Sprite sprite;
-
 public:
-    Wall();  // mặc định
-    Wall(sf::Vector2f pos, int loai, const std::string& duong_dan_anh);
+    float x, y;
+    static Texture TEXTURE;
+    Sprite SPRITE;
 
-    void ve(sf::RenderWindow& window);
-    sf::FloatRect getBounds() const;
+    Wall(float x, float y);
+    void Ve(sf::RenderWindow &window);
+};
 
-    bool coTheDiQua() const;     // Nền: đi được. Tường: không đi được
-    bool coThePha() const;       // Tường mềm: có thể phá
-    bool tonTai() const;         // Còn tồn tại trên map không
-    void pha();                  // Phá tường
-    int getLoai() const;         // Loại gì (0.2)
+class Wall2 : public Wall {
+public:
+    static sf::Texture TEXTURE;
+    Wall2(float x, float y);
 };
 
 #endif
-
-
