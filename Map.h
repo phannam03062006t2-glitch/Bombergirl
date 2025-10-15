@@ -24,11 +24,12 @@ public:
     void ve(RenderWindow& window);
 
 
-    vector<Wall>& layDanhSachTuongPhaDuoc();
-    vector<Wall2>& layDanhSachTuongKhongPha();
+    vector<Wall>& layDanhSachTuongPhaDuoc();   // Tra ve tuong mem
+    vector<Wall2>& layDanhSachTuongKhongPha(); //        tuong cung
 
 
-    bool kiemTraVaCham(const FloatRect& khung_nv);
+    bool kiemTraVaCham(const FloatRect& khung_nv); //Kiem tra va tram
 };
 
 #endif
+
