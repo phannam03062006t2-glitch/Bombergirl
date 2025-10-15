@@ -16,16 +16,16 @@ void Map::napFile(const string& duongdan_file) {
     if (!file.is_open()) {
         throw runtime_error("Khong mo duoc file map: " + duongdan_file);
     }
-
+   
     int hang, cot;
     file >> hang >> cot;
     if (!file || hang <= 0 || cot <= 0) {
         throw runtime_error("File map khong hop le!");
     }
-
+    // Xoa du lieu cu khi nap map moi
     danh_sach_tuong_pha_duoc.clear();
     danh_sach_tuong_khong_pha.clear();
-
+    // Phan nay la muon lai cua @Nam Phan
     int a;
     int i = 0, j = 0;
 
@@ -47,30 +47,31 @@ void Map::napFile(const string& duongdan_file) {
 
     cout << "Da nap map thanh cong! (" << hang << "x" << cot << ")\n";
 }
-
+// Ve map
 void Map::ve(RenderWindow& window) {
     for (auto& tuong : danh_sach_tuong_khong_pha)
         tuong.Ve(window);
     for (auto& tuong : danh_sach_tuong_pha_duoc)
         tuong.Ve(window);
 }
-
+// Lay danh sach tuong mem
 vector<Wall>& Map::layDanhSachTuongPhaDuoc() {
     return danh_sach_tuong_pha_duoc;
 }
-
+// Lay danh sach tuong cung
 vector<Wall2>& Map::layDanhSachTuongKhongPha() {
     return danh_sach_tuong_khong_pha;
 }
-
+// Kiem tra va cham
 bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
     for (auto& tuong : danh_sach_tuong_khong_pha) {
         if (khung_nv.intersects(tuong.SPRITE.getGlobalBounds()))
-            return true;
+            return true; // Co va cham voi tuong cung
     }
     for (auto& tuong : danh_sach_tuong_pha_duoc) {
         if (khung_nv.intersects(tuong.SPRITE.getGlobalBounds()))
-            return true;
+            return true; // Va cham tuong mem
     }
-    return false;
+    return false; // Khong va cham
 }
+
