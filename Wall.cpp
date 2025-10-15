@@ -1,47 +1,29 @@
 #include "Wall.h"
 #include <iostream>
+using namespace sf;
+using namespace std;
 
-Wall::Wall() : position(0, 0), loai(0), ton_tai(true) {}
+Texture Wall::TEXTURE;
+Texture Wall2::TEXTURE;
 
-Wall::Wall(sf::Vector2f pos, int loai, const std::string& duong_dan_anh)
-    : position(pos), loai(loai), ton_tai(true)
-{
-    if (!texture.loadFromFile(duong_dan_anh)) {
-        std::cout << "Không load được ảnh: " << duong_dan_anh << std::endl;
+Wall::Wall(float X, float Y) {
+    x = X;
+    y = Y;
+    if (TEXTURE.getSize().x == 0) {
+        if (!TEXTURE.loadFromFile("assets/wall.png"))
+            cout << "Khong load duoc wall.png\n";
     }
-    sprite.setTexture(texture);
-    sprite.setPosition(position);
-    sprite.setScale(64.f / texture.getSize().x, 64.f / texture.getSize().y);
+    SPRITE.setTexture(TEXTURE);
+    SPRITE.setPosition(x, y);
 }
 
-void Wall::ve(sf::RenderWindow& window) {
-    if (ton_tai) {
-        window.draw(sprite);
+Wall2::Wall2(float X, float Y) : Wall(X, Y) {
+    if (TEXTURE.getSize().x == 0) {
+        if (!TEXTURE.loadFromFile("assets/wall2.png"))
+            cout << "Khong load duoc wall2.png\n";
     }
+    SPRITE.setTexture(TEXTURE);
 }
-
-sf::FloatRect Wall::getBounds() const {
-    return sprite.getGlobalBounds();
+void Wall::Ve(RenderWindow &window) {
+    window.draw(SPRITE);
 }
-
-bool Wall::coTheDiQua() const {
-    if (!ton_tai) return true;
-    return (loai == 0); // nền đi qua được
-}
-
-bool Wall::coThePha() const {
-    return (ton_tai && loai == 1); // tường mềm
-}
-
-bool Wall::tonTai() const {
-    return ton_tai;
-}
-
-void Wall::pha() {
-    ton_tai = false;
-}
-
-int Wall::getLoai() const {
-    return loai;
-}
-
