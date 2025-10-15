@@ -13,10 +13,10 @@ Wall::Wall(float X, float Y) {
         if (!TEXTURE.loadFromFile("assets/wall.png"))
             cout << "Khong load duoc wall.png\n";
     }
-    SPRITE.setTexture(TEXTURE);
-    SPRITE.setPosition(x, y);
+    SPRITE.setTexture(TEXTURE); // Gan anh cho sprite
+    SPRITE.setPosition(x, y);   // Dat vi tri sprite
 }
-
+// Tuong mem
 Wall2::Wall2(float X, float Y) : Wall(X, Y) {
     if (TEXTURE.getSize().x == 0) {
         if (!TEXTURE.loadFromFile("assets/wall2.png"))
@@ -24,6 +24,8 @@ Wall2::Wall2(float X, float Y) : Wall(X, Y) {
     }
     SPRITE.setTexture(TEXTURE);
 }
+// Ve tuong
 void Wall::Ve(RenderWindow &window) {
     window.draw(SPRITE);
 }
+
