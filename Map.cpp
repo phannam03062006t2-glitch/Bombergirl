@@ -1,8 +1,9 @@
 #include "Map.h"
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
+
 using namespace std;
+using namespace sf;
 
 Map::Map() {}
 
@@ -13,79 +14,63 @@ Map::Map(const string& duongdan_file) {
 void Map::napFile(const string& duongdan_file) {
     ifstream file(duongdan_file);
     if (!file.is_open()) {
-        throw runtime_error("Khong mo duoc file map!");
+        throw runtime_error("Khong mo duoc file map: " + duongdan_file);
     }
 
-    int so_dong, so_cot;
-    if (!(file >> so_dong >> so_cot)) {
+    int hang, cot;
+    file >> hang >> cot;
+    if (!file || hang <= 0 || cot <= 0) {
         throw runtime_error("File map khong hop le!");
     }
 
-    danh_sach_phan_khac.clear();
     danh_sach_tuong_pha_duoc.clear();
     danh_sach_tuong_khong_pha.clear();
 
-    for (int i = 0; i < so_dong; i++) {
-        for (int j = 0; j < so_cot; j++) {
-            int loai;
-            if (!(file >> loai)) {
-                throw runtime_error("File map khong du du lieu!");
-            }
+    int a;
+    int i = 0, j = 0;
 
-            Vector2f pos(j * 64, i * 64);
+    while (file >> a) {
+        float x = j * 64.f;
+        float y = i * 64.f;
 
-            switch (loai) {
-                case 0:
-                    break;
-                case 1: // tuong pha duoc
-                    danh_sach_tuong_pha_duoc.emplace_back(pos, loai, "assets/wall_soft.png");
-                    break;
-                case 2: // tuong khong pha
-                    danh_sach_tuong_khong_pha.emplace_back(pos, loai, "assets/wall_hard.png");
-                    break;
-                default:
-                    cout << "Gia tri loai khong hop le: " << loai << endl;
-            }
+        if (a == 1)
+            danh_sach_tuong_khong_pha.push_back(Wall2(x, y));
+        else if (a == 2)
+            danh_sach_tuong_pha_duoc.push_back(Wall(x, y));
+
+        j++;
+        if (j >= cot) {
+            j = 0;
+            i++;
         }
     }
 
-    file.close();
+    cout << "Da nap map thanh cong! (" << hang << "x" << cot << ")\n";
 }
 
 void Map::ve(RenderWindow& window) {
-    for (auto& obj : danh_sach_phan_khac)
-        obj.ve(window);
-
-    // Vẽ tường không phá trước
-    for (auto& wall : danh_sach_tuong_khong_pha)
-        wall.ve(window);
-
-    // Vẽ tường phá được sau để đè lên vụ nổ
-    for (auto& wall : danh_sach_tuong_pha_duoc)
-        wall.ve(window);
+    for (auto& tuong : danh_sach_tuong_khong_pha)
+        tuong.Ve(window);
+    for (auto& tuong : danh_sach_tuong_pha_duoc)
+        tuong.Ve(window);
 }
 
 vector<Wall>& Map::layDanhSachTuongPhaDuoc() {
     return danh_sach_tuong_pha_duoc;
 }
 
-vector<Wall>& Map::layDanhSachTuongKhongPha() {
+vector<Wall2>& Map::layDanhSachTuongKhongPha() {
     return danh_sach_tuong_khong_pha;
 }
 
 bool Map::kiemTraVaCham(const FloatRect& khung_nv) {
-    for (auto& wall : danh_sach_tuong_khong_pha) {
-        if (!wall.coTheDiQua() && wall.getBounds().intersects(khung_nv))
+    for (auto& tuong : danh_sach_tuong_khong_pha) {
+        if (khung_nv.intersects(tuong.SPRITE.getGlobalBounds()))
             return true;
     }
-
-    for (auto& wall : danh_sach_tuong_pha_duoc) {
-        if (wall.tonTai() && !wall.coTheDiQua() && wall.getBounds().intersects(khung_nv))
+    for (auto& tuong : danh_sach_tuong_pha_duoc) {
+        if (khung_nv.intersects(tuong.SPRITE.getGlobalBounds()))
             return true;
     }
-
     return false;
 }
-
-
-
