@@ -38,10 +38,10 @@ Enemy::Enemy(float x_, float y_, int type_) {
 void Enemy::datHuongNgauNhien() {
     huong = rand() % 4;
     switch (huong) {
-        case 0: vanToc = Vector2f(0, tocDo); break;
-        case 1: vanToc = Vector2f(-tocDo, 0); break;
-        case 2: vanToc = Vector2f(tocDo, 0); break;
-        case 3: vanToc = Vector2f(0, -tocDo); break;
+        case 0: vanToc = Vector2f(0, -tocDo); break;
+        case 1: vanToc = Vector2f(tocDo, 0); break;
+        case 2: vanToc = Vector2f(0, tocDo); break;
+        case 3: vanToc = Vector2f(-tocDo, 0); break;
     }
 }
 
