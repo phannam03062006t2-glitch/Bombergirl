@@ -156,15 +156,17 @@ void Player::Move(){
 }
 
 void Player::Ve(RenderWindow &window, float Time){                          // v? player
+
+   if(thoiGianBatTu > 0 && ((int)(Time * 10) % 2 == 0))
+    SPRITE.setColor(Color(255, 255, 255, 180));
+else
+    SPRITE.setColor(Color(255, 255, 255, 255));
+
+    
 	if(alive == false){
 		SPRITE.setScale(1.f, 1.f);
         SPRITE.setOrigin(0, 0);
         SPRITE.setTextureRect(IntRect(3*62.4, 2*64, 62.4, 64));
-	}
-	else if(thoiGianBatTu > 0){
-		SPRITE.setScale(1.f, 1.f);
-        SPRITE.setOrigin(0, 0);
-        SPRITE.setTextureRect(IntRect(9*62.4, 3*64, 62.4, 64));
 	}
     else if (dy == 1) {
         SPRITE.setScale(1.f, 1.f);
