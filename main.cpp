@@ -1,10 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <fstream>
 #include <bits/stdc++.h>
 #include <iostream>
 #include "Player.h"
 #include "Map_phu.h"
 #include "Diem.h"
+#include "QLAmThanh.h"
 // ===================================
 
 using namespace std;
@@ -84,4 +86,5 @@ int main() {
     }
     return 0;
 }
+
 
