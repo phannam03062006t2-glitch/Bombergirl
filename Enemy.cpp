@@ -2,10 +2,17 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
+
 Texture Enemy::TEXTURES[3];
 bool Enemy::EnemyLoad = false;
+vector<Enemy> DanhSachEnemy;
 
-Enemy::Enemy(float x_, float y_) {
+// ===============================
+//   Ð?NH NGHIA L?P ENEMY CHUNG
+// ===============================
+
+Enemy::Enemy(float x_, float y_, int type_) {
     if (!EnemyLoad) {
         TEXTURES[0].loadFromFile("enemy1.png");
         TEXTURES[1].loadFromFile("enemy2.png");
@@ -13,10 +20,13 @@ Enemy::Enemy(float x_, float y_) {
         EnemyLoad = true;
     }
 
-    SPRITE.setTexture(TEXTURES[0]); // mac dinh enemy1
+    if (type_ < 0 || type_ > 2) type_ = 0;
+
+    SPRITE.setTexture(TEXTURES[type_]);
     SPRITE.setTextureRect(IntRect(0, 0, 64, 64));
 
-    x = x_; y = y_;
+    x = x_;
+    y = y_;
     SPRITE.setPosition(x, y);
     tocDo = 1.5f;
     alive = true;
@@ -58,7 +68,10 @@ void Enemy::capNhat(RenderWindow &window) {
 
     SPRITE.setTextureRect(IntRect(frame * 64, huong * 64, 64, 64));
 
-    c1 = x; c2 = y; c3 = x + 64; c4 = y + 64;
+    c1 = x;
+    c2 = y;
+    c3 = x + 64;
+    c4 = y + 64;
 }
 
 void Enemy::Ve(RenderWindow &window) {
@@ -79,3 +92,24 @@ bool Enemy::kiemTraVaChamPlayer(const FloatRect &playerBounds) {
     return false;
 }
 
+// ===============================
+//   Ð?NH NGHIA CÁC L?P CON
+// ===============================
+
+// Enemy1
+Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
+    SPRITE.setTexture(TEXTURES[0]);
+    tocDo = 1.0f;
+}
+
+// Enemy2
+Enemy2::Enemy2(float x_, float y_) : Enemy(x_, y_, 1) {
+    SPRITE.setTexture(TEXTURES[1]);
+    tocDo = 2.0f;
+}
+
+// Enemy3
+Enemy3::Enemy3(float x_, float y_) : Enemy(x_, y_, 2) {
+    SPRITE.setTexture(TEXTURES[2]);
+    tocDo = 2.5f;
+}

@@ -7,11 +7,12 @@
 using namespace sf;
 using namespace std;
 
+// ====================== L?P CO S? ENEMY ======================
 class Enemy {
 protected:
     Sprite SPRITE;
-    static Texture TEXTURES[3];  // Chua anh chung
-    static bool EnemyLoad;
+    static Texture TEXTURES[3];   // Texture dùng chung cho 3 lo?i quái
+    static bool EnemyLoad;        // Ch? load 1 l?n
 
     float x, y;
     float tocDo;
@@ -25,7 +26,7 @@ public:
     bool alive;
     float c1, c2, c3, c4;
 
-    Enemy(float x_ = 0, float y_ = 0);
+    Enemy(float x_ = 0, float y_ = 0, int type_ = 0);
     virtual ~Enemy() {}
 
     virtual void datHuongNgauNhien();
@@ -34,6 +35,24 @@ public:
 
     bool kiemTraVaChamBom(const FloatRect &bomNo);
     bool kiemTraVaChamPlayer(const FloatRect &playerBounds);
+};
+
+// ====================== Enemy1 ======================
+class Enemy1 : public Enemy {
+public:
+    Enemy1(float x_, float y_);
+};
+
+// ====================== Enemy2 ======================
+class Enemy2 : public Enemy {
+public:
+    Enemy2(float x_, float y_);
+};
+
+// ====================== Enemy3 ======================
+class Enemy3 : public Enemy {
+public:
+    Enemy3(float x_, float y_);
 };
 
 #endif
