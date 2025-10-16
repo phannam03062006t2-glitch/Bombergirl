@@ -245,6 +245,7 @@ void CapNhapPlayer(Player &a){
     // d?t bomb
     if(a.DatBomb == true && a.phimX == false){
         Bomb b(a);
+        amThanh.phatAm("datbomb");
         QuanLyBomb.push_back(b);
         a.DatBomb = false;
         a.out = false;
@@ -264,7 +265,9 @@ void CapNhapPlayer(Player &a){
 			}
    ktCham(a,QuanLyBomb);
 }
+
 bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2);
+
 void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
     for (int i = (int)QuanLyBomb.size() - 1; i >= 0; --i) {
         Bomb &b = QuanLyBomb[i];
@@ -276,6 +279,7 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
         }
 
         if (b.time <= 0.0f && !b.dangNo) {
+        	amThanh.phatAm("no");
             b.dangNo = true;
             ktCham2(b, QuanLyBomb, i);                                 // ki?m tra n?u n? lên bomb thì cho th?i gian d?m ngu?c v? 0.1  ( g?n nhu n? luôn)
              ktCham3(b, QuanLyWall2);

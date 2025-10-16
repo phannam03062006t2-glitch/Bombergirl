@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "Map_phu.h"
+#include "QLAmThanh.h"
 using namespace std;
 using namespace sf;
 

@@ -6,6 +6,7 @@
 #include "Map_phu.h"
 #include "Diem.h"
 #include "Enemy.h"
+#include "QLAmThanh.h"
 // ===================================
 
 using namespace std;
@@ -32,7 +33,11 @@ int main() {
     Texture TEXTURE;
     TEXTURE.loadFromFile("assets/map.png");
     Sprite SPRITE(TEXTURE);
-
+    
+    amThanh.napAm("datbomb", "sound/datbom.wav");
+    amThanh.napAm("no", "sound/no.wav");
+    amThanh.phatNhacNen("sound/nhacnen.ogg");
+    
     while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         Time += deltaTime;
@@ -49,7 +54,13 @@ int main() {
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
        
-
+        if (!a.alive) {
+            amThanh.phatAm("no");
+            diem.save("score.txt");
+            cout << "Game Over! Diem: " << diem.get() << endl;
+            window.close();
+            continue;
+        }
 
 
         
