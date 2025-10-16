@@ -1,22 +1,22 @@
 #include "Enemy.h"
-#include "Map_phu.h"     // d? l?y QuanLyWall và QuanLyWall2
+#include "Map_phu.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-
 using namespace std;
 
-// Khai báo bi?n static
+// ========================
+// Static members
+// ========================
 Texture Enemy::TEXTURES[3];
 bool Enemy::EnemyLoad = false;
 
-// Các vector toàn c?c
 std::vector<Enemy1> DanhSachEnemy1;
 std::vector<Enemy2> DanhSachEnemy2;
 std::vector<Enemy3> DanhSachEnemy3;
 
 // ===================================================
-//             HÀM KH?I T?O CHUNG
+//                  KH?I T?O CHUNG
 // ===================================================
 Enemy::Enemy(float x_, float y_, int type_) {
     if (!EnemyLoad) {
@@ -47,20 +47,20 @@ Enemy::Enemy(float x_, float y_, int type_) {
 }
 
 // ===================================================
-//        C?P NH?T HU?NG NG?U NHIÊN
+//             C?P NH?T HU?NG NG?U NHIÊN
 // ===================================================
 void Enemy::datHuongNgauNhien() {
     huong = rand() % 4;
     switch (huong) {
         case 0: vanToc = Vector2f(0, -1); break; // lên
-        case 1: vanToc = Vector2f(1, 0); break;  // ph?i
-        case 2: vanToc = Vector2f(0, 1); break;  // xu?ng
+        case 1: vanToc = Vector2f(1, 0);  break; // ph?i
+        case 2: vanToc = Vector2f(0, 1);  break; // xu?ng
         case 3: vanToc = Vector2f(-1, 0); break; // trái
     }
 }
 
 // ===================================================
-//         KI?M TRA VA CH?M TU?NG
+//             VA CH?M TU?NG
 // ===================================================
 bool VaChamWall_Enemy(const Enemy& e, const Wall& w) {
     if (e.c1 >= w.c3) return false;
@@ -79,7 +79,7 @@ bool VaChamWall2_Enemy(const Enemy& e, const Wall2& w) {
 }
 
 // ===================================================
-//              C?P NH?T ENEMY
+//               C?P NH?T ENEMY
 // ===================================================
 void Enemy::capNhat(float deltaTime) {
     if (!alive) return;
@@ -97,7 +97,7 @@ void Enemy::capNhat(float deltaTime) {
 
     bool chamTuong = false;
 
-    // Ki?m tra va ch?m tu?ng thu?ng
+    // Va ch?m tu?ng thu?ng
     for (int i = 0; i < (int)QuanLyWall.size(); i++) {
         if (VaChamWall_Enemy(*this, QuanLyWall[i])) {
             chamTuong = true;
@@ -105,7 +105,7 @@ void Enemy::capNhat(float deltaTime) {
         }
     }
 
-    // Ki?m tra va ch?m tu?ng c?ng
+    // Va ch?m tu?ng c?ng
     if (!chamTuong) {
         for (int i = 0; i < (int)QuanLyWall2.size(); i++) {
             if (VaChamWall2_Enemy(*this, QuanLyWall2[i])) {
@@ -117,28 +117,26 @@ void Enemy::capNhat(float deltaTime) {
 
     // N?u ch?m tu?ng thì d?i hu?ng
     if (chamTuong) {
-        // Lùi l?i d? tránh b? k?t
         x -= vanToc.x * tocDo;
         y -= vanToc.y * tocDo;
         SPRITE.setPosition(x, y);
-
-        // Ch?n hu?ng ng?u nhiên m?i
         datHuongNgauNhien();
     }
 
-    // C?p nh?t animation (n?u có sprite sheet)
+    // C?p nh?t animation (4 hàng, m?i hàng 3 frame)
     if (frameClock.getElapsedTime().asSeconds() > 0.15f) {
-        frame = (frame + 1) % 3;
-        SPRITE.setTextureRect(IntRect(64 * frame, 0, 64, 64));
+        frame = (frame + 1) % 3;  // 3 frame m?i hu?ng
+        SPRITE.setTextureRect(IntRect(64 * frame, 64 * huong, 64, 64));
         frameClock.restart();
     }
 }
 
 // ===================================================
-//                V? ENEMY
+//                    V? ENEMY
 // ===================================================
 void Enemy::Ve(RenderWindow &window) {
-    if (alive) window.draw(SPRITE);
+    if (alive)
+        window.draw(SPRITE);
 }
 
 // ===================================================
@@ -155,7 +153,7 @@ bool Enemy::kiemTraVaChamPlayer(const FloatRect &playerBounds) {
 }
 
 // ===================================================
-//                Enemy1/2/3
+//                   Enemy1/2/3
 // ===================================================
 Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
     tocDo = 1.8f;
