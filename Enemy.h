@@ -55,4 +55,8 @@ public:
     Enemy3(float x_, float y_);
 };
 
+extern std::vector<Enemy1> DanhSachEnemy1;
+extern std::vector<Enemy2> DanhSachEnemy2;
+extern std::vector<Enemy3> DanhSachEnemy3;
+
 #endif

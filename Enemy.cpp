@@ -1,12 +1,16 @@
 #include "Enemy.h"
 #include <cstdlib>
 #include <ctime>
+#include "Map_phu.h"
 
 using namespace std;
 
 Texture Enemy::TEXTURES[3];
 bool Enemy::EnemyLoad = false;
-vector<Enemy> DanhSachEnemy;
+
+std::vector<Enemy1> DanhSachEnemy1;
+std::vector<Enemy2> DanhSachEnemy2;
+std::vector<Enemy3> DanhSachEnemy3;
 
 // ===============================
 //   Ð?NH NGHIA L?P ENEMY CHUNG
