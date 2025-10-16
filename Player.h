@@ -32,6 +32,8 @@ class Player{
 	public:
 		Texture TEXTURE;
 		Sprite SPRITE;
+		int health;
+		float thoiGianBatTu;
 		float x, y;                               // t?a d?
 		float kx, ky;
 		float c1, c2, c3, c4;                     // vùng va ch?m

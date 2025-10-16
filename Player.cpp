@@ -73,7 +73,9 @@ Player::Player(){
 	TEXTURE.loadFromFile("assets/player.png");
 	SPRITE.setTexture(TEXTURE);
     SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
-	bombMax = 3;                                                   // s? bomb max
+	bombMax = 3;     
+	health = 3;                                              // s? bomb max
+	thoiGianBatTu = 0.f;
 	// set v? trí
 	x = 32.f + 64;
 	y = 32.f + 64;
@@ -159,6 +161,11 @@ void Player::Ve(RenderWindow &window, float Time){                          // v
         SPRITE.setOrigin(0, 0);
         SPRITE.setTextureRect(IntRect(3*62.4, 2*64, 62.4, 64));
 	}
+	else if(thoiGianBatTu > 0){
+		SPRITE.setScale(1.f, 1.f);
+        SPRITE.setOrigin(0, 0);
+        SPRITE.setTextureRect(IntRect(9*62.4, 3*64, 62.4, 64));
+	}
     else if (dy == 1) {
         SPRITE.setScale(1.f, 1.f);
         SPRITE.setOrigin(0, 0); 
@@ -227,6 +234,7 @@ bool KiemTraChan(Player& a){
 
 
 void CapNhapPlayer(Player &a){
+	a.thoiGianBatTu -= 1.00/60;
 	a.dx = 0;
 	a.dy = 0;
 	// l?y d? li?u
@@ -254,7 +262,6 @@ void CapNhapPlayer(Player &a){
             a.c4 = a.y + a.ky;
              a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
 			}
-   
    ktCham(a,QuanLyBomb);
 }
 bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2);
@@ -321,8 +328,11 @@ bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){                               
 	for(int i = 0; i < (int)QuanLyBomb.size(); i++)
 	{   
 		if( QuanLyBomb[i].dangNo && VaChamNo(a, QuanLyBomb[i]))
-		{
+		{   
+		    if(a.thoiGianBatTu <= 0){a.health--;a.thoiGianBatTu = 3.f;}
+		    if(a.health == 0){
 			a.alive = false;
+		    }
 		}
 	}
 }
