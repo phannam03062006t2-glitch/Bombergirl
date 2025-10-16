@@ -1,7 +1,9 @@
 #include "QLAmThanh.h"
-#include <iostream>
-#include <algorithm> // can cho remove_if
+#include <bits/stdc++.h>
 using namespace std;
+using namespace sf;
+// Dinh nghia bien am thanh toan cuc
+QLAmThanh amThanh;
 
 void QLAmThanh::napAm(const string& ten, const string& duongdan) {
     SoundBuffer buffer;
@@ -38,4 +40,3 @@ void QLAmThanh::capNhat() {
         [](const Sound& s) { return s.getStatus() == Sound::Stopped; }),
         sounds.end());
 }
-
