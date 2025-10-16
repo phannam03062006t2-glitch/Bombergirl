@@ -18,7 +18,7 @@ Diem diem;
 int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
     window.setFramerateLimit(60);
-    srand(time(0));
+     srand((unsigned)time(NULL));
 
     // Nap map
     input_map();
@@ -53,6 +53,9 @@ int main() {
         // Cap nhat bomb & player
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
+          for (auto &e : DanhSachEnemy1) e.capNhat(deltaTime);
+        for (auto &e : DanhSachEnemy2) e.capNhat(deltaTime);
+        for (auto &e : DanhSachEnemy3) e.capNhat(deltaTime);
        
         if (!a.alive) {
             amThanh.phatAm("no");
