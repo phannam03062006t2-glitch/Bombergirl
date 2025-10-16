@@ -33,7 +33,11 @@ int main() {
     Texture TEXTURE;
     TEXTURE.loadFromFile("assets/map.png");
     Sprite SPRITE(TEXTURE);
-
+    //==== Am thanh =====
+    QLAmThanh amThanh;
+    amThanh.napAm("datbomb", "sound/datbom.wav");
+    amThanh.napAm("no", "sound/no.wav");
+    amThanh.phatNhacNen("sound/nhacnen.ogg");
     // ==========================
     // ?? Thêm 3 quái khác hình
     // ==========================
@@ -51,7 +55,13 @@ int main() {
         // Cap nhat bomb & player
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
-        
+         if (!player.alive) {
+            amThanh.phatAm("no");
+            diem.save("score.txt");
+            cout << "Game Over! Diem: " << diem.get() << endl;
+            window.close();
+            continue;
+        }
         // ==========================
         window.clear();
 
@@ -74,3 +84,4 @@ int main() {
     }
     return 0;
 }
+
