@@ -19,10 +19,12 @@ public:
     // Phat mot am thanh ngan theo ten da nap
     void phatAm(const string& ten);
 
-    // Phat nhac nen (loop vo han)
+    // Phat nhac nen (lap vo han)
     void phatNhacNen(const string& duongdan);
 
     // Cap nhat, xoa cac am thanh da phat xong
     void capNhat();
 };
 
+// Bien am thanh toan cuc de goi tu nhieu file khac nhau
+extern QLAmThanh amThanh;
