@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using namespace sf;
-// Dinh nghia bien am thanh toan cuc
+
 QLAmThanh amThanh;
 
 void QLAmThanh::napAm(const string& ten, const string& duongdan) {
@@ -40,3 +40,4 @@ void QLAmThanh::capNhat() {
         [](const Sound& s) { return s.getStatus() == Sound::Stopped; }),
         sounds.end());
 }
+
