@@ -133,7 +133,7 @@ void Player::Input(){
 	
 	if(Keyboard::isKeyPressed(Keyboard::X) && (int)QuanLyBomb.size() < bombMax)                // di?u ki?n d?t bomb : dã r?i bomb cu?i 
 	   {  
-	                 if(!phimX /*&& out == true*/) { 
+	                 if(!phimX && out == true) { 
                           DatBomb = true;
                          phimX = true;
                    }
@@ -335,7 +335,11 @@ bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){                               
 	{   
 		if( QuanLyBomb[i].dangNo && VaChamNo(a, QuanLyBomb[i]))
 		{   
-		    if(a.thoiGianBatTu <= 0){a.health--;a.thoiGianBatTu = 3.f;}
+		    if(a.thoiGianBatTu <= 0){
+			a.health--;
+			a.thoiGianBatTu = 3.f;
+			a.out = true;
+			}
 		    if(a.health == 0){
 			a.alive = false;
 		    }
