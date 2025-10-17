@@ -7,6 +7,7 @@
 #include "Diem.h"
 #include "Enemy.h"
 #include "QLAmThanh.h"
+#include "ThanhMau.h"
 // ===================================
 
 using namespace std;
@@ -19,6 +20,7 @@ int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
     window.setFramerateLimit(60);
      srand((unsigned)time(NULL));
+     ThanhMau thanhMau(3); 
 
     // Nap map
     input_map();
@@ -53,7 +55,9 @@ int main() {
         // Cap nhat bomb & player
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
-          for (auto &e : DanhSachEnemy1) e.capNhat(deltaTime);
+        thanhMau.capNhat(a.health);
+        
+        for (auto &e : DanhSachEnemy1) e.capNhat(deltaTime);
         for (auto &e : DanhSachEnemy2) e.capNhat(deltaTime);
         for (auto &e : DanhSachEnemy3) e.capNhat(deltaTime);
        
@@ -90,6 +94,7 @@ int main() {
         veWall(window);
         // Ve diem
         diem.draw(window);
+        thanhMau.ve(window);
 
 
 
