@@ -168,22 +168,22 @@ void Enemy::capNhat(float deltaTime) {
 
     // --- N?U BOM ÐANG N? (dangNo) -> KI?M TRA VÙNG N?, N?U TRÚNG THÌ QUÁI CH?T ---
     for (size_t i = 0; i < QuanLyBomb.size(); ++i) {
-        const Bomb &b = QuanLyBomb[i];
-        if (b.dangNo) {
-            // vùng n? d?ng ô vuông bao quanh (ph?m vi lan)
-            float left = b.x - 32.f - 64.f * b.phamVi;
-            float top  = b.y - 32.f - 64.f * b.phamVi;
-            float size = 64.f * (b.phamVi * 2 + 1); // chi?u c?nh vuông
-            FloatRect explosionRect(left, top, size, size);
+    const Bomb &b = QuanLyBomb[i];
+    if (!b.dangNo) continue;
 
-            FloatRect enemyRect(x, y, 64.f, 64.f);
-            if (enemyRect.intersects(explosionRect)) {
-                // Quái ch?t: d?t alive = false (bi?n m?t)
-                alive = false;
-                break;
-            }
-        }
-    }
+    if (c1 >= b.c3 + 64 * b.phamVi) continue; // enemy quá ph?i
+    if (c3 <= b.c1 - 64 * b.phamVi) continue; // enemy quá trái
+    if (c2 >= b.c4 + 64 * b.phamVi) continue; // enemy quá du?i
+    if (c4 <= b.c2 - 64 * b.phamVi) continue; // enemy quá trên
+    if (c3 <= b.c1 && c4 <= b.c2) continue;   // góc trên trái
+    if (c1 >= b.c3 && c4 <= b.c2) continue;   // góc trên ph?i
+    if (c2 >= b.c4 && c1 >= b.c3) continue;   // góc du?i ph?i
+    if (c2 >= b.c4 && c3 <= b.c1) continue;   // góc du?i trái
+
+    // N?u không roi vào các vùng lo?i tr? => trúng bom
+    alive = false;
+    break;
+}
 
     // C?p nh?t animation (4 hàng, m?i hàng 3 frame)
     if (frameClock.getElapsedTime().asSeconds() > 0.15f) {
