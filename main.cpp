@@ -14,7 +14,7 @@ using namespace std;
 using namespace sf;
 
 Diem diem;
-
+Player a;
 
 int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
@@ -27,7 +27,7 @@ int main() {
     
     
     // khai báo
-    Player a;
+    
     float deltaTime = 0.f;
     Clock clock;
     float Time = 0.f;

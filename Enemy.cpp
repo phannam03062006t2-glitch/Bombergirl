@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Map_phu.h"
+#include "Player.h"  
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -14,6 +15,11 @@ bool Enemy::EnemyLoad = false;
 std::vector<Enemy1> DanhSachEnemy1;
 std::vector<Enemy2> DanhSachEnemy2;
 std::vector<Enemy3> DanhSachEnemy3;
+
+// Truy c?p danh sách bomb t? Player.cpp
+extern std::vector<Bomb> QuanLyBomb;
+// Truy c?p player 
+extern Player a;
 
 // ===================================================
 //                  KH?I T?O CHUNG
@@ -40,10 +46,10 @@ Enemy::Enemy(float x_, float y_, int type_) {
     huong = rand() % 4;
     datHuongNgauNhien();
 
-    c1 = x;
-    c2 = y;
-    c3 = x + 64;
-    c4 = y + 64;
+    c1 = x ;
+    c2 = y ;
+    c3 = x + 64 - 4;
+    c4 = y + 64 - 4;
 }
 
 // ===================================================
@@ -84,16 +90,16 @@ bool VaChamWall2_Enemy(const Enemy& e, const Wall2& w) {
 void Enemy::capNhat(float deltaTime) {
     if (!alive) return;
 
-    // Di chuy?n
+    // Di chuy?n t?m th?i
     x += vanToc.x * tocDo;
     y += vanToc.y * tocDo;
     SPRITE.setPosition(x, y);
 
     // C?p nh?t vùng va ch?m
-    c1 = x;
-    c2 = y;
-    c3 = x + 64;
-    c4 = y + 64;
+    c1 = x ;
+    c2 = y ;
+    c3 = x + 64 - 4;
+    c4 = y + 64 - 4;
 
     bool chamTuong = false;
 
@@ -115,12 +121,68 @@ void Enemy::capNhat(float deltaTime) {
         }
     }
 
-    // N?u ch?m tu?ng thì d?i hu?ng
+    // --- Không di xuyên qua BOM CHUA N? ---
+    if (!chamTuong) {
+        for (size_t i = 0; i < QuanLyBomb.size(); ++i) {
+            const Bomb &b = QuanLyBomb[i];
+            if (!b.dangNo) {
+                // vùng bomb chua n? là ô 64x64 ? v? trí b.x-32, b.y-32
+                FloatRect bombRect(b.x - 32.f, b.y - 32.f, 64.f, 64.f);
+                FloatRect enemyRect(x, y, 64.f, 64.f);
+                if (enemyRect.intersects(bombRect)) {
+                    chamTuong = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    // N?u ch?m (tu?ng ho?c bomb chua n?) -> lùi l?i và d?i hu?ng
     if (chamTuong) {
         x -= vanToc.x * tocDo;
         y -= vanToc.y * tocDo;
         SPRITE.setPosition(x, y);
         datHuongNgauNhien();
+    }
+
+    // --- KI?M TRA VA CH?M V?I PLAYER (TR? M?T MÁU / CH?T) ---
+    {
+        // Ki?m tra b?o d?m player t?n t?i 
+        FloatRect enemyRect(x, y, 64.f, 64.f);
+
+        // Dùng vùng va ch?m player có trong Player class 
+        FloatRect playerRect(a.c1, a.c2, a.c3 - a.c1, a.c4 - a.c2);
+        if (enemyRect.intersects(playerRect) && a.alive) {
+            if (a.thoiGianBatTu <= 0.0f) {
+                a.health--;
+                a.thoiGianBatTu = 3.f; // th?i gian b?t t?
+                a.out = true;
+                if (a.health <= 0) {
+                    a.alive = false;
+                }
+            }
+            // Khi ch?m player, quái có th? d?i hu?ng d? tránh ch?ng chéo liên t?c
+            datHuongNgauNhien();
+        }
+    }
+
+    // --- N?U BOM ÐANG N? (dangNo) -> KI?M TRA VÙNG N?, N?U TRÚNG THÌ QUÁI CH?T ---
+    for (size_t i = 0; i < QuanLyBomb.size(); ++i) {
+        const Bomb &b = QuanLyBomb[i];
+        if (b.dangNo) {
+            // vùng n? d?ng ô vuông bao quanh (ph?m vi lan)
+            float left = b.x - 32.f - 64.f * b.phamVi;
+            float top  = b.y - 32.f - 64.f * b.phamVi;
+            float size = 64.f * (b.phamVi * 2 + 1); // chi?u c?nh vuông
+            FloatRect explosionRect(left, top, size, size);
+
+            FloatRect enemyRect(x, y, 64.f, 64.f);
+            if (enemyRect.intersects(explosionRect)) {
+                // Quái ch?t: d?t alive = false (bi?n m?t)
+                alive = false;
+                break;
+            }
+        }
     }
 
     // C?p nh?t animation (4 hàng, m?i hàng 3 frame)
