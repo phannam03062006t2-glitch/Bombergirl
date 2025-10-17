@@ -133,7 +133,7 @@ void Player::Input(){
 	
 	if(Keyboard::isKeyPressed(Keyboard::X) && (int)QuanLyBomb.size() < bombMax)                // di?u ki?n d?t bomb : dã r?i bomb cu?i 
 	   {  
-	                 if(!phimX && out == true) { 
+	                 if(!phimX /*&& out == true*/) { 
                           DatBomb = true;
                          phimX = true;
                    }
