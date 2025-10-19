@@ -13,7 +13,12 @@
 using namespace std;
 using namespace sf;
 
+extern Diem diemGame;
 Player a;
+
+// ===== KHAI BAO HAM HO TRO =====
+void NapLaiTexture(Player &a);
+void NapLaiTextureThanhMau(ThanhMau &thanhMau);
 
 int main() {
     RenderWindow window(VideoMode(1700, 900), "Bomber Girl");
@@ -27,7 +32,7 @@ int main() {
     srand((unsigned)time(NULL));
     ThanhMau thanhMau(3);
 
-    // ===== GAME SETUP =====
+    // ===== CAI DAT GAME =====
     input_map();
 
     float deltaTime = 0.f;
@@ -39,25 +44,23 @@ int main() {
     TEXTURE.loadFromFile("assets/map.png");
     Sprite SPRITE(TEXTURE);
 
+    // ===== AM THANH =====
     amThanh.napAm("datbomb", "sound/datbom.wav");
     amThanh.napAm("no", "sound/no.wav");
     amThanh.phatNhacNen("sound/nhacnen.ogg");
 
-    // ===== GAME LOOP =====
+    // ===== VONG LAP GAME =====
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
 
+            // Nhan ESC de tam dung
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
-                // Bat pause
                 paused = true;
-
-                // Dung tat ca am thanh
-                amThanh.dungTatCaAmThanh();
-
-                // Ve khung hien tai
+				amThanh.dungTatCaAmThanh();
+                // Ve khung tam dung
                 window.clear();
                 window.draw(SPRITE);
                 for (auto &bomb : QuanLyBomb) bomb.Ve(window);
@@ -70,13 +73,12 @@ int main() {
                 thanhMau.ve(window);
                 window.display();
 
-                // Goi menu pause
+                // Hien menu tam dung
                 int luaChon = menu.hienPause(window);
                 if (luaChon == 0) {
-                    paused = false; // Tiep tuc
-
-                    // Reset clock de khong bi nhay thoi gian
+                    paused = false;
                     clock.restart();
+                    amThanh.tiepTucTatCaAmThanh();
                 } else if (luaChon == 1) {
                     window.close();
                     return 0;
@@ -84,7 +86,7 @@ int main() {
             }
         }
 
-        if (paused) continue; // Bo qua update khi dang pause
+        if (paused) continue;
 
         // Cap nhat thoi gian
         deltaTime = clock.restart().asSeconds();
@@ -99,73 +101,50 @@ int main() {
         for (auto &e : DanhSachEnemy2) e.capNhat(deltaTime);
         for (auto &e : DanhSachEnemy3) e.capNhat(deltaTime);
 
+        // ===== NEU NHAN VAT CHET =====
         if (!a.alive) {
-    amThanh.phatAm("no");
-    diemGame.save("score.txt");
+            amThanh.phatAm("no");
+            diemGame.save("score.txt");
 
-    // T?o c?a s? game over full màn
-    window.create(VideoMode(1700, 900), "Game Over", Style::Close);
+            // Hien man hinh Game Over
+            bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
 
-    Font font;
-    if (!font.loadFromFile("arial.ttf")) {
-        cerr << "Khong tim thay font!" << endl;
-    }
-
-    // ==== Tieu de GAME OVER ====
-    Text gameOverText("GAME OVER", font, 120);
-    gameOverText.setFillColor(Color::Red);
-    gameOverText.setStyle(Text::Bold);
-    FloatRect textRect = gameOverText.getLocalBounds();
-    gameOverText.setOrigin(textRect.width / 2, textRect.height / 2);
-    gameOverText.setPosition(1700 / 2, 900 / 2 - 200);
-
-    // ==== Diem hien tai ====
-    Text diemText("Score: " + to_string(diemGame.get()), font, 70);
-    diemText.setFillColor(Color::White);
-    FloatRect diemRect = diemText.getLocalBounds();
-    diemText.setOrigin(diemRect.width / 2, diemRect.height / 2);
-    diemText.setPosition(1700 / 2, 900 / 2);
-
-    // ==== Huong dan nut bam ====
-    Text huongDanText("PRESS ENTER TO RETURN TO MENU\nPRESS ESC TO EXIT GAME", font, 45);
-    huongDanText.setFillColor(Color::Yellow);
-    FloatRect hdRect = huongDanText.getLocalBounds();
-    huongDanText.setOrigin(hdRect.width / 2, hdRect.height / 2);
-    huongDanText.setPosition(1700 / 2, 900 / 2 + 200);
-
-    bool choLuaChon = true;
-
-    while (choLuaChon && window.isOpen()) {
-        Event e;
-        while (window.pollEvent(e)) {
-            if (e.type == Event::Closed) {
-                window.close();
-                return 0;
-            }
-            if (e.type == Event::KeyPressed) {
-                if (e.key.code == Keyboard::Return) {
-                    // Quay lai menu (neu menu nam trong main)
-                    return main();
-                }
-                if (e.key.code == Keyboard::Escape) {
+            if (quayLaiMenu) {
+                // Dung nhac, mo lai menu
+                amThanh.dungTatCaAmThanh();
+                bool batDauLai = menu.hienMenu(window);
+                if (!batDauLai) {
                     window.close();
-                    return 0;
+                    break;
                 }
+
+                // === Khoi tao lai game ===
+                a = Player();
+                NapLaiTexture(a);
+
+                QuanLyBomb.clear();
+                DanhSachEnemy1.clear();
+                DanhSachEnemy2.clear();
+                DanhSachEnemy3.clear();
+
+                input_map();
+
+                thanhMau.reset(3);
+                
+                diemGame.reset();
+
+                amThanh.phatNhacNen("sound/nhacnen.ogg"); // Phat lai nhac nen
+
+                Time = 0.f;
+                clock.restart();
+                continue;
+            } else {
+                window.close();
+                break;
             }
         }
 
-        window.clear(Color::Black);
-        window.draw(gameOverText);
-        window.draw(diemText);
-        window.draw(huongDanText);
-        window.display();
-    }
-
-    continue;
-}
-
-
-        // ===== VE GAME =====
+        // ===== VE MAN HINH GAME =====
         window.clear();
         window.draw(SPRITE);
 
@@ -186,4 +165,9 @@ int main() {
     return 0;
 }
 
+// ===== CAC HAM PHU =====
+void NapLaiTexture(Player &a) {
+    a.TEXTURE.loadFromFile("assets/player.png");
+    a.SPRITE.setTexture(a.TEXTURE);
+}
 
