@@ -120,7 +120,7 @@ int main() {
     gameOverText.setPosition(1700 / 2, 900 / 2 - 200);
 
     // ==== Diem hien tai ====
-    Text diemText("Diem: " + to_string(diemGame.get()), font, 70);
+    Text diemText("Score: " + to_string(diemGame.get()), font, 70);
     diemText.setFillColor(Color::White);
     FloatRect diemRect = diemText.getLocalBounds();
     diemText.setOrigin(diemRect.width / 2, diemRect.height / 2);
@@ -185,4 +185,5 @@ int main() {
 
     return 0;
 }
+
 
