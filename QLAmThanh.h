@@ -21,6 +21,9 @@ public:
 
     // Phat nhac nen (lap vo han)
     void phatNhacNen(const string& duongdan);
+    
+    //Dung tat ca am thanh
+    void dungTatCaAmThanh(); // Khai báo
 
     // Cap nhat, xoa cac am thanh da phat xong
     void capNhat();
