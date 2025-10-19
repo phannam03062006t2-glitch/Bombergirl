@@ -106,3 +106,69 @@ int Menu::hienPause(RenderWindow &window) {
     }
     return 1;
 }
+// menu game over
+bool Menu::hienGameOver(RenderWindow &window, int diem) {
+    // Nen mo den
+    RectangleShape nenMo(Vector2f(1700, 900));
+    nenMo.setFillColor(Color(0, 0, 0, 200));
+
+    // Tieu de GAME OVER
+    Text gameOverText;
+    gameOverText.setFont(font);
+    gameOverText.setString("GAME OVER");
+    gameOverText.setCharacterSize(80);
+    gameOverText.setFillColor(Color::Red);
+    gameOverText.setPosition(600, 250);
+
+    // Hien diem nguoi choi
+    Text scoreText;
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(50);
+    scoreText.setFillColor(Color::White);
+    scoreText.setString("SCORE: " + to_string(diem));
+    scoreText.setPosition(720, 380);
+
+    // Huong dan bam phim
+    Text restartText, exitText;
+    restartText.setFont(font);
+    restartText.setCharacterSize(40);
+    restartText.setFillColor(Color::Yellow);
+    restartText.setString("PRESS ENTER TO RETURN TO MENU");
+    restartText.setPosition(540, 500);
+
+    exitText.setFont(font);
+    exitText.setCharacterSize(40);
+    exitText.setFillColor(Color::White);
+    exitText.setString("PRESS ESC TO EXIT");
+    exitText.setPosition(650, 580);
+
+    // Vong lap hien thi man hinh
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed)
+                window.close();
+
+            if (event.type == Event::KeyPressed) {
+                if (event.key.code == Keyboard::Return) {
+                    return true; // quay lai menu
+                }
+                if (event.key.code == Keyboard::Escape) {
+                    window.close(); // thoat game
+                    return false;
+                }
+            }
+        }
+
+        window.clear();
+        window.draw(nenMo);
+        window.draw(gameOverText);
+        window.draw(scoreText);
+        window.draw(restartText);
+        window.draw(exitText);
+        window.display();
+    }
+    return false;
+}
+
+
