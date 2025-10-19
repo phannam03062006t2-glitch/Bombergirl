@@ -381,45 +381,66 @@ bool ktWall(float x, float y){
     return false;
 }
 
-
-bool BetterMove(Player &a){                            // ki?m tra tr??t t??ng
+bool BetterMove(Player &a){                            
     float x = a.x / 64;
     float y = a.y / 64;
-    x = int(x) * 64 + 32;
+    x = int(x) * 64 + 32;      
     y = int(y) * 64 + 32;
-
-    // n?u ??ng di chuy?n sang ph?i v? t?ng
+    
     if(a.dx == 1 && !ktWall(x + 64, y)){
-        if(a.y - y < 0){                     // ??ng l?ch ph?a trên => tr??t xu?ng
+        if(a.y - y < 0){                     
             a.dy = 1;
             a.dx = 0;
             return 1;
         }
-        else if(a.y - y > 0){                // ??ng l?ch ph?a d??i => tr??t lên
+        else if(a.y - y > 0){             
             a.dy = -1;
             a.dx = 0;
             return 1;
         }
     }
 
-    // n?u ??ng di chuy?n sang tr?i v? t?ng
     else if(a.dx == -1 && !ktWall(x - 64, y)){
-        if(a.y - y < 0){
+        if(a.y - y < 0){                   
             a.dy = 1;
             a.dx = 0;
             return 1;
         }
-        else if(a.y - y > 0){
+        else if(a.y - y > 0){               
             a.dy = -1;
             a.dx = 0;
             return 1;
         }
     }
+
+    else if(a.dy == 1 && !ktWall(x, y + 64)){
+        if(a.x - x < 0){                     
+            a.dx = 1;
+            a.dy = 0;
+            return 1;
+        }
+        else if(a.x - x > 0){              
+            a.dx = -1;
+            a.dy = 0;
+            return 1;
+        }
+    }
+
+    else if(a.dy == -1 && !ktWall(x, y - 64)){
+        if(a.x - x < 0){                  
+            a.dx = 1;
+            a.dy = 0;
+            return 1;
+        }
+        else if(a.x - x > 0){              
+            a.dx = -1;
+            a.dy = 0;
+            return 1;
+        }
+    }
+
     return 0;
 }
-
-
-
 
 
 
