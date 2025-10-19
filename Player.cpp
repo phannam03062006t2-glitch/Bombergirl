@@ -73,8 +73,8 @@ Player::Player(){
 	TEXTURE.loadFromFile("assets/player.png");
 	SPRITE.setTexture(TEXTURE);
     SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
-	bombMax = 3;     
-	health = 10;                                              // s? bomb max
+	bombMax = 1;     
+	health = 3;                                              // s? bomb max
 	thoiGianBatTu = 0.f;
 	// set v? trí
 	x = 32.f + 64;
@@ -294,14 +294,14 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
 }
 
 bool VaChamNo(const Player& a, const Bomb& b){                        // ki?m tra xem ngu?i choi b? n? không        (ki?m tra 1 bomb)
-	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
-	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
-	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
-	if(a.c4 <= b.c2 - 64*b.phamVi)return false;
-	if(a.c3 <= b.c1 && a.c4 <= b.c2)return false;
-	if(a.c1 >= b.c3 && a.c4 <= b.c2)return false;
-	if(a.c2 >= b.c4 && a.c1 >= b.c3)return false;
-	if(a.c2 >= b.c4 && a.c3 <= b.c1)return false;
+	if(a.c1 + 10>= b.c3 + 64*b.phamVi)return false;
+	if(a.c3 - 10<= b.c1 - 64*b.phamVi)return false;
+	if(a.c2 + 10>= b.c4 + 64*b.phamVi)return false;
+	if(a.c4 - 10<= b.c2 - 64*b.phamVi)return false;
+	if(a.c3 - 10<= b.c1 && a.c4 <= b.c2)return false;
+	if(a.c1 + 10>= b.c3 && a.c4 <= b.c2)return false;
+	if(a.c2 + 10>= b.c4 && a.c1 >= b.c3)return false;
+	if(a.c2 + 10>= b.c4 && a.c3 <= b.c1)return false;
 	return true;
 }
 
