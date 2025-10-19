@@ -4,6 +4,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+
 using namespace sf;
 using namespace std;
 
@@ -13,14 +14,13 @@ protected:
     Sprite SPRITE;
     static Texture TEXTURES[3];   // Texture dùng chung cho 3 lo?i quái
     static bool EnemyLoad;        // Ch? load 1 l?n
-
     float x, y;                   // T?a d?
     float tocDo;                  // T?c d? di chuy?n
     int frame;                    // Frame animation hi?n t?i
     Clock frameClock;             // Ð?ng h? d?i frame
-    Clock doiHuongClock;          // Ð?ng h? d?i hu?ng ng?u nhiên (n?u c?n)
+    Clock doiHuongClock;          // Ð?ng h? d?i hu?ng ng?u nhiên
     Vector2f vanToc;              // Hu?ng di chuy?n (x, y)
-    int type;                     // Lo?i quái (0,1,2)
+    int type;                     // Lo?i quái (1, 2, 3)
     int huong;                    // Hu?ng di chuy?n (0=LÊN,1=PH?I,2=XU?NG,3=TRÁI)
 
 public:
@@ -56,7 +56,7 @@ public:
     Enemy3(float x_, float y_);
 };
 
-// Các danh sách quái toàn c?c
+// ====================== Danh sách quái toàn c?c ======================
 extern std::vector<Enemy1> DanhSachEnemy1;
 extern std::vector<Enemy2> DanhSachEnemy2;
 extern std::vector<Enemy3> DanhSachEnemy3;
