@@ -18,6 +18,7 @@ public:
     ThanhMau(int maxHearts = 3);
     void capNhat(int mauHienTai);
     void ve(RenderWindow &window);
+    void reset(int maxHearts = 3);
 };
 
 #endif
