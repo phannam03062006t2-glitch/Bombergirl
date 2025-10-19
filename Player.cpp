@@ -74,14 +74,14 @@ Player::Player(){
 	SPRITE.setTexture(TEXTURE);
     SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
 	bombMax = 3;     
-	health = 3;                                              // s? bomb max
+	health = 10;                                              // s? bomb max
 	thoiGianBatTu = 0.f;
 	// set v? trí
 	x = 32.f + 64;
 	y = 32.f + 64;
 	// ch?nh vùng va ch?m
 	kx = 20;
-	ky = 26;
+	ky = 23;
 	c1 = x - kx;
 	c2 = y - ky;
 	c3 = x + kx - 10;
@@ -91,11 +91,7 @@ Player::Player(){
 	dx = 0;
 	dy = 1;
 	// t?c d?
-	speed = 3.f;
-	// ki?m tra n?u true thì d?t  bomb xong tr? v? false
-	DatBomb = false;
-	// d? không d?t quá nhi?u bomb
-    phimX  = false;    
+	speed = 3.f;  
 	// ki?m tra out bomb cu?i
     out    = true;
 	// ki?m tra còn s?ng
@@ -133,16 +129,14 @@ void Player::Input(){
 	
 	if(Keyboard::isKeyPressed(Keyboard::X) && (int)QuanLyBomb.size() < bombMax)                // di?u ki?n d?t bomb : dã r?i bomb cu?i 
 	   {  
-	                 if(!phimX && out == true) { 
-                          DatBomb = true;
-                         phimX = true;
+	                 if(out == true && thoiGianBatTu <= 0) { 
+                          Bomb b(*this);
+                          amThanh.phatAm("datbomb");
+                          QuanLyBomb.push_back(b);
+                          out = false;
                    }
 	    
        }
-	
-	else{
-	   	phimX = false;
-	   }
 }
 
 void Player::Move(){
@@ -244,14 +238,6 @@ void CapNhapPlayer(Player &a){
 	// luu v? trí cu n?u va ch?m thì d?ch chuy?n l?i
     float oldX = a.x;
     float oldY = a.y; 
-    // d?t bomb
-    if(a.DatBomb == true && a.phimX == false){
-        Bomb b(a);
-        amThanh.phatAm("datbomb");
-        QuanLyBomb.push_back(b);
-        a.DatBomb = false;
-        a.out = false;
-    }
     // di chuy?n
     a.Move();
    // n?u có bomb

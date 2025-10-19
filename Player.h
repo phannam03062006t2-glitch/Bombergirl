@@ -40,8 +40,6 @@ class Player{
 		float c1, c2, c3, c4;                     // vùng va ch?m
 		float dx, dy;                             // hu?ng
 		float speed;                              // t?c d?
-		bool DatBomb;                             // bi?n d? d?t bomb
-		bool phimX;                               // tránh d?t nhi?u bomb khi nh?n gi? nút X
 		bool out;                                 // kt nv out bomb cuoi ch
 		bool cham;
 		int bombMax;                               // bomb max d?t du?c
