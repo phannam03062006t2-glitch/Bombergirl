@@ -32,12 +32,17 @@ void QLAmThanh::phatNhacNen(const string& duongdan) {
     }
     nhacNen.setLoop(true); // Lap vo han
     nhacNen.play();        // Bat dau phat nhac nen
+    
 }
-
+//Dung am thanh
+	void QLAmThanh::dungTatCaAmThanh() {
+		for(auto& s : sounds) {
+			s.stop();
+		}
+	} 
 void QLAmThanh::capNhat() {
     // Xoa cac am thanh da ket thuc
     sounds.erase(remove_if(sounds.begin(), sounds.end(),
         [](const Sound& s) { return s.getStatus() == Sound::Stopped; }),
         sounds.end());
 }
-
