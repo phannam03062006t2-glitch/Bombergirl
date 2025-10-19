@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "Map_phu.h"
-#include "Player.h"  
+#include "Player.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -26,6 +26,7 @@ extern Player a;
 // ===================================================
 Enemy::Enemy(float x_, float y_, int type_) {
     if (!EnemyLoad) {
+        // T?i 3 file texture (b?n ph?i có các file trong thu m?c assets)
         TEXTURES[0].loadFromFile("assets/enemy1.png");
         TEXTURES[1].loadFromFile("assets/enemy2.png");
         TEXTURES[2].loadFromFile("assets/enemy3.png");
@@ -33,7 +34,9 @@ Enemy::Enemy(float x_, float y_, int type_) {
         srand((unsigned)time(NULL));
     }
 
-    SPRITE.setTexture(TEXTURES[type_]);
+    type = type_;
+    SPRITE.setTexture(TEXTURES[type]);
+    // m?c d?nh m?i sprite 64x64, 4 hàng hu?ng, 3 c?t frame -> header s? set khi anim
     SPRITE.setTextureRect(IntRect(0, 0, 64, 64));
     SPRITE.setPosition(x_, y_);
     SPRITE.setScale(1.f, 1.f);
@@ -46,10 +49,11 @@ Enemy::Enemy(float x_, float y_, int type_) {
     huong = rand() % 4;
     datHuongNgauNhien();
 
-    c1 = x ;
-    c2 = y ;
-    c3 = x + 64 - 4;
-    c4 = y + 64 - 4;
+    // khung va ch?m (di?u ch?nh d? phù h?p sprite)
+    c1 = x + 10;
+    c2 = y + 10;
+    c3 = x + 64 - 10;
+    c4 = y + 64 - 10;
 }
 
 // ===================================================
@@ -66,7 +70,7 @@ void Enemy::datHuongNgauNhien() {
 }
 
 // ===================================================
-//             VA CH?M TU?NG
+//             VA CH?M TU?NG (dành cho Enemy)
 // ===================================================
 bool VaChamWall_Enemy(const Enemy& e, const Wall& w) {
     if (e.c1 >= w.c3) return false;
@@ -90,7 +94,7 @@ bool VaChamWall2_Enemy(const Enemy& e, const Wall2& w) {
 void Enemy::capNhat(float deltaTime) {
     if (!alive) return;
 
-    // Di chuy?n t?m th?i
+    // Di chuy?n t?m th?i (dùng tocDo làm t?c d? pixel/frame)
     x += vanToc.x * tocDo;
     y += vanToc.y * tocDo;
     SPRITE.setPosition(x, y);
@@ -103,7 +107,7 @@ void Enemy::capNhat(float deltaTime) {
 
     bool chamTuong = false;
 
-    // Va ch?m tu?ng thu?ng
+    // Va ch?m v?i wall (Wall - tu?ng c? d?nh)
     for (int i = 0; i < (int)QuanLyWall.size(); i++) {
         if (VaChamWall_Enemy(*this, QuanLyWall[i])) {
             chamTuong = true;
@@ -111,7 +115,7 @@ void Enemy::capNhat(float deltaTime) {
         }
     }
 
-    // Va ch?m tu?ng c?ng
+    // Va ch?m v?i wall2 (có th? là g?ch có th? b? phá)
     if (!chamTuong) {
         for (int i = 0; i < (int)QuanLyWall2.size(); i++) {
             if (VaChamWall2_Enemy(*this, QuanLyWall2[i])) {
@@ -121,7 +125,7 @@ void Enemy::capNhat(float deltaTime) {
         }
     }
 
-    // --- Không di xuyên qua BOM CHUA N? ---
+    // Không di xuyên qua BOM chua n?
     if (!chamTuong) {
         for (size_t i = 0; i < QuanLyBomb.size(); ++i) {
             const Bomb &b = QuanLyBomb[i];
@@ -137,7 +141,7 @@ void Enemy::capNhat(float deltaTime) {
         }
     }
 
-    // N?u ch?m (tu?ng ho?c bomb chua n?) -> lùi l?i và d?i hu?ng
+    // N?u ch?m -> lùi l?i và d?i hu?ng ng?u nhiên
     if (chamTuong) {
         x -= vanToc.x * tocDo;
         y -= vanToc.y * tocDo;
@@ -145,12 +149,11 @@ void Enemy::capNhat(float deltaTime) {
         datHuongNgauNhien();
     }
 
-    // --- KI?M TRA VA CH?M V?I PLAYER (TR? M?T MÁU / CH?T) ---
+    // --- KI?M TRA VA CH?M V?I PLAYER (tr? m?t máu / làm ch?m) ---
     {
-        // Ki?m tra b?o d?m player t?n t?i 
+        // vùng va ch?m enemy (dùng bounding box)
         FloatRect enemyRect(x, y, 64.f, 64.f);
-
-        // Dùng vùng va ch?m player có trong Player class 
+        // vùng player t? bi?n global a (player)
         FloatRect playerRect(a.c1, a.c2, a.c3 - a.c1, a.c4 - a.c2);
         if (enemyRect.intersects(playerRect) && a.alive) {
             if (a.thoiGianBatTu <= 0.0f) {
@@ -160,30 +163,32 @@ void Enemy::capNhat(float deltaTime) {
                     a.alive = false;
                 }
             }
-            // Khi ch?m player, quái có th? d?i hu?ng d? tránh ch?ng chéo liên t?c
+            // Khi ch?m player, quái có th? d?i hu?ng tránh ch?ng liên t?c
+            datHuongNgauNhien();
         }
     }
 
-    // --- N?U BOM ÐANG N? (dangNo) -> KI?M TRA VÙNG N?, N?U TRÚNG THÌ QUÁI CH?T ---
+    // --- KI?M TRA BOM ÐANG N? (dangNo) -> N?U ROI VÀO VÙNG N? THÌ QUÁI CH?T ---
     for (size_t i = 0; i < QuanLyBomb.size(); ++i) {
-    const Bomb &b = QuanLyBomb[i];
-    if (!b.dangNo) continue;
+        const Bomb &b = QuanLyBomb[i];
+        if (!b.dangNo) continue;
 
-    if (c1 >= b.c3 + 64 * b.phamVi) continue; // enemy quá ph?i
-    if (c3 <= b.c1 - 64 * b.phamVi) continue; // enemy quá trái
-    if (c2 >= b.c4 + 64 * b.phamVi) continue; // enemy quá du?i
-    if (c4 <= b.c2 - 64 * b.phamVi) continue; // enemy quá trên
-    if (c3 <= b.c1 && c4 <= b.c2) continue;   // góc trên trái
-    if (c1 >= b.c3 && c4 <= b.c2) continue;   // góc trên ph?i
-    if (c2 >= b.c4 && c1 >= b.c3) continue;   // góc du?i ph?i
-    if (c2 >= b.c4 && c3 <= b.c1) continue;   // góc du?i trái
+        // Các di?u ki?n tuong t? VaChamNo trong Player.cpp
+        if (c1 >= b.c3 + 64 * b.phamVi) continue; // enemy quá ph?i
+        if (c3 <= b.c1 - 64 * b.phamVi) continue; // enemy quá trái
+        if (c2 >= b.c4 + 64 * b.phamVi) continue; // enemy quá du?i
+        if (c4 <= b.c2 - 64 * b.phamVi) continue; // enemy quá trên
+        if (c3 <= b.c1 && c4 <= b.c2) continue;   // góc trên trái
+        if (c1 >= b.c3 && c4 <= b.c2) continue;   // góc trên ph?i
+        if (c2 >= b.c4 && c1 >= b.c3) continue;   // góc du?i ph?i
+        if (c2 >= b.c4 && c3 <= b.c1) continue;   // góc du?i trái
 
-    // N?u không roi vào các vùng lo?i tr? => trúng bom
-    alive = false;
-    break;
-}
+        // n?u không roi vào vùng lo?i tr? => b? n? trúng
+        alive = false;
+        break;
+    }
 
-    // C?p nh?t animation (4 hàng, m?i hàng 3 frame)
+    // C?p nh?t animation (gi? s? m?i hàng là 1 hu?ng, m?i hàng 3 frame)
     if (frameClock.getElapsedTime().asSeconds() > 0.15f) {
         frame = (frame + 1) % 3;  // 3 frame m?i hu?ng
         SPRITE.setTextureRect(IntRect(64 * frame, 64 * huong, 64, 64));
@@ -200,7 +205,7 @@ void Enemy::Ve(RenderWindow &window) {
 }
 
 // ===================================================
-//          KI?M TRA VA CH?M BOM & PLAYER
+//          KI?M TRA VA CH?M BOM & PLAYER (TI?N ÍCH)
 // ===================================================
 bool Enemy::kiemTraVaChamBom(const FloatRect &bomNo) {
     FloatRect bounds(x, y, 64, 64);
@@ -220,10 +225,10 @@ Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
 }
 
 Enemy2::Enemy2(float x_, float y_) : Enemy(x_, y_, 1) {
-    tocDo = 1.f;
+    tocDo = 1.2f;
 }
 
 Enemy3::Enemy3(float x_, float y_) : Enemy(x_, y_, 2) {
-    tocDo = 1.f;
+    tocDo = 1.5f;
 }
 

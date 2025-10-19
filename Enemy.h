@@ -18,10 +18,10 @@ protected:
     float tocDo;                  // T?c d? di chuy?n
     int frame;                    // Frame animation hi?n t?i
     Clock frameClock;             // Ð?ng h? d?i frame
-    Clock doiHuongClock;          // Ð?ng h? d?i hu?ng ng?u nhiên
+    Clock doiHuongClock;          // Ð?ng h? d?i hu?ng ng?u nhiên (n?u c?n)
     Vector2f vanToc;              // Hu?ng di chuy?n (x, y)
-    int type;                     // Lo?i quái (1, 2, 3)
-    int huong;                    // ?? HU?NG DI CHUY?N (0=LÊN,1=PH?I,2=XU?NG,3=TRÁI)
+    int type;                     // Lo?i quái (0,1,2)
+    int huong;                    // Hu?ng di chuy?n (0=LÊN,1=PH?I,2=XU?NG,3=TRÁI)
 
 public:
     bool alive;
