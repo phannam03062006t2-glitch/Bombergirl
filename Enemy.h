@@ -6,7 +6,7 @@
 #include <vector>
 using namespace sf;
 using namespace std;
-
+extern int SoLuongQuai;
 // ====================== L?P CO S? ENEMY ======================
 class Enemy {
 protected:
@@ -31,7 +31,7 @@ public:
     virtual ~Enemy() {}
 
     virtual void datHuongNgauNhien();
-    virtual void capNhat(float deltaTime);
+    virtual void capNhat(float deltaTime, int& SoLuongQuai);
     virtual void Ve(RenderWindow &window);
 
     bool kiemTraVaChamBom(const FloatRect &bomNo);

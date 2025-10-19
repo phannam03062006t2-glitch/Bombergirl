@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 
-// ========================
+// =======================
 // Static members
 // ========================
 Texture Enemy::TEXTURES[3];
@@ -18,6 +18,7 @@ std::vector<Enemy*> DanhSachEnemy;
 extern std::vector<Bomb> QuanLyBomb;
 // Truy c?p player 
 extern Player a;
+int SoLuongQuai;
 
 // ===================================================
 //                  KH?I T?O CHUNG
@@ -89,7 +90,7 @@ bool VaChamWall2_Enemy(const Enemy& e, const Wall2& w) {
 // ===================================================
 //               C?P NH?T ENEMY
 // ===================================================
-void Enemy::capNhat(float deltaTime) {
+void Enemy::capNhat(float deltaTime, int& SoLuongQuai){
     if (!alive) return;
 
     // Di chuy?n t?m th?i (dùng tocDo làm t?c d? pixel/frame)
@@ -181,6 +182,7 @@ void Enemy::capNhat(float deltaTime) {
 
         // n?u không roi vào vùng lo?i tr? => b? n? trúng
         alive = false;
+        SoLuongQuai--;
         diemGame.add(100);
         break;
     }

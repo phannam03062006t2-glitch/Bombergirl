@@ -95,10 +95,50 @@ int main() {
         CapNhapPlayer(a);
         thanhMau.capNhat(a.health);
 
-        for (auto &e : DanhSachEnemy) e->capNhat(deltaTime);
+        for (auto &e : DanhSachEnemy) e->capNhat(deltaTime, SoLuongQuai);
 
         // ===== NEU NHAN VAT CHET =====
         if (!a.alive) {
+            amThanh.phatAm("no");
+            diemGame.save("score.txt");
+
+            // Hien man hinh Game Over
+            bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
+
+            if (quayLaiMenu) {
+                // Dung nhac, mo lai menu
+                amThanh.dungTatCaAmThanh();
+                bool batDauLai = menu.hienMenu(window);
+                if (!batDauLai) {
+                    window.close();
+                    break;
+                }
+
+                // === Khoi tao lai game ===
+                a = Player();
+                NapLaiTexture(a);
+
+                QuanLyBomb.clear();
+                DanhSachEnemy.clear();
+
+                input_map();
+
+                thanhMau.reset(3);
+                
+                diemGame.reset();
+
+                amThanh.phatNhacNen("sound/nhacnen.ogg"); // Phat lai nhac nen
+
+                Time = 0.f;
+                clock.restart();
+                continue;
+            } else {
+                window.close();
+                break;
+            }
+        }
+        //
+         if (SoLuongQuai == 0) {
             amThanh.phatAm("no");
             diemGame.save("score.txt");
 

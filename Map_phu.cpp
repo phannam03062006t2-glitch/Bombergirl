@@ -48,7 +48,7 @@ void input_map(){
 			i++;	
 		}
 	}
-	
+	SoLuongQuai = DanhSachEnemy.size();
 	file.close();
 }
 
