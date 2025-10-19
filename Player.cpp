@@ -242,6 +242,17 @@ void CapNhapPlayer(Player &a){
     a.Move();
    // n?u có bomb
    if(KiemTraChan(a))
+		{
+			a.x = oldX;
+            a.y = oldY;
+			a.c1 = a.x - a.kx;
+            a.c2 = a.y - a.ky;
+            a.c3 = a.x + a.kx - 10;
+            a.c4 = a.y + a.ky;
+            a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
+            if(BetterMove(a)){
+            a.Move();
+               if(KiemTraChan(a))
 			{
 			a.x = oldX;
             a.y = oldY;
@@ -249,8 +260,10 @@ void CapNhapPlayer(Player &a){
             a.c2 = a.y - a.ky;
             a.c3 = a.x + a.kx - 10;
             a.c4 = a.y + a.ky;
-             a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
-			}
+            a.SPRITE.setPosition(a.x - 33.f, a.y - 32.f);
+            }
+           }
+	}
    ktCham(a,QuanLyBomb);
 }
 
@@ -352,6 +365,57 @@ bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2){                           // 
 			i--;  
 		}
 	}
+}
+
+bool ktWall(float x, float y){
+    for(int i = 0; i < (int)QuanLyWall2.size(); i++)
+    {
+        if(x == QuanLyWall2[i].x + 32  && y == QuanLyWall2[i].y + 32) 
+            return true;
+    }
+    for(int i = 0; i < (int)QuanLyWall.size(); i++)
+    {
+        if(x == QuanLyWall[i].x + 32 && y == QuanLyWall[i].y + 32)
+            return true;
+    }
+    return false;
+}
+
+
+bool BetterMove(Player &a){                            // ki?m tra tr??t t??ng
+    float x = a.x / 64;
+    float y = a.y / 64;
+    x = int(x) * 64 + 32;
+    y = int(y) * 64 + 32;
+
+    // n?u ??ng di chuy?n sang ph?i v? t?ng
+    if(a.dx == 1 && !ktWall(x + 64, y)){
+        if(a.y - y < 0){                     // ??ng l?ch ph?a trên => tr??t xu?ng
+            a.dy = 1;
+            a.dx = 0;
+            return 1;
+        }
+        else if(a.y - y > 0){                // ??ng l?ch ph?a d??i => tr??t lên
+            a.dy = -1;
+            a.dx = 0;
+            return 1;
+        }
+    }
+
+    // n?u ??ng di chuy?n sang tr?i v? t?ng
+    else if(a.dx == -1 && !ktWall(x - 64, y)){
+        if(a.y - y < 0){
+            a.dy = 1;
+            a.dx = 0;
+            return 1;
+        }
+        else if(a.y - y > 0){
+            a.dy = -1;
+            a.dx = 0;
+            return 1;
+        }
+    }
+    return 0;
 }
 
 

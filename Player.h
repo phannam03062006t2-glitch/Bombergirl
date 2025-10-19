@@ -61,7 +61,8 @@ bool VaChamNo2(const Bomb& a, const Bomb& b);
 bool ktCham(Player &a, vector<Bomb>& QuanLyBomb);
 bool ktCham2(Bomb &a, vector<Bomb>& QuanLyBomb, int j);
 bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2);
-
+bool BetterMove(Player& a);
+bool ktWall(float x, float y);
 
 
 
