@@ -1,5 +1,4 @@
-#ifndef DIEM_H
-#define DIEM_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -18,6 +17,10 @@ public:
     int get();
     void draw(RenderWindow& window);
     void save(const string& filename);
+    void reset();
 };
 
-#endif
+
+extern Diem diemGame;
+
+
