@@ -8,16 +8,16 @@ ThanhMau::ThanhMau(int maxHearts) {
         std::cerr << "Khong the tai assets/heart.png\n";
     }
 
-    // N?n t?i m? phía sau thanh máu
+    // N?n t?i m? phÃ­a sau thanh mÃ¡u
     background.setSize(Vector2f(180, 60));
-    background.setFillColor(Color(0, 0, 0, 120)); // ğen trong su?t
-    background.setPosition(1500, 10); // góc ph?i trên
+    background.setFillColor(Color(0, 0, 0, 120)); // Ä‘en trong su?t
+    background.setPosition(840, 0); // gÃ³c ph?i trÃªn
 
     hearts.resize(maxHearts);
     for (int i = 0; i < maxHearts; i++) {
         hearts[i].setTexture(heartTexture);
         hearts[i].setScale(0.1f, 0.1f);
-        hearts[i].setPosition(1510 + i * 55, 20);
+        hearts[i].setPosition(840 + i * 55, 10);
     }
 }
 
@@ -35,4 +35,3 @@ void ThanhMau::ve(RenderWindow &window) {
     for (auto &h : hearts)
         window.draw(h);
 }
-
