@@ -19,15 +19,22 @@ Player a;
 int main() {
     RenderWindow window(VideoMode(1700, 900), "my game");
     window.setFramerateLimit(60);
-     srand((unsigned)time(NULL));
-     ThanhMau thanhMau(3); 
+    srand((unsigned)time(NULL));
+    ThanhMau thanhMau(3); 
+
+    // =================== N?N ===================
+    Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("assets/anhnen.png")) {
+        cout << "Khong the tai nen.png!" << endl;
+    }
+    Sprite backgroundSprite(backgroundTexture);
+    Vector2u textureSize = backgroundTexture.getSize();
+    backgroundSprite.setScale(1700.f / textureSize.x, 900.f / textureSize.y);
 
     // Nap map
     input_map();
     
-    
     // khai báo
-    
     float deltaTime = 0.f;
     Clock clock;
     float Time = 0.f;
@@ -49,10 +56,6 @@ int main() {
             if (event.type == Event::Closed) window.close();
         }
 
-
-
-
-        // Cap nhat bomb & player
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
         thanhMau.capNhat(a.health);
@@ -69,34 +72,24 @@ int main() {
             continue;
         }
 
-
-        
-        // ==========================
+        // ========================== V? ==========================
         window.clear();
 
+        window.draw(backgroundSprite);  // ? V? n?n
+        window.draw(SPRITE);            // ? V? map.png
 
-
-        // Ve background map.png
-        window.draw(SPRITE);
-        // Bomb
         for (auto &bomb : QuanLyBomb)
             bomb.Ve(window);
-        // Player
         a.Ve(window, Time);
-        // Enemy
         for (auto &Enemy : DanhSachEnemy1)
             Enemy.Ve(window);
         for (auto &Enemy : DanhSachEnemy2)
             Enemy.Ve(window);
         for (auto &Enemy : DanhSachEnemy3)
             Enemy.Ve(window);
-        // Wall
         veWall(window);
-        // Ve diem
         diem.draw(window);
         thanhMau.ve(window);
-
-
 
         window.display();
     }
