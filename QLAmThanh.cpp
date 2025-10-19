@@ -46,3 +46,21 @@ void QLAmThanh::capNhat() {
         [](const Sound& s) { return s.getStatus() == Sound::Stopped; }),
         sounds.end());
 }
+
+void QLAmThanh::tamDungTatCaAmThanh() {
+    for (auto& s : sounds) 
+    	if (s.getStatus() == Sound::Playing)
+        	s.pause();
+        	
+    if(nhacNen.getStatus() == Music::Playing)
+    	nhacNen.pause();
+}
+
+void QLAmThanh::tiepTucTatCaAmThanh() {
+    for (auto& s : sounds)
+    if (s.getStatus() == Sound::Paused)
+        s.play();
+        
+    if(nhacNen.getStatus()==Music::Paused)
+    	nhacNen.play();
+}
