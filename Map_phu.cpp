@@ -38,9 +38,9 @@ void input_map(){
 
 		if(a == 1){QuanLyWall.push_back(Wall(j*64, i*64));}
 		else if(a == 2){QuanLyWall2.push_back(Wall2(j*64, i*64));}
-		else if(a == 3){DanhSachEnemy1.push_back(Enemy1(j*64, i*64));}
-		else if(a == 4){DanhSachEnemy2.push_back(Enemy2(j*64, i*64));}
-		else if(a == 5){DanhSachEnemy3.push_back(Enemy3(j*64, i*64));}
+		else if(a == 3){DanhSachEnemy.push_back(new Enemy1(j*64, i*64));}
+		else if(a == 4){DanhSachEnemy.push_back(new Enemy2(j*64, i*64));}
+		else if(a == 5){DanhSachEnemy.push_back(new Enemy3(j*64, i*64));}
 		
 		j++;
 		if(j == cot){

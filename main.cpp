@@ -65,9 +65,7 @@ int main() {
                 window.draw(SPRITE);
                 for (auto &bomb : QuanLyBomb) bomb.Ve(window);
                 a.Ve(window, Time);
-                for (auto &Enemy : DanhSachEnemy1) Enemy.Ve(window);
-                for (auto &Enemy : DanhSachEnemy2) Enemy.Ve(window);
-                for (auto &Enemy : DanhSachEnemy3) Enemy.Ve(window);
+                for (auto &Enemy : DanhSachEnemy) Enemy->Ve(window);
                 veWall(window);
                 diemGame.draw(window);
                 thanhMau.ve(window);
@@ -97,9 +95,7 @@ int main() {
         CapNhapPlayer(a);
         thanhMau.capNhat(a.health);
 
-        for (auto &e : DanhSachEnemy1) e.capNhat(deltaTime);
-        for (auto &e : DanhSachEnemy2) e.capNhat(deltaTime);
-        for (auto &e : DanhSachEnemy3) e.capNhat(deltaTime);
+        for (auto &e : DanhSachEnemy) e->capNhat(deltaTime);
 
         // ===== NEU NHAN VAT CHET =====
         if (!a.alive) {
@@ -123,9 +119,7 @@ int main() {
                 NapLaiTexture(a);
 
                 QuanLyBomb.clear();
-                DanhSachEnemy1.clear();
-                DanhSachEnemy2.clear();
-                DanhSachEnemy3.clear();
+                DanhSachEnemy.clear();
 
                 input_map();
 
@@ -151,9 +145,7 @@ int main() {
         for (auto &bomb : QuanLyBomb) bomb.Ve(window);
         a.Ve(window, Time);
 
-        for (auto &Enemy : DanhSachEnemy1) Enemy.Ve(window);
-        for (auto &Enemy : DanhSachEnemy2) Enemy.Ve(window);
-        for (auto &Enemy : DanhSachEnemy3) Enemy.Ve(window);
+        for (auto &Enemy : DanhSachEnemy) Enemy->Ve(window);
 
         veWall(window);
         diemGame.draw(window);

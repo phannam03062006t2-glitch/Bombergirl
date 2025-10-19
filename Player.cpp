@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Map_phu.h"
+#include "Diem.h"
 using namespace std;
 using namespace sf;
 
@@ -363,6 +364,7 @@ bool ktCham3(Bomb &a, vector<Wall2>& QuanLyWall2){                           // 
 		{
 			QuanLyWall2.erase(QuanLyWall2.begin() + i); 
 			i--;  
+			diemGame.add(50);
 		}
 	}
 }

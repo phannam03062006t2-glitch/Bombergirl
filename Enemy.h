@@ -36,6 +36,7 @@ public:
 
     bool kiemTraVaChamBom(const FloatRect &bomNo);
     bool kiemTraVaChamPlayer(const FloatRect &playerBounds);
+
 };
 
 // ====================== Enemy1 ======================
@@ -57,9 +58,6 @@ public:
 };
 
 // Các danh sách quái toàn c?c
-extern std::vector<Enemy1> DanhSachEnemy1;
-extern std::vector<Enemy2> DanhSachEnemy2;
-extern std::vector<Enemy3> DanhSachEnemy3;
 
+extern std::vector<Enemy*> DanhSachEnemy;
 #endif
-

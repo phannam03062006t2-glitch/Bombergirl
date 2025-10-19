@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Diem.h"
 #include "Map_phu.h"
 #include "Player.h"
 #include <cstdlib>
@@ -12,10 +13,7 @@ using namespace std;
 Texture Enemy::TEXTURES[3];
 bool Enemy::EnemyLoad = false;
 
-std::vector<Enemy1> DanhSachEnemy1;
-std::vector<Enemy2> DanhSachEnemy2;
-std::vector<Enemy3> DanhSachEnemy3;
-
+std::vector<Enemy*> DanhSachEnemy;
 // Truy c?p danh sách bomb t? Player.cpp
 extern std::vector<Bomb> QuanLyBomb;
 // Truy c?p player 
@@ -73,18 +71,18 @@ void Enemy::datHuongNgauNhien() {
 //             VA CH?M TU?NG (dành cho Enemy)
 // ===================================================
 bool VaChamWall_Enemy(const Enemy& e, const Wall& w) {
-    if (e.c1 > w.c3) return false;
-    if (e.c3 < w.c1) return false;
-    if (e.c2 > w.c4) return false;
-    if (e.c4 < w.c2) return false;
+    if (e.c1 - 2 > w.c3) return false;
+    if (e.c3 + 2 < w.c1) return false;
+    if (e.c2 - 2 > w.c4) return false;
+    if (e.c4 + 2 < w.c2) return false;
     return true;
 }
 
 bool VaChamWall2_Enemy(const Enemy& e, const Wall2& w) {
-    if (e.c1 > w.c3) return false;
-    if (e.c3 < w.c1) return false;
-    if (e.c2 > w.c4) return false;
-    if (e.c4 < w.c2) return false;
+    if (e.c1 - 2 > w.c3) return false;
+    if (e.c3 + 2 < w.c1) return false;
+    if (e.c2 - 2 > w.c4) return false;
+    if (e.c4 + 2 < w.c2) return false;
     return true;
 }
 
@@ -183,6 +181,7 @@ void Enemy::capNhat(float deltaTime) {
 
         // n?u không roi vào vùng lo?i tr? => b? n? trúng
         alive = false;
+        diemGame.add(100);
         break;
     }
 
@@ -223,10 +222,9 @@ Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
 }
 
 Enemy2::Enemy2(float x_, float y_) : Enemy(x_, y_, 1) {
-    tocDo = 1.5f;
+    tocDo = 1.f;
 }
 
 Enemy3::Enemy3(float x_, float y_) : Enemy(x_, y_, 2) {
-    tocDo = 2.0f;
+    tocDo = 1.f;
 }
-
