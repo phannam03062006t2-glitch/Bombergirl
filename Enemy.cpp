@@ -96,10 +96,10 @@ void Enemy::capNhat(float deltaTime) {
     SPRITE.setPosition(x, y);
 
     // C?p nh?t vùng va ch?m
-    c1 = x ;
-    c2 = y ;
-    c3 = x + 64 - 4;
-    c4 = y + 64 - 4;
+    c1 = x + 10;
+    c2 = y + 10;
+    c3 = x + 64 - 10;
+    c4 = y + 64 - 10;
 
     bool chamTuong = false;
 
@@ -128,7 +128,7 @@ void Enemy::capNhat(float deltaTime) {
             if (!b.dangNo) {
                 // vùng bomb chua n? là ô 64x64 ? v? trí b.x-32, b.y-32
                 FloatRect bombRect(b.x - 32.f, b.y - 32.f, 64.f, 64.f);
-                FloatRect enemyRect(x, y, 64.f, 64.f);
+                FloatRect enemyRect(c1, c2, c3 - c1, c4 - c2);
                 if (enemyRect.intersects(bombRect)) {
                     chamTuong = true;
                     break;
@@ -156,13 +156,11 @@ void Enemy::capNhat(float deltaTime) {
             if (a.thoiGianBatTu <= 0.0f) {
                 a.health--;
                 a.thoiGianBatTu = 3.f; // th?i gian b?t t?
-                a.out = true;
                 if (a.health <= 0) {
                     a.alive = false;
                 }
             }
             // Khi ch?m player, quái có th? d?i hu?ng d? tránh ch?ng chéo liên t?c
-            datHuongNgauNhien();
         }
     }
 
@@ -218,14 +216,14 @@ bool Enemy::kiemTraVaChamPlayer(const FloatRect &playerBounds) {
 //                   Enemy1/2/3
 // ===================================================
 Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
-    tocDo = 1.8f;
+    tocDo = 1.f;
 }
 
 Enemy2::Enemy2(float x_, float y_) : Enemy(x_, y_, 1) {
-    tocDo = 2.2f;
+    tocDo = 1.f;
 }
 
 Enemy3::Enemy3(float x_, float y_) : Enemy(x_, y_, 2) {
-    tocDo = 2.5f;
+    tocDo = 1.f;
 }
 
