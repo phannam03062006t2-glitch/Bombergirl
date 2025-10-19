@@ -127,7 +127,7 @@ int main() {
     diemText.setPosition(1700 / 2, 900 / 2);
 
     // ==== Huong dan nut bam ====
-    Text huongDanText("Nhan ENTER de quay lai menu\nNhan ESC de thoat game", font, 45);
+    Text huongDanText("PRESS ENTER TO RETURN TO MENU\nPRESS ESC TO EXIT GAME", font, 45);
     huongDanText.setFillColor(Color::Yellow);
     FloatRect hdRect = huongDanText.getLocalBounds();
     huongDanText.setOrigin(hdRect.width / 2, hdRect.height / 2);
@@ -185,3 +185,4 @@ int main() {
 
     return 0;
 }
+
