@@ -378,6 +378,11 @@ bool ktWall(float x, float y){
         if(x == QuanLyWall[i].x + 32 && y == QuanLyWall[i].y + 32)
             return true;
     }
+    for(int i = 0; i < (int)QuanLyBomb.size(); i++)
+    {
+        if(x == QuanLyBomb[i].x && y == QuanLyBomb[i].y)
+            return true;
+    }
     return false;
 }
 
