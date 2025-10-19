@@ -35,3 +35,16 @@ void ThanhMau::ve(RenderWindow &window) {
     for (auto &h : hearts)
         window.draw(h);
 }
+
+void ThanhMau::reset(int maxHearts) {
+	soTimToiDa = maxHearts;
+	
+	hearts.clear();
+	hearts.resize(maxHearts);
+	
+	for(int i=0;i<maxHearts;i++) {
+		hearts[i].setTexture(heartTexture);
+		hearts[i].setScale(0.1f, 0.1f);
+		hearts[i].setPosition(840+i*55,10);
+	}
+}
