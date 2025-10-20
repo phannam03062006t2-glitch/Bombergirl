@@ -26,4 +26,3 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font);
 
 
 #endif
-
