@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <iostream>
+#include "Diem.h"
 using namespace std;
 
 Menu::Menu() {
@@ -129,19 +130,28 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     scoreText.setPosition(727, 380);
 
     // Huong dan bam phim
-    Text restartText, exitText;
+    Text restartText, exitText, rankText; 
     restartText.setFont(font);
     restartText.setCharacterSize(40);
     restartText.setFillColor(Color::Yellow);
     restartText.setString("PRESS ENTER TO RETURN TO MENU");
     restartText.setPosition(510, 500);
+    
+    rankText.setFont(font);
+    rankText.setCharacterSize(40);
+    rankText.setFillColor(Color::Cyan);
+    rankText.setString("PRESS Q TO VIEW LEADERBOARD");
+    rankText.setPosition(560, 540);
 
     exitText.setFont(font);
     exitText.setCharacterSize(40);
     exitText.setFillColor(Color::White);
     exitText.setString("PRESS ESC TO EXIT");
     exitText.setPosition(655, 580);
-
+	
+	//cap nhat diem vao bang xep hang
+	diemGame.capNhatBangXepHang();
+	
     // Vong lap hien thi man hinh
     while (window.isOpen()) {
         Event event;
@@ -150,9 +160,11 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
                 window.close();
 
             if (event.type == Event::KeyPressed) {
-                if (event.key.code == Keyboard::Return) {
+                if (event.key.code == Keyboard::Return) 
                     return true; // quay lai menu
-                }
+                if(event.key.code==Keyboard::Q) {
+                	hienBangXepHang(window); // mo bang xep hang
+				}
                 if (event.key.code == Keyboard::Escape) {
                     window.close(); // thoat game
                     return false;
@@ -165,7 +177,26 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
         window.draw(gameOverText);
         window.draw(scoreText);
         window.draw(restartText);
+        window.draw(rankText);
         window.draw(exitText);
+        window.display();
+    }
+    return false;
+}
+bool Menu::hienBangXepHang(RenderWindow &window) {
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed)
+                window.close();
+
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Return) {
+                return true; // quay v? menu chính
+            }
+        }
+
+        window.clear();
+        diemGame.veBangXepHang(window);
         window.display();
     }
     return false;
