@@ -1,7 +1,7 @@
 #include "HelpText.h"
 #include <iostream>
 
-HuongDan huongDan; // –?nh ngh?a bi?n to‡n c?c
+HuongDan huongDan; // ƒê?nh ngh?a bi?n to√†n c?c
 
 HuongDan::HuongDan() {
     if (!font.loadFromFile("arial.ttf")) {
@@ -51,4 +51,3 @@ void HuongDan::ve(RenderWindow &cuaSo, float chieuCaoBanDo) {
     cuaSo.draw(nen);
     cuaSo.draw(vanBan);
 }
-
