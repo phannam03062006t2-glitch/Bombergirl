@@ -126,7 +126,7 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     scoreText.setCharacterSize(50);
     scoreText.setFillColor(Color::White);
     scoreText.setString("SCORE: " + to_string(diem));
-    scoreText.setPosition(720, 380);
+    scoreText.setPosition(727, 380);
 
     // Huong dan bam phim
     Text restartText, exitText;
@@ -134,13 +134,13 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     restartText.setCharacterSize(40);
     restartText.setFillColor(Color::Yellow);
     restartText.setString("PRESS ENTER TO RETURN TO MENU");
-    restartText.setPosition(540, 500);
+    restartText.setPosition(510, 500);
 
     exitText.setFont(font);
     exitText.setCharacterSize(40);
     exitText.setFillColor(Color::White);
     exitText.setString("PRESS ESC TO EXIT");
-    exitText.setPosition(650, 580);
+    exitText.setPosition(655, 580);
 
     // Vong lap hien thi man hinh
     while (window.isOpen()) {
