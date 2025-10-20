@@ -28,7 +28,7 @@ void HuongDan::ve(RenderWindow &cuaSo, float chieuCaoBanDo) {
     if (!hienThi) return;
 
     // Kich thuoc khung huong dan 
-    float rong = 400.0f;
+    float rong = 450.0f;
     float cao = 120.0f;
     float le = 10.0f;
 
@@ -51,3 +51,4 @@ void HuongDan::ve(RenderWindow &cuaSo, float chieuCaoBanDo) {
     cuaSo.draw(nen);
     cuaSo.draw(vanBan);
 }
+
