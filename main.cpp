@@ -9,11 +9,12 @@
 #include "QLAmThanh.h"
 #include "ThanhMau.h"
 #include "Menu.h"
-
+#include "HelpText.h"
 using namespace std;
 using namespace sf;
 
 extern Diem diemGame;
+extern HuongDan huongDan;
 Player a;
 
 // ===== KHAI BAO HAM HO TRO =====
@@ -68,6 +69,8 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::H) 
+        		huongDan.doiTrangThai();
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
                 paused = true;
                 amThanh.dungTatCaAmThanh();
@@ -118,7 +121,7 @@ int main() {
         veWall(window);
         diemGame.draw(window);
         thanhMau.ve(window);
-
+        huongDan.ve(window, 0.f);
         window.display();
     }
 
@@ -169,5 +172,6 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         return false; // Thoát game
     }
 }
+
 
 
