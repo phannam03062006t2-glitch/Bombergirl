@@ -9,7 +9,7 @@ Menu::Menu() {
     }
 
     if (!bgTexture.loadFromFile("assets/anhmenu.png")) {
-        cerr << "Khong the tai anh nen assets/menu.png\n";
+        cerr << "Khong the tai anh nen assets/anhmenu.png\n";
     }
 
     bgSprite.setTexture(bgTexture);
@@ -202,5 +202,46 @@ bool Menu::hienBangXepHang(RenderWindow &window) {
     return false;
 }
 
+string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
+    string name = "";
+    Text textNhap("Nhap ten nguoi choi: ", font, 35);
+    textNhap.setFillColor(Color::White);
+    textNhap.setPosition(600, 300);
 
+    Text textTen("", font, 35);
+    textTen.setFillColor(Color::Cyan);
+    textTen.setPosition(950, 300);
 
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed)
+                window.close();
+
+            // Nhan phim
+            if (event.type == Event::TextEntered) {
+                if (event.text.unicode == '\b') { // Xoa ky tu
+                    if (!name.empty())
+                        name.pop_back();
+                } 
+                else if (event.text.unicode == '\r') { // Enter
+                    if (!name.empty()) 
+                        return name;
+                } 
+                else if (event.text.unicode < 128 && event.text.unicode >= 32) {
+                    // Them ky tu chu
+                    name += static_cast<char>(event.text.unicode);
+                }
+            }
+        }
+
+        textTen.setString(name);
+
+        window.clear(Color::Black);
+        window.draw(textNhap);
+        window.draw(textTen);
+        window.display();
+    }
+
+    return name;
+}
