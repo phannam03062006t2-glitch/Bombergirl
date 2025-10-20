@@ -16,16 +16,16 @@ Bomb::Bomb(const Player& a){
 	TEXTURE2.loadFromFile("assets/no.png");
 	SPRITE.setTexture(TEXTURE);
     
-    time = 3.f;                                                 // th?i gian d?m ngu?c d?n lúc n?
+    time = 3.f;                                                 // th?i gian d?m ngu?c d?n lÃºc n?
     phamVi = 1;                                           // ph?m vi v? n?
     thoiGianNo = 0.5f;                                           // th?i gian v? n? x?y ra
     dangNo = false;
-	// t?o t?a d? chính gi?a ô
+	// t?o t?a d? chÃ­nh gi?a Ã´
     x = a.x / 64;
 	y = a.y / 64;
 	x = int(x)*64 + 32;
 	y = int(y)*64 + 32;
-	// t?o vùng va ch?m
+	// t?o vÃ¹ng va ch?m
 	c1 = x - 32;
 	c2 = y - 32;
 	c3 = x + 32;
@@ -36,7 +36,7 @@ Bomb::Bomb(const Player& a){
 
 
 void Bomb::Ve(RenderWindow &window){
-	if(dangNo == true){                                             // n?u dang n? thì v? v? n?
+	if(dangNo == true){                                             // n?u dang n? thÃ¬ v? v? n?
 	SPRITE.setTexture(TEXTURE2);
 	SPRITE.setTextureRect(IntRect(3, 3, 60, 60));
 	SPRITE.setPosition(x - 32, y - 32);
@@ -58,7 +58,7 @@ void Bomb::Ve(RenderWindow &window){
 	window.draw(SPRITE);
     }
 	}
-	else{                                                        // n?u không n? thì v? bomb
+	else{                                                        // n?u khÃ´ng n? thÃ¬ v? bomb
         TEXTURE.loadFromFile("assets/cherrybomb.png");
         if(time >= 2.5f){ SPRITE.setTextureRect(IntRect(8, 5, 48, 53));}
         else if(time >= 2.0f){SPRITE.setTextureRect(IntRect(60, 5, 51, 53));}
@@ -74,13 +74,13 @@ Player::Player(){
 	TEXTURE.loadFromFile("assets/player.png");
 	SPRITE.setTexture(TEXTURE);
     SPRITE.setTextureRect(IntRect(0, 0, 62.4,64));
-	bombMax = 1;     
+	bombMax = 3;     
 	health = 3;                                              // s? bomb max
 	thoiGianBatTu = 0.f;
-	// set v? trí
+	// set v? trÃ­
 	x = 32.f + 64;
 	y = 32.f + 64;
-	// ch?nh vùng va ch?m
+	// ch?nh vÃ¹ng va ch?m
 	kx = 20;
 	ky = 23;
 	c1 = x - kx;
@@ -88,32 +88,32 @@ Player::Player(){
 	c3 = x + kx - 10;
 	c4 = y + ky;
 	SPRITE.setPosition(x - 27, y - 32);   
-	// hu?ng lúc d?u
+	// hu?ng lÃºc d?u
 	dx = 0;
 	dy = 1;
 	// t?c d?
 	speed = 3.f;  
 	// ki?m tra out bomb cu?i
     out    = true;
-	// ki?m tra còn s?ng
+	// ki?m tra cÃ²n s?ng
 	alive = true;	
 }
 
-bool VaCham(const Player& a, const Bomb& b){                            // hàm ki?m tra va ch?m bomb v?i player 
+bool VaCham(const Player& a, const Bomb& b){                            // hÃ m ki?m tra va ch?m bomb v?i player 
 	if(a.c1 >= b.c3)return false;
 	if(a.c3 <= b.c1)return false;
 	if(a.c2 >= b.c4)return false;
 	if(a.c4 <= b.c2)return false;
 	return true;
 }
-bool VaChamWall(const Player& a, const Wall& b){                            // hàm ki?m tra va ch?m bomb v?i player 
+bool VaChamWall(const Player& a, const Wall& b){                            // hÃ m ki?m tra va ch?m bomb v?i player 
 	if(a.c1 >= b.c3)return false;
 	if(a.c3 <= b.c1)return false;
 	if(a.c2 >= b.c4)return false;
 	if(a.c4 <= b.c2)return false;
 	return true;
 }
-bool VaChamWall2(const Player& a, const Wall2& b){                            // hàm ki?m tra va ch?m bomb v?i player 
+bool VaChamWall2(const Player& a, const Wall2& b){                            // hÃ m ki?m tra va ch?m bomb v?i player 
 	if(a.c1 >= b.c3)return false;
 	if(a.c3 <= b.c1)return false;
 	if(a.c2 >= b.c4)return false;
@@ -128,7 +128,7 @@ void Player::Input(){
 	else if(Keyboard::isKeyPressed(Keyboard::Down)){dx = 0; dy = 1;}
 	else if(Keyboard::isKeyPressed(Keyboard::Right)){dx = 1; dy = 0;}
 	
-	if(Keyboard::isKeyPressed(Keyboard::X) && (int)QuanLyBomb.size() < bombMax)                // di?u ki?n d?t bomb : dã r?i bomb cu?i 
+	if(Keyboard::isKeyPressed(Keyboard::X) && (int)QuanLyBomb.size() < bombMax)                // di?u ki?n d?t bomb : dÃ£ r?i bomb cu?i 
 	   {  
 	                 if(out == true && thoiGianBatTu <= 0) { 
                           Bomb b(*this);
@@ -190,7 +190,7 @@ bool KiemTraChan(Player& a){
     bool kt_Chan = false;
 
     if (!QuanLyBomb.empty()) {
-        // N?u r?i kh?i bomb cu?i cùng thì out = true
+        // N?u r?i kh?i bomb cu?i cÃ¹ng thÃ¬ out = true
         if (!VaCham(a, QuanLyBomb.back())) {
             a.out = true;
         }
@@ -236,12 +236,12 @@ void CapNhapPlayer(Player &a){
 	a.dy = 0;
 	// l?y d? li?u
     a.Input();
-	// luu v? trí cu n?u va ch?m thì d?ch chuy?n l?i
+	// luu v? trÃ­ cu n?u va ch?m thÃ¬ d?ch chuy?n l?i
     float oldX = a.x;
     float oldY = a.y; 
     // di chuy?n
     a.Move();
-   // n?u có bomb
+   // n?u cÃ³ bomb
    if(KiemTraChan(a))
 		{
 			a.x = oldX;
@@ -275,26 +275,26 @@ void CapNhapBomb(vector<Bomb>& QuanLyBomb,const float& deltaTime){
         Bomb &b = QuanLyBomb[i];
 
         if (b.dangNo) {
-            b.thoiGianNo -= deltaTime;                             // n?u dang n? thì tr? th?i gian n?
+            b.thoiGianNo -= deltaTime;                             // n?u dang n? thÃ¬ tr? th?i gian n?
         } else {
-            b.time -= deltaTime;                                // n?u dang ch? n? thì tr? th?i gian d?m ngu?c
+            b.time -= deltaTime;                                // n?u dang ch? n? thÃ¬ tr? th?i gian d?m ngu?c
         }
 
         if (b.time <= 0.0f && !b.dangNo) {
         	amThanh.phatAm("no");
             b.dangNo = true;
-            ktCham2(b, QuanLyBomb, i);                                 // ki?m tra n?u n? lên bomb thì cho th?i gian d?m ngu?c v? 0.1  ( g?n nhu n? luôn)
+            ktCham2(b, QuanLyBomb, i);                                 // ki?m tra n?u n? lÃªn bomb thÃ¬ cho th?i gian d?m ngu?c v? 0.1  ( g?n nhu n? luÃ´n)
              ktCham3(b, QuanLyWall2);
         }
         
         if (b.dangNo && b.thoiGianNo <= 0.0f) {
-            QuanLyBomb.erase(QuanLyBomb.begin() + i);                   // xóa bomb khi xong
+            QuanLyBomb.erase(QuanLyBomb.begin() + i);                   // xÃ³a bomb khi xong
             continue; 
         }
     }
 }
 
-bool VaChamNo(const Player& a, const Bomb& b){                        // ki?m tra xem ngu?i choi b? n? không        (ki?m tra 1 bomb)
+bool VaChamNo(const Player& a, const Bomb& b){                        // ki?m tra xem ngu?i choi b? n? khÃ´ng        (ki?m tra 1 bomb)
 	if(a.c1 + 10>= b.c3 + 64*b.phamVi)return false;
 	if(a.c3 - 10<= b.c1 - 64*b.phamVi)return false;
 	if(a.c2 + 10>= b.c4 + 64*b.phamVi)return false;
@@ -306,7 +306,7 @@ bool VaChamNo(const Player& a, const Bomb& b){                        // ki?m tr
 	return true;
 }
 
-bool VaChamNo2(const Bomb& a, const Bomb& b){                          // ki?m tra bomb n? bomb không               (ki?n tra 1 bomb)
+bool VaChamNo2(const Bomb& a, const Bomb& b){                          // ki?m tra bomb n? bomb khÃ´ng               (ki?n tra 1 bomb)
 	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
 	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
 	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
@@ -318,7 +318,7 @@ bool VaChamNo2(const Bomb& a, const Bomb& b){                          // ki?m t
 	return true;
 }
 
-bool VaChamNo3(const Bomb& b, const Wall2& a){                          // ki?m tra bomb n? bomb không               (ki?n tra 1 bomb)
+bool VaChamNo3(const Bomb& b, const Wall2& a){                          // ki?m tra bomb n? bomb khÃ´ng               (ki?n tra 1 bomb)
 	if(a.c1 >= b.c3 + 64*b.phamVi)return false;
 	if(a.c3 <= b.c1 - 64*b.phamVi)return false;
 	if(a.c2 >= b.c4 + 64*b.phamVi)return false;
@@ -330,7 +330,7 @@ bool VaChamNo3(const Bomb& b, const Wall2& a){                          // ki?m 
 	return true;
 }
 
-bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){                                 // ki?m tra n?u b? n? thì ch?t        (ki?m tra t?t c?  bomb)
+bool ktCham(Player &a, vector<Bomb>& QuanLyBomb){                                 // ki?m tra n?u b? n? thÃ¬ ch?t        (ki?m tra t?t c?  bomb)
 	for(int i = 0; i < (int)QuanLyBomb.size(); i++)
 	{   
 		if( QuanLyBomb[i].dangNo && VaChamNo(a, QuanLyBomb[i]))
@@ -448,6 +448,7 @@ bool BetterMove(Player &a){
 
     return 0;
 }
+
 
 
 
