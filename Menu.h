@@ -18,6 +18,8 @@ public:
     bool hienGameOver(RenderWindow &window, int diem);
     bool hienMenu(RenderWindow &window);
     int hienPause(RenderWindow &window); // 0: tiep tuc, 1: thoat
+    bool hienBangXepHang(RenderWindow &window);
+
 };
 
 #endif
