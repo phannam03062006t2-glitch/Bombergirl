@@ -32,6 +32,15 @@ int main() {
     bool batDau = menu.hienMenu(window);
     if (!batDau) return 0;
 
+    // ==== NHAP TEN NGUOI CHOI ====
+	Font font;
+	if (!font.loadFromFile("arial.ttf")) {
+    	cout << "Khong the tai font arial.ttf!" << endl;
+	}
+	string ten = nhapTenNguoiChoi(window, font);
+	diemGame.setPlayerName(ten);
+
+
     srand((unsigned)time(NULL));
     ThanhMau thanhMau(3);
 
@@ -172,6 +181,7 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         return false; // Thoát game
     }
 }
+
 
 
 
