@@ -3,112 +3,142 @@
 #include <fstream>
 using namespace std;
 
-Diem diemGame;
+Diem diemGame;       // Bien toan cuc
+string playerName;   // Luu ten nguoi choi hien tai
 
+// ===== Ham khoi tao =====
 Diem::Diem() {
     points = 0;
-    daLuu=false;
-    
+    daLuu = false;
+
+    // Nap font chu
     if (!font.loadFromFile("arial.ttf")) {
-        throw runtime_error("Font arial.ttf not found!");
+        throw runtime_error("Khong tim thay file arial.ttf!");
     }
+
     text.setFont(font);
     text.setCharacterSize(30);
     text.setFillColor(Color::Red);
     text.setPosition(10, 10);
-    
-    //Doc bang xep hang khi file khoi tao
+
+    // Doc bang xep hang khi bat dau game
     docBangXepHang("score.txt");
 }
 
+// ===== Gan ten nguoi choi =====
+void Diem::setPlayerName(const string &name) {
+    playerName = name;
+}
+
+// ===== Cong diem =====
 void Diem::add(int p) {
     points += p;
 }
 
+// ===== Lay diem hien tai =====
 int Diem::get() {
     return points;
 }
 
+// ===== Ve diem tren man hinh =====
 void Diem::draw(RenderWindow &window) {
     text.setString("Score: " + to_string(points));
     text.setPosition(840, 70);
     window.draw(text);
 }
 
+// ===== Luu diem (cap nhat bang xep hang) =====
 void Diem::save(const string &filename) {
-    // Cap nhat tam trong ram
     capNhatBangXepHang();
 }
 
+// ===== Dat lai diem khi choi lai =====
 void Diem::reset() {
     points = 0;
-    daLuu=false;
+    daLuu = false;
 }
 
-// ================== BANG XEP HANG TRONG RAM ==================
+// ===== Cap nhat bang xep hang trong RAM =====
 void Diem::capNhatBangXepHang() {
-    // Them diem hien tai
-    if(daLuu) return;
-    
-    bangXepHang.push_back(points);
-    daLuu=true;
+    // Neu da luu roi thi khong luu lai nua
+    if (daLuu) return;
 
-    // Sap xep giam dan
-    sort(bangXepHang.begin(), bangXepHang.end(), greater<int>());
+    // Them diem hien tai vao danh sach
+    PlayerScore ps;
+    ps.name = playerName;
+    ps.score = points;
+    bangXepHang.push_back(ps);
+    daLuu = true;
 
-    // Giu lai top 5
+    // Sap xep giam dan theo diem
+    sort(bangXepHang.begin(), bangXepHang.end(),
+         [](const PlayerScore &a, const PlayerScore &b) {
+             return a.score > b.score;
+         });
+
+    // Chi giu lai top 5 nguoi cao diem nhat
     if (bangXepHang.size() > 5)
         bangXepHang.resize(5);
-        
-    //Ghi lai vao file
+
+    // Ghi lai vao file
     ghiBangXepHang("score.txt");
 }
 
-void Diem::veBangXepHang(RenderWindow& window) {
+// ===== Ve bang xep hang tren man hinh =====
+void Diem::veBangXepHang(RenderWindow &window) {
     // Tieu de
     Text title("TOP 5 SCORE", font, 50);
     title.setFillColor(Color::Yellow);
     title.setPosition(700, 150);
     window.draw(title);
 
-    // In diem
+    // Hien thi tung dong diem
     for (int i = 0; i < (int)bangXepHang.size(); i++) {
-        Text line(to_string(i + 1) + ". " + to_string(bangXepHang[i]), font, 40);
+        string lineStr = to_string(i + 1) + ". " + bangXepHang[i].name + " - " + to_string(bangXepHang[i].score);
+        Text line(lineStr, font, 40);
         line.setFillColor(Color::White);
-        line.setPosition(800, 230 + i * 60);
+        line.setPosition(700, 230 + i * 60);
         window.draw(line);
     }
 
-    // Goi y quay lai 
+    // Chu huong dan quay lai
     Text note("PRESS ENTER TO RETURN", font, 25);
     note.setFillColor(Color::Cyan);
     note.setPosition(696, 600);
     window.draw(note);
 }
-//===== Doc va ghi file =====
+
+// ===== Doc bang xep hang tu file =====
 void Diem::docBangXepHang(const string &filename) {
-	ifstream file(filename);
-	bangXepHang.clear();
-	int diem;
-	if (file.is_open()) {
-		while(file>>diem) {
-			bangXepHang.push_back(diem);
-		}
-		file.close();
-	}
-	sort(bangXepHang.begin(),bangXepHang.end(),greater<int>());
-	
-	// Giu lai top 5 neu co nhieu hon
-	if(bangXepHang.size()>5);
-	bangXepHang.resize(5);
+    ifstream file(filename);
+    bangXepHang.clear();
+    PlayerScore ps;
+
+    if (file.is_open()) {
+        while (file >> ps.name >> ps.score) {
+            bangXepHang.push_back(ps);
+        }
+        file.close();
+    }
+
+    // Sap xep giam dan theo diem
+    sort(bangXepHang.begin(), bangXepHang.end(),
+         [](const PlayerScore &a, const PlayerScore &b) {
+             return a.score > b.score;
+         });
+
+    // Chi lay top 5
+    if (bangXepHang.size() > 5)
+        bangXepHang.resize(5);
 }
 
+// ===== Ghi bang xep hang ra file =====
 void Diem::ghiBangXepHang(const string &filename) {
-	ofstream file(filename);
-	if(file.is_open()) {
-		for(int diem : bangXepHang) {
-			file<<diem<<"\n";
-		}
-		file.close();
-	}
+    ofstream file(filename);
+    if (file.is_open()) {
+        for (auto &p : bangXepHang) {
+            file << p.name << " " << p.score << "\n";
+        }
+        file.close();
+    }
 }
