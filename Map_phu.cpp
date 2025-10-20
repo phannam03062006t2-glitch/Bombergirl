@@ -48,6 +48,7 @@ void input_map(){
 		else if(a == 3){DanhSachEnemy.push_back(new Enemy1(j*64, i*64));}
 		else if(a == 4){DanhSachEnemy.push_back(new Enemy2(j*64, i*64));}
 		else if(a == 5){DanhSachEnemy.push_back(new Enemy3(j*64, i*64));}
+		else if(a == 0){}
 		else{
 			cerr << "[CANH BAO] Loi du lieu" << endl;
 		}
