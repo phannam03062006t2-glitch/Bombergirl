@@ -22,9 +22,9 @@ void NapLaiTextureThanhMau(ThanhMau &thanhMau);
 bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time);
 
 int main() {
+//===========================================================KHOI TAO=============================================================================================================
     RenderWindow window(VideoMode(1700, 900), "Bomber Girl");
     window.setFramerateLimit(60);
-
     // ===== MENU CHINH =====
     Menu menu;
     bool batDau = menu.hienMenu(window);
@@ -50,10 +50,11 @@ int main() {
     amThanh.napAm("no", "sound/no.wav");
     amThanh.phatNhacNen("sound/nhacnen.ogg");
 
-    // ===== VONG LAP GAME =====
+
+    // =================================================================== VONG LAP GAME ============================================================================================
     while (window.isOpen()) {
         Event event;
-        // pause
+        // ============================================================XU LY EVENT ===================================================================================================
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
@@ -74,7 +75,7 @@ int main() {
         }
         if (paused) continue;
 
-         // ===== CAP NHAT GAME =====
+         // ======================================================================= CAP NHAT GAME =====================================================================================
         deltaTime = clock.restart().asSeconds();
         Time += deltaTime;     
         CapNhapBomb(QuanLyBomb, deltaTime);
@@ -94,7 +95,7 @@ int main() {
         }
 
 
-        // ===== VE MAN HINH GAME =====
+        // ====================================================================== VE MAN HINH GAME =================================================================================
         window.clear();
         window.draw(SPRITE);
 
@@ -113,6 +114,7 @@ int main() {
     return 0;
 }
 
+// =============================================================KET THUC MAIN====================================================================================================
 // ===== CAC HAM PHU =====
 void NapLaiTexture(Player &a) {
     a.TEXTURE.loadFromFile("assets/player.png");
