@@ -31,7 +31,7 @@ int main() {
     Menu menu;
     bool batDau = menu.hienMenu(window);
     if (!batDau) return 0;
-
+    
     // ==== NHAP TEN NGUOI CHOI ====
 	Font font;
 	if (!font.loadFromFile("arial.ttf")) {
@@ -105,7 +105,7 @@ int main() {
         thanhMau.capNhat(a.health);
         for (auto &e : DanhSachEnemy) e->capNhat(deltaTime, SoLuongQuai);
 
-        // ===== ÐI?U KI?N WIN/LOSE =====
+        // ===== ?I?U KI?N WIN/LOSE =====
         if (!a.alive) {
             bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
             if (!tiepTuc) break;
@@ -116,7 +116,7 @@ int main() {
             if (!tiepTuc) break;
         }
 
-        // ====================================================================== V? MÀN HÌNH GAME =================================================================================
+        // ====================================================================== V? MÀN H?NH GAME =================================================================================
         window.clear();
 
         window.draw(backgroundSprite);  // ?? V? ?NH N?N TRU?C
@@ -146,6 +146,8 @@ void NapLaiTexture(Player &a) {
 
 bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time) {
     amThanh.phatAm("no");
+    
+    diemGame.save("score.txt");
 
     bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
 
@@ -181,7 +183,5 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         return false; // Thoát game
     }
 }
-
-
 
 
