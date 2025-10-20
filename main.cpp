@@ -56,7 +56,7 @@ int main() {
     Vector2u textureSize = backgroundTexture.getSize();
     backgroundSprite.setScale(1700.f / textureSize.x, 900.f / textureSize.y);
 
-    // ===== ¬M THANH =====
+    // ===== √ÇM THANH =====
     amThanh.napAm("datbomb", "sound/datbom.wav");
     amThanh.napAm("no", "sound/no.wav");
     amThanh.phatNhacNen("sound/nhacnen.ogg");
@@ -93,7 +93,7 @@ int main() {
         thanhMau.capNhat(a.health);
         for (auto &e : DanhSachEnemy) e->capNhat(deltaTime, SoLuongQuai);
 
-        // ===== –I?U KI?N WIN/LOSE =====
+        // ===== √êI?U KI?N WIN/LOSE =====
         if (!a.alive) {
             bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
             if (!tiepTuc) break;
@@ -104,11 +104,11 @@ int main() {
             if (!tiepTuc) break;
         }
 
-        // ====================================================================== V? M¿N HÃNH GAME =================================================================================
+        // ====================================================================== V? M√ÄN H√åNH GAME =================================================================================
         window.clear();
 
         window.draw(backgroundSprite);  // ?? V? ?NH N?N TRU?C
-        window.draw(SPRITE);            // V? MAP PNG L N TR N
+        window.draw(SPRITE);            // V? MAP PNG L√äN TR√äN
 
         for (auto &bomb : QuanLyBomb) bomb.Ve(window);
         a.Ve(window, Time);
@@ -134,7 +134,6 @@ void NapLaiTexture(Player &a) {
 
 bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time) {
     amThanh.phatAm("no");
-    diemGame.save("score.txt");
 
     bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
 
@@ -145,7 +144,7 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
 
         if (!batDauLai) {
             window.close();
-            return false;  // Tho·t game
+            return false;  // Tho√°t game
         }
 
         // === Kh?i t?o l?i game ===
@@ -167,7 +166,8 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         return true;  // Choi l?i
     } else {
         window.close();
-        return false; // Tho·t game
+        return false; // Tho√°t game
     }
 }
+
 
