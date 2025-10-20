@@ -224,9 +224,9 @@ Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
 }
 
 Enemy2::Enemy2(float x_, float y_) : Enemy(x_, y_, 1) {
-    tocDo = 1.f;
+    tocDo = 1,5.f;
 }
 
 Enemy3::Enemy3(float x_, float y_) : Enemy(x_, y_, 2) {
-    tocDo = 1.f;
+    tocDo = 2,5.f;
 }

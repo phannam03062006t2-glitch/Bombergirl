@@ -25,6 +25,7 @@ int main() {
 //===========================================================KHOI TAO=============================================================================================================
     RenderWindow window(VideoMode(1700, 900), "Bomber Girl");
     window.setFramerateLimit(60);
+
     // ===== MENU CHINH =====
     Menu menu;
     bool batDau = menu.hienMenu(window);
@@ -41,15 +42,24 @@ int main() {
     float Time = 0.f;
     bool paused = false;
 
+    // ===== MAP TEXTURE =====
     Texture TEXTURE;
     TEXTURE.loadFromFile("assets/map.png");
     Sprite SPRITE(TEXTURE);
 
-    // ===== AM THANH =====
+    // ===== ?NH N?N =====
+    Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("assets/anhnen.png")) {
+        cout << "Khong the tai anhnen.png!" << endl;
+    }
+    Sprite backgroundSprite(backgroundTexture);
+    Vector2u textureSize = backgroundTexture.getSize();
+    backgroundSprite.setScale(1700.f / textureSize.x, 900.f / textureSize.y);
+
+    // ===== ÂM THANH =====
     amThanh.napAm("datbomb", "sound/datbom.wav");
     amThanh.napAm("no", "sound/no.wav");
     amThanh.phatNhacNen("sound/nhacnen.ogg");
-
 
     // =================================================================== VONG LAP GAME ============================================================================================
     while (window.isOpen()) {
@@ -60,8 +70,8 @@ int main() {
                 window.close();
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
                 paused = true;
-				amThanh.dungTatCaAmThanh();
-                // Hien menu tam dung
+                amThanh.dungTatCaAmThanh();
+                // Hi?n menu t?m d?ng
                 int luaChon = menu.hienPause(window);
                 if (luaChon == 0) {
                     paused = false;
@@ -75,7 +85,7 @@ int main() {
         }
         if (paused) continue;
 
-         // ======================================================================= CAP NHAT GAME =====================================================================================
+        // ======================================================================= CAP NHAT GAME =====================================================================================
         deltaTime = clock.restart().asSeconds();
         Time += deltaTime;     
         CapNhapBomb(QuanLyBomb, deltaTime);
@@ -83,21 +93,22 @@ int main() {
         thanhMau.capNhat(a.health);
         for (auto &e : DanhSachEnemy) e->capNhat(deltaTime, SoLuongQuai);
 
-        // ===== ÐK WIN LOSE =====
+        // ===== ÐI?U KI?N WIN/LOSE =====
         if (!a.alive) {
-             bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
-             if (!tiepTuc) break;
+            bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
+            if (!tiepTuc) break;
         }
 
         if (SoLuongQuai == 0) {
-          bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
-          if (!tiepTuc) break;
+            bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
+            if (!tiepTuc) break;
         }
 
-
-        // ====================================================================== VE MAN HINH GAME =================================================================================
+        // ====================================================================== V? MÀN HÌNH GAME =================================================================================
         window.clear();
-        window.draw(SPRITE);
+
+        window.draw(backgroundSprite);  // ?? V? ?NH N?N TRU?C
+        window.draw(SPRITE);            // V? MAP PNG LÊN TRÊN
 
         for (auto &bomb : QuanLyBomb) bomb.Ve(window);
         a.Ve(window, Time);
@@ -120,8 +131,8 @@ void NapLaiTexture(Player &a) {
     a.TEXTURE.loadFromFile("assets/player.png");
     a.SPRITE.setTexture(a.TEXTURE);
 }
-bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time) 
-{
+
+bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time) {
     amThanh.phatAm("no");
     diemGame.save("score.txt");
 
@@ -154,11 +165,9 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         Time = 0.f;
         clock.restart();
         return true;  // Choi l?i
-    } 
-    else {
+    } else {
         window.close();
         return false; // Thoát game
     }
 }
-
 
