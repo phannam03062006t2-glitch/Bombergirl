@@ -1,11 +1,14 @@
 #include "Diem.h"
 #include <algorithm>
+#include <fstream>
 using namespace std;
 
 Diem diemGame;
 
 Diem::Diem() {
     points = 0;
+    daLuu=false;
+    
     if (!font.loadFromFile("arial.ttf")) {
         throw runtime_error("Font arial.ttf not found!");
     }
@@ -13,6 +16,9 @@ Diem::Diem() {
     text.setCharacterSize(30);
     text.setFillColor(Color::Red);
     text.setPosition(10, 10);
+    
+    //Doc bang xep hang khi file khoi tao
+    docBangXepHang("score.txt");
 }
 
 void Diem::add(int p) {
@@ -43,6 +49,7 @@ void Diem::reset() {
 void Diem::capNhatBangXepHang() {
     // Them diem hien tai
     if(daLuu) return;
+    
     bangXepHang.push_back(points);
     daLuu=true;
 
@@ -52,10 +59,13 @@ void Diem::capNhatBangXepHang() {
     // Giu lai top 5
     if (bangXepHang.size() > 5)
         bangXepHang.resize(5);
+        
+    //Ghi lai vao file
+    ghiBangXepHang("score.txt");
 }
 
 void Diem::veBangXepHang(RenderWindow& window) {
-    // Tiêu đ?
+    // Tieu de
     Text title("TOP 5 SCORE", font, 50);
     title.setFillColor(Color::Yellow);
     title.setPosition(700, 150);
@@ -75,4 +85,30 @@ void Diem::veBangXepHang(RenderWindow& window) {
     note.setPosition(696, 600);
     window.draw(note);
 }
+//===== Doc va ghi file =====
+void Diem::docBangXepHang(const string &filename) {
+	ifstream file(filename);
+	bangXepHang.clear();
+	int diem;
+	if (file.is_open()) {
+		while(file>>diem) {
+			bangXepHang.push_back(diem);
+		}
+		file.close();
+	}
+	sort(bangXepHang.begin(),bangXepHang.end(),greater<int>());
+	
+	// Giu lai top 5 neu co nhieu hon
+	if(bangXepHang.size()>5);
+	bangXepHang.resize(5);
+}
 
+void Diem::ghiBangXepHang(const string &filename) {
+	ofstream file(filename);
+	if(file.is_open()) {
+		for(int diem : bangXepHang) {
+			file<<diem<<"\n";
+		}
+		file.close();
+	}
+}
