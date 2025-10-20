@@ -204,7 +204,7 @@ bool Menu::hienBangXepHang(RenderWindow &window) {
 
 string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
     string name = "";
-    Text textNhap("Nhap ten nguoi choi: ", font, 35);
+    Text textNhap("Player name: ", font, 35);
     textNhap.setFillColor(Color::White);
     textNhap.setPosition(600, 300);
 
@@ -245,3 +245,4 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
 
     return name;
 }
+
