@@ -210,7 +210,7 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
 
     Text textTen("", font, 35);
     textTen.setFillColor(Color::Cyan);
-    textTen.setPosition(950, 300);
+    textTen.setPosition(830, 300);
 
     while (window.isOpen()) {
         Event event;
@@ -245,4 +245,5 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
 
     return name;
 }
+
 
