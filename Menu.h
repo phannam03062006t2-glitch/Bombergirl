@@ -22,7 +22,8 @@ public:
 
 };
 
-string nhapTenNguoiChoi(sf::RenderWindow &window, sf::Font &font);
+string nhapTenNguoiChoi(RenderWindow &window, Font &font);
 
 
 #endif
+
