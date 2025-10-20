@@ -24,6 +24,8 @@ public:
 
     void capNhatBangXepHang();
     void veBangXepHang(RenderWindow&);
+    void docBangXepHang(const string &filename);
+    void ghiBangXepHang(const string &filename);
 
 };
 
