@@ -38,7 +38,7 @@ void input_map(){
 	int hang, cot;
 	file >> hang >> cot;
 	if(hang != 11 && cot != 13){
-		cerr << "[CANH BAO] Loi du lieu" << endl;
+		cerr << "[CANH BAO] Loi du lieu kich thuoc" << endl;
 	}
 	int i = 0, j = 0;
 	while(file >> a){
@@ -50,7 +50,7 @@ void input_map(){
 		else if(a == 5){DanhSachEnemy.push_back(new Enemy3(j*64, i*64));}
 		else if(a == 0){}
 		else{
-			cerr << "[CANH BAO] Loi du lieu" << endl;
+			cerr << "[CANH BAO] Loi du lieu thanh phan" << endl;
 		}
 		j++;
 		if(j == cot){
