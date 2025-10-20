@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <vector>
 using namespace sf;
 using namespace std;
 
@@ -10,6 +11,7 @@ private:
     int points;
     Font font;
     Text text;
+    vector<int> bangXepHang;
 
 public:
     Diem();
@@ -18,6 +20,11 @@ public:
     void draw(RenderWindow& window);
     void save(const string& filename);
     void reset();
+    bool daLuu = false;
+
+    void capNhatBangXepHang();
+    void veBangXepHang(RenderWindow&);
+
 };
 
 
