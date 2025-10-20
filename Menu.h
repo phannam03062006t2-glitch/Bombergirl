@@ -22,7 +22,8 @@ public:
 
 };
 
-string nhapTenNguoiChoi(RenderWindow &window, Font &font);
+std::string nhapTenNguoiChoi(sf::RenderWindow &window, sf::Font &font);
 
 
 #endif
+
