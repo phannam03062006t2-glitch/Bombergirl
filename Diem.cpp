@@ -58,20 +58,21 @@ void Diem::veBangXepHang(RenderWindow& window) {
     // Tiêu đ?
     Text title("TOP 5 SCORE", font, 50);
     title.setFillColor(Color::Yellow);
-    title.setPosition(600, 150);
+    title.setPosition(700, 150);
     window.draw(title);
 
     // In diem
     for (int i = 0; i < (int)bangXepHang.size(); i++) {
         Text line(to_string(i + 1) + ". " + to_string(bangXepHang[i]), font, 40);
         line.setFillColor(Color::White);
-        line.setPosition(700, 230 + i * 60);
+        line.setPosition(800, 230 + i * 60);
         window.draw(line);
     }
 
     // Goi y quay lai 
     Text note("PRESS ENTER TO RETURN", font, 25);
     note.setFillColor(Color::Cyan);
-    note.setPosition(650, 600);
+    note.setPosition(696, 600);
     window.draw(note);
 }
+
