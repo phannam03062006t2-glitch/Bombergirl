@@ -19,6 +19,7 @@ Player a;
 // ===== KHAI BAO HAM HO TRO =====
 void NapLaiTexture(Player &a);
 void NapLaiTextureThanhMau(ThanhMau &thanhMau);
+bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time);
 
 int main() {
     RenderWindow window(VideoMode(1700, 900), "Bomber Girl");
@@ -52,25 +53,13 @@ int main() {
     // ===== VONG LAP GAME =====
     while (window.isOpen()) {
         Event event;
+        // pause
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 window.close();
-
-            // Nhan ESC de tam dung
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
                 paused = true;
 				amThanh.dungTatCaAmThanh();
-                // Ve khung tam dung
-                window.clear();
-                window.draw(SPRITE);
-                for (auto &bomb : QuanLyBomb) bomb.Ve(window);
-                a.Ve(window, Time);
-                for (auto &Enemy : DanhSachEnemy) Enemy->Ve(window);
-                veWall(window);
-                diemGame.draw(window);
-                thanhMau.ve(window);
-                window.display();
-
                 // Hien menu tam dung
                 int luaChon = menu.hienPause(window);
                 if (luaChon == 0) {
@@ -83,100 +72,27 @@ int main() {
                 }
             }
         }
-
         if (paused) continue;
 
-        // Cap nhat thoi gian
+         // ===== CAP NHAT GAME =====
         deltaTime = clock.restart().asSeconds();
-        Time += deltaTime;
-
-        // ===== CAP NHAT GAME =====
+        Time += deltaTime;     
         CapNhapBomb(QuanLyBomb, deltaTime);
         CapNhapPlayer(a);
         thanhMau.capNhat(a.health);
-
         for (auto &e : DanhSachEnemy) e->capNhat(deltaTime, SoLuongQuai);
 
-        // ===== NEU NHAN VAT CHET =====
+        // ===== ÐK WIN LOSE =====
         if (!a.alive) {
-            amThanh.phatAm("no");
-            diemGame.save("score.txt");
-
-            // Hien man hinh Game Over
-            bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
-
-            if (quayLaiMenu) {
-                // Dung nhac, mo lai menu
-                amThanh.dungTatCaAmThanh();
-                bool batDauLai = menu.hienMenu(window);
-                if (!batDauLai) {
-                    window.close();
-                    break;
-                }
-
-                // === Khoi tao lai game ===
-                a = Player();
-                NapLaiTexture(a);
-
-                QuanLyBomb.clear();
-                DanhSachEnemy.clear();
-
-                input_map();
-
-                thanhMau.reset(3);
-                
-                diemGame.reset();
-
-                amThanh.phatNhacNen("sound/nhacnen.ogg"); // Phat lai nhac nen
-
-                Time = 0.f;
-                clock.restart();
-                continue;
-            } else {
-                window.close();
-                break;
-            }
+             bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
+             if (!tiepTuc) break;
         }
-        //
-         if (SoLuongQuai == 0) {
-            amThanh.phatAm("no");
-            diemGame.save("score.txt");
 
-            // Hien man hinh Game Over
-            bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
-
-            if (quayLaiMenu) {
-                // Dung nhac, mo lai menu
-                amThanh.dungTatCaAmThanh();
-                bool batDauLai = menu.hienMenu(window);
-                if (!batDauLai) {
-                    window.close();
-                    break;
-                }
-
-                // === Khoi tao lai game ===
-                a = Player();
-                NapLaiTexture(a);
-
-                QuanLyBomb.clear();
-                DanhSachEnemy.clear();
-
-                input_map();
-
-                thanhMau.reset(3);
-                
-                diemGame.reset();
-
-                amThanh.phatNhacNen("sound/nhacnen.ogg"); // Phat lai nhac nen
-
-                Time = 0.f;
-                clock.restart();
-                continue;
-            } else {
-                window.close();
-                break;
-            }
+        if (SoLuongQuai == 0) {
+          bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
+          if (!tiepTuc) break;
         }
+
 
         // ===== VE MAN HINH GAME =====
         window.clear();
@@ -202,4 +118,45 @@ void NapLaiTexture(Player &a) {
     a.TEXTURE.loadFromFile("assets/player.png");
     a.SPRITE.setTexture(a.TEXTURE);
 }
+bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Player &a, ThanhMau &thanhMau, Clock &clock, float &Time) 
+{
+    amThanh.phatAm("no");
+    diemGame.save("score.txt");
+
+    bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
+
+    if (quayLaiMenu) {
+        // D?ng nh?c, m? l?i menu
+        amThanh.dungTatCaAmThanh();
+        bool batDauLai = menu.hienMenu(window);
+
+        if (!batDauLai) {
+            window.close();
+            return false;  // Thoát game
+        }
+
+        // === Kh?i t?o l?i game ===
+        a = Player();
+        NapLaiTexture(a);
+
+        QuanLyBomb.clear();
+        DanhSachEnemy.clear();
+
+        input_map();
+
+        thanhMau.reset(3);
+        diemGame.reset();
+
+        amThanh.phatNhacNen("sound/nhacnen.ogg");
+
+        Time = 0.f;
+        clock.restart();
+        return true;  // Choi l?i
+    } 
+    else {
+        window.close();
+        return false; // Thoát game
+    }
+}
+
 
