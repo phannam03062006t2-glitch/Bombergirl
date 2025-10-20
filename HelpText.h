@@ -16,6 +16,5 @@ public:
     void ve(RenderWindow &cuaSo, float chieuCaoBanDo); // Ve ra man hinh
 };
 
-// Khai báo bi?n toàn c?c (s? ðý?c ð?nh ngh?a trong HelpText.cpp)
+// Khai bÃ¡o bi?n toÃ n c?c (s? Ä‘Æ°?c Ä‘?nh ngh?a trong HelpText.cpp)
 extern HuongDan huongDan;
-
