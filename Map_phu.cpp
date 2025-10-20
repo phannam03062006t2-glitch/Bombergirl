@@ -30,9 +30,16 @@ void Wall::Ve(RenderWindow &window){
 void input_map(){
 	ifstream file;
 	file.open("map.txt");
+	if (!file.is_open()) {
+        cerr << "[LOI] Khong the mo file map.txt" << endl;
+        throw runtime_error("Khong the mo file map.txt");
+    }
 	int a;
 	int hang, cot;
 	file >> hang >> cot;
+	if(hang != 11 && cot != 13){
+		cerr << "[CANH BAO] Loi du lieu" << endl;
+	}
 	int i = 0, j = 0;
 	while(file >> a){
 
@@ -41,7 +48,9 @@ void input_map(){
 		else if(a == 3){DanhSachEnemy.push_back(new Enemy1(j*64, i*64));}
 		else if(a == 4){DanhSachEnemy.push_back(new Enemy2(j*64, i*64));}
 		else if(a == 5){DanhSachEnemy.push_back(new Enemy3(j*64, i*64));}
-		
+		else{
+			cerr << "[CANH BAO] Loi du lieu" << endl;
+		}
 		j++;
 		if(j == cot){
 		    j = 0;
