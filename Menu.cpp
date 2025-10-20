@@ -8,8 +8,8 @@ Menu::Menu() {
         cerr << "Khong the tai font arial.ttf\n";
     }
 
-    if (!bgTexture.loadFromFile("assets/anhnen.png")) {
-        cerr << "Khong the tai anh nen assets/anhnen.png\n";
+    if (!bgTexture.loadFromFile("assets/anhmenu.png")) {
+        cerr << "Khong the tai anh nen assets/menu.png\n";
     }
 
     bgSprite.setTexture(bgTexture);
@@ -201,5 +201,6 @@ bool Menu::hienBangXepHang(RenderWindow &window) {
     }
     return false;
 }
+
 
 
