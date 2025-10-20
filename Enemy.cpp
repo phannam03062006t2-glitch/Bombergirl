@@ -32,7 +32,8 @@ Enemy::Enemy(float x_, float y_, int type_) {
         EnemyLoad = true;
         srand((unsigned)time(NULL));
     }
-
+    healthMax = 1;
+    health = healthMax;
     type = type_;
     SPRITE.setTexture(TEXTURES[type]);
     // m?c d?nh m?i sprite 64x64, 4 hàng hu?ng, 3 c?t frame -> header s? set khi anim
@@ -92,12 +93,12 @@ bool VaChamWall2_Enemy(const Enemy& e, const Wall2& w) {
 // ===================================================
 void Enemy::capNhat(float deltaTime, int& SoLuongQuai){
     if (!alive) return;
-
+  
     // Di chuy?n t?m th?i (dùng tocDo làm t?c d? pixel/frame)
     x += vanToc.x * tocDo;
     y += vanToc.y * tocDo;
     SPRITE.setPosition(x, y);
-
+ 
     // C?p nh?t vùng va ch?m
     c1 = x + 10;
     c2 = y + 10;
@@ -181,9 +182,12 @@ void Enemy::capNhat(float deltaTime, int& SoLuongQuai){
         if (c2 >= b.c4 && c3 <= b.c1) continue;   // góc du?i trái
 
         // n?u không roi vào vùng lo?i tr? => b? n? trúng
-        alive = false;
-        SoLuongQuai--;
-        diemGame.add(100);
+        health--;
+        if(health <= 0){
+		alive  = false;
+		SoLuongQuai--;
+		diemGame.add( tocDo * 10 + healthMax * 10);
+		}
         break;
     }
 
@@ -220,13 +224,19 @@ bool Enemy::kiemTraVaChamPlayer(const FloatRect &playerBounds) {
 //                   Enemy1/2/3
 // ===================================================
 Enemy1::Enemy1(float x_, float y_) : Enemy(x_, y_, 0) {
-    tocDo = 1.f;
+    tocDo = 3.f;
+    healthMax = 15;
+    health = healthMax;
 }
 
 Enemy2::Enemy2(float x_, float y_) : Enemy(x_, y_, 1) {
-    tocDo = 1,5.f;
+    tocDo = 1.f;
+    healthMax = 70;
+    health = healthMax;
 }
 
 Enemy3::Enemy3(float x_, float y_) : Enemy(x_, y_, 2) {
-    tocDo = 2,5.f;
+    tocDo = 1.5f;
+    healthMax = 31;
+    health = healthMax;
 }

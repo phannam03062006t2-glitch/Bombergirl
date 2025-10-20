@@ -13,7 +13,9 @@ protected:
     Sprite SPRITE;
     static Texture TEXTURES[3];   // Texture dùng chung cho 3 lo?i quái
     static bool EnemyLoad;        // Ch? load 1 l?n
-
+    
+    int health;
+    int healthMax;
     float x, y;                   // T?a d?
     float tocDo;                  // T?c d? di chuy?n
     int frame;                    // Frame animation hi?n t?i
