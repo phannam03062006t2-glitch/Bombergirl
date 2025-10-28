@@ -8,14 +8,21 @@ Menu::Menu() {
         cerr << "Khong the tai font arial.ttf\n";
     }
 
+    // ======= ?NH N?N MENU CHÍNH =======
     if (!bgTexture.loadFromFile("assets/anhmenu.png")) {
         cerr << "Khong the tai anh nen assets/anhmenu.png\n";
     }
-
     bgSprite.setTexture(bgTexture);
     bgSprite.setScale(1700.0f / bgTexture.getSize().x, 900.0f / bgTexture.getSize().y);
 
-    
+    // ======= ?NH N?N CHO CÁC MÀN PH? (pause, game over, b?ng x?p h?ng) =======
+    if (!backgroundTextureMenu.loadFromFile("assets/anh_nen_menu.png")) {
+        cerr << "Khong the tai anh_nen_menu.png\n";
+    }
+    backgroundSpriteMenu.setTexture(backgroundTextureMenu);
+    backgroundSpriteMenu.setScale(1700.f / backgroundTextureMenu.getSize().x, 900.f / backgroundTextureMenu.getSize().y);
+
+    // ======= TEXT MENU CHÍNH =======
     startText.setFont(font);
     startText.setString("PRESS ENTER TO START");
     startText.setCharacterSize(40);
@@ -29,6 +36,9 @@ Menu::Menu() {
     exitText.setPosition(610, 470);
 }
 
+// =========================
+// MENU CHÍNH
+// =========================
 bool Menu::hienMenu(RenderWindow &window) {
     Clock blinkClock;
     bool visible = true;
@@ -51,8 +61,7 @@ bool Menu::hienMenu(RenderWindow &window) {
         }
 
         window.clear();
-        window.draw(bgSprite);
-        window.draw(title);
+        window.draw(bgSprite); // n?n menu chính
         if (visible) window.draw(startText);
         if (visible) window.draw(exitText);
         window.display();
@@ -61,11 +70,11 @@ bool Menu::hienMenu(RenderWindow &window) {
 }
 
 // =========================
-// MENU TAM DUNG (PAUSE)
+// MENU T?M D?NG (PAUSE)
 // =========================
 int Menu::hienPause(RenderWindow &window) {
     RectangleShape nenMo(Vector2f(1700, 900));
-    nenMo.setFillColor(Color(0, 0, 0, 180));
+    nenMo.setFillColor(Color(0, 0, 0, 150));
 
     Text pauseText, tiepTucText, thoatText;
     pauseText.setFont(font);
@@ -93,12 +102,13 @@ int Menu::hienPause(RenderWindow &window) {
                 window.close();
 
             if (event.type == Event::KeyPressed) {
-                if (event.key.code == Keyboard::Return) return 0; // tiep tuc
-                if (event.key.code == Keyboard::Escape) return 1; // thoat
+                if (event.key.code == Keyboard::Return) return 0; // ti?p t?c
+                if (event.key.code == Keyboard::Escape) return 1; // thoát
             }
         }
 
         window.clear();
+        window.draw(backgroundSpriteMenu); // n?n ph?
         window.draw(nenMo);
         window.draw(pauseText);
         window.draw(tiepTucText);
@@ -107,13 +117,14 @@ int Menu::hienPause(RenderWindow &window) {
     }
     return 1;
 }
-// menu game over
+
+// =========================
+// MENU GAME OVER
+// =========================
 bool Menu::hienGameOver(RenderWindow &window, int diem) {
-    // Nen mo den
     RectangleShape nenMo(Vector2f(1700, 900));
     nenMo.setFillColor(Color(0, 0, 0, 200));
 
-    // Tieu de GAME OVER
     Text gameOverText;
     gameOverText.setFont(font);
     gameOverText.setString("GAME OVER");
@@ -121,7 +132,6 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     gameOverText.setFillColor(Color::Red);
     gameOverText.setPosition(600, 250);
 
-    // Hien diem nguoi choi
     Text scoreText;
     scoreText.setFont(font);
     scoreText.setCharacterSize(50);
@@ -129,7 +139,6 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     scoreText.setString("SCORE: " + to_string(diem));
     scoreText.setPosition(727, 380);
 
-    // Huong dan bam phim
     Text restartText, exitText, rankText; 
     restartText.setFont(font);
     restartText.setCharacterSize(40);
@@ -149,10 +158,8 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     exitText.setString("PRESS ESC TO EXIT");
     exitText.setPosition(655, 580);
 	
-	//cap nhat diem vao bang xep hang
 	diemGame.capNhatBangXepHang();
 	
-    // Vong lap hien thi man hinh
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -161,18 +168,18 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
 
             if (event.type == Event::KeyPressed) {
                 if (event.key.code == Keyboard::Return) 
-                    return true; // quay lai menu
+                    return true; 
                 if(event.key.code==Keyboard::Q) {
-                	hienBangXepHang(window); // mo bang xep hang
+                	hienBangXepHang(window);
 				}
                 if (event.key.code == Keyboard::Escape) {
-                    window.close(); // thoat game
                     return false;
                 }
             }
         }
 
         window.clear();
+        window.draw(backgroundSpriteMenu); // n?n ph?
         window.draw(nenMo);
         window.draw(gameOverText);
         window.draw(scoreText);
@@ -183,6 +190,10 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     }
     return false;
 }
+
+// =========================
+// HI?N B?NG X?P H?NG
+// =========================
 bool Menu::hienBangXepHang(RenderWindow &window) {
     while (window.isOpen()) {
         Event event;
@@ -191,19 +202,31 @@ bool Menu::hienBangXepHang(RenderWindow &window) {
                 window.close();
 
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Return) {
-                return true; // quay v? menu chÃ­nh
+                return true; 
             }
         }
 
         window.clear();
+        window.draw(backgroundSpriteMenu); // n?n ph?
         diemGame.veBangXepHang(window);
         window.display();
     }
     return false;
 }
 
+// =========================
+// NH?P TÊN NGU?I CHOI
+// =========================
 string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
     string name = "";
+
+    Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("assets/anh_nen_menu.png")) {
+        cerr << "Khong the tai anh_nen_menu.png!\n";
+    }
+    Sprite backgroundSprite(backgroundTexture);
+    backgroundSprite.setScale(1700.f / backgroundTexture.getSize().x, 900.f / backgroundTexture.getSize().y);
+
     Text textNhap("Player name: ", font, 35);
     textNhap.setFillColor(Color::White);
     textNhap.setPosition(600, 300);
@@ -218,18 +241,16 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
             if (event.type == Event::Closed)
                 window.close();
 
-            // Nhan phim
             if (event.type == Event::TextEntered) {
-                if (event.text.unicode == '\b') { // Xoa ky tu
+                if (event.text.unicode == '\b') { 
                     if (!name.empty())
                         name.pop_back();
                 } 
-                else if (event.text.unicode == '\r') { // Enter
+                else if (event.text.unicode == '\r') { 
                     if (!name.empty()) 
                         return name;
                 } 
                 else if (event.text.unicode < 128 && event.text.unicode >= 32) {
-                    // Them ky tu chu
                     name += static_cast<char>(event.text.unicode);
                 }
             }
@@ -237,7 +258,8 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
 
         textTen.setString(name);
 
-        window.clear(Color::Black);
+        window.clear();
+        window.draw(backgroundSprite); // n?n ph?
         window.draw(textNhap);
         window.draw(textTen);
         window.display();
@@ -245,5 +267,3 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
 
     return name;
 }
-
-
