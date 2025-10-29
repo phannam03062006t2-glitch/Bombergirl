@@ -1,7 +1,7 @@
 #include "HelpText.h"
 #include <iostream>
 
-HuongDan huongDan; // Đ?nh ngh?a bi?n toàn c?c
+HuongDan huongDan; // Ä?nh ngh?a bi?n toÃ n c?c
 
 HuongDan::HuongDan() {
     if (!font.loadFromFile("arial.ttf")) {
@@ -13,9 +13,9 @@ HuongDan::HuongDan() {
     vanBan.setFillColor(Color::White);
     vanBan.setString(
         "LEN XUONG TRAI PHAI  : Phim di chuyen\n"
-        "X        : Dat bom\n"
-        "ESC      : Pause game\n"
-        "H        : An / Hien huong dan"
+        "X        	: Dat bom\n"
+        "ESC       : Pause game\n"
+        "H        	: An / Hien huong dan"
     );
     hienThi = true;
 }
@@ -51,4 +51,3 @@ void HuongDan::ve(RenderWindow &cuaSo, float chieuCaoBanDo) {
     cuaSo.draw(nen);
     cuaSo.draw(vanBan);
 }
-
