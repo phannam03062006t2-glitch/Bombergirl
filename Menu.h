@@ -8,11 +8,11 @@ class Menu {
 private:
     Font font;
 
-    // === N?N MENU CHÕNH ===
+    // === NEN MENU CHINH ===
     Texture bgTexture;
     Sprite bgSprite;
 
-    // === N?N CHO C¡C M¿N PH? ===
+    // === NEN CHO CAC MAN HINH KHAC ===
     Texture backgroundTextureMenu;
     Sprite backgroundSpriteMenu;
 
@@ -24,7 +24,7 @@ public:
     Menu();
     bool hienGameOver(RenderWindow &window, int diem);
     bool hienMenu(RenderWindow &window);
-    int hienPause(RenderWindow &window); // 0: ti?p t?c, 1: tho·t
+    int hienPause(RenderWindow &window); // 0: tiep tuc, 1: tho√°t
     bool hienBangXepHang(RenderWindow &window);
 };
 
