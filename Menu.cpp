@@ -130,7 +130,7 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     gameOverText.setString("GAME OVER");
     gameOverText.setCharacterSize(80);
     gameOverText.setFillColor(Color::Red);
-    gameOverText.setPosition(600, 250);
+    gameOverText.setPosition(620, 250);
 
     Text scoreText;
     scoreText.setFont(font);
@@ -150,7 +150,7 @@ bool Menu::hienGameOver(RenderWindow &window, int diem) {
     rankText.setCharacterSize(40);
     rankText.setFillColor(Color::Cyan);
     rankText.setString("PRESS Q TO VIEW LEADERBOARD");
-    rankText.setPosition(560, 540);
+    rankText.setPosition(545, 540);
 
     exitText.setFont(font);
     exitText.setCharacterSize(40);
@@ -221,27 +221,24 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
     string name = "";
 // Anh nen
     Texture backgroundTexture;
-    if (!backgroundTexture.loadFromFile("assets/anh_nen_menu.png")) {
-        cerr << "Khong the tai anh_nen_menu.png!\n";
+    if (!backgroundTexture.loadFromFile("assets/name.png")) {
+        cerr << "Khong the tai name.png!\n";
     }
     Sprite backgroundSprite(backgroundTexture);
     backgroundSprite.setScale(1700.f / backgroundTexture.getSize().x, 900.f / backgroundTexture.getSize().y);
 
 // VUNG HIEN THI TEN
-	RectangleShape inputBox(Vector2f(300, 60)); // tao o chu nhat
+	RectangleShape inputBox(Vector2f(210, 60)); // tao o chu nhat
     inputBox.setFillColor(Color(0, 0, 0, 150)); // mau den trong suot
     inputBox.setOutlineColor(Color::Cyan);		//Vien trang
     inputBox.setOutlineThickness(3);			//do day vien
-    inputBox.setPosition(800, 295);				//vi tri o nhap ten
+    inputBox.setPosition(798, 426);				//vi tri o nhap ten
     
 // CHU HIEN TEN NGUOI CHOI
-    Text textNhap("PLAYER NAME: ", font, 35);
-    textNhap.setFillColor(Color::White);
-    textNhap.setPosition(530, 300);
 
     Text textTen("", font, 35);
     textTen.setFillColor(Color::Cyan);
-    textTen.setPosition(810, 300);
+    textTen.setPosition(810, 430);
 
     while (window.isOpen()) {
         Event event;
@@ -268,8 +265,7 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
 
         window.clear();
         window.draw(backgroundSprite); // ve anh nen  
-        window.draw(textNhap);
-         window.draw(inputBox);        // ve o nhap ten
+        window.draw(inputBox);        // ve o nhap ten
         window.draw(textTen);
         window.display();
     }
