@@ -8,21 +8,21 @@ Menu::Menu() {
         cerr << "Khong the tai font arial.ttf\n";
     }
 
-    // ======= ?NH N?N MENU CHÍNH =======
+    // ======= ANH NEN CHO MENU CHINH =======
     if (!bgTexture.loadFromFile("assets/anhmenu.png")) {
         cerr << "Khong the tai anh nen assets/anhmenu.png\n";
     }
     bgSprite.setTexture(bgTexture);
     bgSprite.setScale(1700.0f / bgTexture.getSize().x, 900.0f / bgTexture.getSize().y);
 
-    // ======= ?NH N?N CHO CÁC MÀN PH? (pause, game over, b?ng x?p h?ng) =======
+    // ======= ANH NEN CHO CAC MAN HINH =======
     if (!backgroundTextureMenu.loadFromFile("assets/anh_nen_menu.png")) {
         cerr << "Khong the tai anh_nen_menu.png\n";
     }
     backgroundSpriteMenu.setTexture(backgroundTextureMenu);
     backgroundSpriteMenu.setScale(1700.f / backgroundTextureMenu.getSize().x, 900.f / backgroundTextureMenu.getSize().y);
 
-    // ======= TEXT MENU CHÍNH =======
+    // ======= TEXT MENU CHÃNH =======
     startText.setFont(font);
     startText.setString("PRESS ENTER TO START");
     startText.setCharacterSize(40);
@@ -37,7 +37,7 @@ Menu::Menu() {
 }
 
 // =========================
-// MENU CHÍNH
+// MENU CHINH
 // =========================
 bool Menu::hienMenu(RenderWindow &window) {
     Clock blinkClock;
@@ -61,7 +61,7 @@ bool Menu::hienMenu(RenderWindow &window) {
         }
 
         window.clear();
-        window.draw(bgSprite); // n?n menu chính
+        window.draw(bgSprite); // n?n menu chÃ­nh
         if (visible) window.draw(startText);
         if (visible) window.draw(exitText);
         window.display();
@@ -70,7 +70,7 @@ bool Menu::hienMenu(RenderWindow &window) {
 }
 
 // =========================
-// MENU T?M D?NG (PAUSE)
+// MENU TAM DUNG (PAUSE)
 // =========================
 int Menu::hienPause(RenderWindow &window) {
     RectangleShape nenMo(Vector2f(1700, 900));
@@ -103,7 +103,7 @@ int Menu::hienPause(RenderWindow &window) {
 
             if (event.type == Event::KeyPressed) {
                 if (event.key.code == Keyboard::Return) return 0; // ti?p t?c
-                if (event.key.code == Keyboard::Escape) return 1; // thoát
+                if (event.key.code == Keyboard::Escape) return 1; // thoÃ¡t
             }
         }
 
@@ -215,11 +215,11 @@ bool Menu::hienBangXepHang(RenderWindow &window) {
 }
 
 // =========================
-// NH?P TÊN NGU?I CHOI
+// NHAP TEN NGUOI CHOI
 // =========================
 string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
     string name = "";
-
+// Anh nen
     Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("assets/anh_nen_menu.png")) {
         cerr << "Khong the tai anh_nen_menu.png!\n";
@@ -227,13 +227,21 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
     Sprite backgroundSprite(backgroundTexture);
     backgroundSprite.setScale(1700.f / backgroundTexture.getSize().x, 900.f / backgroundTexture.getSize().y);
 
-    Text textNhap("Player name: ", font, 35);
+// VUNG HIEN THI TEN
+	RectangleShape inputBox(Vector2f(300, 60)); // tao o chu nhat
+    inputBox.setFillColor(Color(0, 0, 0, 150)); // mau den trong suot
+    inputBox.setOutlineColor(Color::Cyan);		//Vien trang
+    inputBox.setOutlineThickness(3);			//do day vien
+    inputBox.setPosition(800, 295);				//vi tri o nhap ten
+    
+// CHU HIEN TEN NGUOI CHOI
+    Text textNhap("PLAYER NAME: ", font, 35);
     textNhap.setFillColor(Color::White);
-    textNhap.setPosition(600, 300);
+    textNhap.setPosition(530, 300);
 
     Text textTen("", font, 35);
     textTen.setFillColor(Color::Cyan);
-    textTen.setPosition(830, 300);
+    textTen.setPosition(810, 300);
 
     while (window.isOpen()) {
         Event event;
@@ -259,8 +267,9 @@ string nhapTenNguoiChoi(RenderWindow &window, Font &font) {
         textTen.setString(name);
 
         window.clear();
-        window.draw(backgroundSprite); // n?n ph?
+        window.draw(backgroundSprite); // ve anh nen  
         window.draw(textNhap);
+         window.draw(inputBox);        // ve o nhap ten
         window.draw(textTen);
         window.display();
     }
