@@ -57,7 +57,7 @@ int main() {
     TEXTURE.loadFromFile("assets/map.png");
     Sprite SPRITE(TEXTURE);
 
-    // ===== ?NH N?N =====
+    // ===== ANH NEN =====
     Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("assets/anhnen.png")) {
         cout << "Khong the tai anhnen.png!" << endl;
@@ -66,7 +66,7 @@ int main() {
     Vector2u textureSize = backgroundTexture.getSize();
     backgroundSprite.setScale(1700.f / textureSize.x, 900.f / textureSize.y);
 
-    // ===== ÂM THANH =====
+    // ===== AM THANH =====
     amThanh.napAm("datbomb", "sound/datbom.wav");
     amThanh.napAm("no", "sound/no.wav");
     amThanh.phatNhacNen("sound/nhacnen.ogg");
@@ -82,8 +82,8 @@ int main() {
         		huongDan.doiTrangThai();
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
                 paused = true;
-                amThanh.dungTatCaAmThanh();
-                // Hi?n menu t?m d?ng
+                amThanh.tamDungTatCaAmThanh();
+                // Hien menu tam dung
                 int luaChon = menu.hienPause(window);
                 if (luaChon == 0) {
                     paused = false;
@@ -105,7 +105,7 @@ int main() {
         thanhMau.capNhat(a.health);
         for (auto &e : DanhSachEnemy) e->capNhat(deltaTime, SoLuongQuai);
 
-        // ===== ?I?U KI?N WIN/LOSE =====
+        // ===== KIEU DE WIN/LOSE =====
         if (!a.alive) {
             bool tiepTuc = XuLyKetThucTran(window, menu, amThanh, a, thanhMau, clock, Time);
             if (!tiepTuc) break;
@@ -116,11 +116,11 @@ int main() {
             if (!tiepTuc) break;
         }
 
-        // ====================================================================== V? MÀN H?NH GAME =================================================================================
+        // ====================================================================== VE MAN HINH GAME =================================================================================
         window.clear();
 
-        window.draw(backgroundSprite);  // ?? V? ?NH N?N TRU?C
-        window.draw(SPRITE);            // V? MAP PNG LÊN TRÊN
+        window.draw(backgroundSprite);  // VE ANH NEN TRUOC
+        window.draw(SPRITE);            // VE MAP
 
         for (auto &bomb : QuanLyBomb) bomb.Ve(window);
         a.Ve(window, Time);
@@ -152,16 +152,16 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
     bool quayLaiMenu = menu.hienGameOver(window, diemGame.get());
 
     if (quayLaiMenu) {
-        // D?ng nh?c, m? l?i menu
+        // Dung lai nhac menu
         amThanh.dungTatCaAmThanh();
         bool batDauLai = menu.hienMenu(window);
 
         if (!batDauLai) {
             window.close();
-            return false;  // Thoát game
+            return false;  // ThoÃ¡t game
         }
 
-        // === Kh?i t?o l?i game ===
+        // === Khoi tao lai game ===
         a = Player();
         NapLaiTexture(a);
 
@@ -180,8 +180,7 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         return true;  // Choi l?i
     } else {
         window.close();
-        return false; // Thoát game
+        return false; // ThoÃ¡t game
     }
 }
-
 
