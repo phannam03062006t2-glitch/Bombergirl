@@ -24,7 +24,7 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
 
 int main() {
 //===========================================================KHOI TAO=============================================================================================================
-    RenderWindow window(VideoMode(1700, 900), "Bomber Girl");
+    RenderWindow window(VideoMode(1700, 900), "Bomber Man");
     window.setFramerateLimit(60);
 
     // ===== MENU CHINH =====
@@ -183,4 +183,5 @@ bool XuLyKetThucTran(RenderWindow &window, Menu &menu, QLAmThanh &amThanh, Playe
         return false; // ThoÃ¡t game
     }
 }
+
 
