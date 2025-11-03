@@ -25,7 +25,7 @@ void QLAmThanh::phatAm(const string& ten) {
 }
 
 void QLAmThanh::phatNhacNen(const string& duongdan) {
-    static Music nhacNen; // Chi co mot nhac nen chay lap lai
+    //static Music nhacNen; // Chi co mot nhac nen chay lap lai
     if (!nhacNen.openFromFile(duongdan)) {
         cout << "Khong the tai nhac nen!" << endl;
         return;
@@ -64,3 +64,4 @@ void QLAmThanh::tiepTucTatCaAmThanh() {
     if(nhacNen.getStatus()==Music::Paused)
     	nhacNen.play();
 }
+
